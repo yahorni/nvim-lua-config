@@ -1,12 +1,9 @@
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+-- Set leader/localleader keys
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
---    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
@@ -27,22 +24,15 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
-  -- NOTE: First, some plugins that don't require any configuration
-
-  -- Git related plugins
-  -- 'tpope/vim-fugitive',
-  -- 'tpope/vim-rhubarb',
-
   -- improved quoting/parenthesizing
   'tpope/vim-surround',
   -- dot command for vim-surround
   'tpope/vim-repeat',
-
-  -- Detect tabstop and shiftwidth automatically
+  -- detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+  -- rename files
+  'vim-scripts/Rename2',
 
-  -- NOTE: This is where your plugins related to LSP can be installed.
-  --  The configuration is done below. Search for lspconfig to find it below.
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -60,76 +50,12 @@ require('lazy').setup({
     },
   },
 
-  -- File tree setup with Fern
-  {
-    {
-      'lambdalisue/fern.vim',
-      init = function()
-        vim.g['fern#default_hidden'] = 1
-        vim.g['fern#disable_default_mappings'] = 1
-        vim.g['fern#disable_viewer_hide_cursor'] = 1
-
-        local fern_init = function()
-          vim.cmd("nm <buffer><nowait> <CR> <Plug>(fern-action-open-or-expand)")
-          vim.cmd("nm <buffer><nowait> l <Plug>(fern-action-open-or-expand)")
-          vim.cmd("nm <buffer><nowait> h <Plug>(fern-action-collapse)")
-          vim.cmd("nm <buffer><nowait> s <Plug>(fern-action-open:split)")
-          vim.cmd("nm <buffer><nowait> v <Plug>(fern-action-open:vsplit)")
-          vim.cmd("nm <buffer><nowait> r <Plug>(fern-action-reload:cursor)")
-          vim.cmd("nm <buffer><nowait> R <Plug>(fern-action-reload:all)")
-          vim.cmd("nm <buffer><nowait> u <Plug>(fern-action-leave)")
-          vim.cmd("nm <buffer><nowait> d <Plug>(fern-action-enter)")
-          vim.cmd("nm <buffer><nowait> c <Plug>(fern-action-cancel)")
-          vim.cmd("nm <buffer><nowait> D <Plug>(fern-action-remove)")
-          vim.cmd("nm <buffer> za <Plug>(fern-action-hidden:toggle)")
-          vim.cmd("nm <buffer> yy <Plug>(fern-action-yank:label)")
-          vim.cmd("nm <buffer> yb <Plug>(fern-action-yank)")
-        end
-
-        local fern_group = vim.api.nvim_create_augroup('FernGroup', { clear = true })
-        vim.api.nvim_create_autocmd({'FileType'}, {
-          pattern = 'fern',
-          group = fern_group,
-          callback = fern_init,
-        })
-      end,
-      keys = {
-        { '<C-n>', '<cmd>Fern . -reveal=%s<CR>', 'Open file tree in buffer' },
-        { '<leader>n', '<cmd>Fern %:p:h -reveal=%:p<CR>', 'Open file tree in buffer for current dir' },
-        { '<leader>N', '<cmd>Fern . -reveal=%s -drawer -toggle<CR>', 'Open file tree in drawer' },
-      },
-    },
-
-    -- Replace netrw with fern by default
-    {
-      'lambdalisue/fern-hijack.vim',
-      dependencies = { 'lambdalisue/fern.vim', }
-    },
-
-    -- Show git status in file tree
-    {
-      'lambdalisue/fern-git-status.vim',
-      dependencies = { 'lambdalisue/fern.vim', },
-      init = function()
-        vim.g['fern_git_status#disable_ignored'] = 1
-        vim.g['fern_git_status#disable_submodules'] = 1
-      end
-    }
-  },
-
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
-      -- Snippet Engine & its associated nvim-cmp source
-      -- 'L3MON4D3/LuaSnip',
-      -- 'saadparwaiz1/cmp_luasnip',
-
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
-
-      -- Adds a number of user-friendly snippets
-      -- 'rafamadriz/friendly-snippets',
     },
   },
 
@@ -149,6 +75,7 @@ require('lazy').setup({
       },
       on_attach = function(bufnr)
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
+        vim.keymap.set('n', '<leader>gb', require('gitsigns').toggle_current_line_blame, { buffer = bufnr, desc = 'Toggle current line blame' })
 
         -- don't override the built-in and fugitive keymaps
         local gs = package.loaded.gitsigns
@@ -252,24 +179,13 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
-  --       These are some example plugins that I've included in the kickstart repository.
-  --       Uncomment any of the lines below to enable them.
   -- require 'kickstart.plugins.autoformat',
   require 'kickstart.plugins.debug',
 
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-  --    up-to-date with whatever is in the kickstart repo.
-  --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --
-  --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
 -- status line
 vim.o.laststatus = 2
 -- encoding/fileformat
@@ -385,27 +301,28 @@ vim.cmd('com! -bang Qa :qa<bang>')
 vim.cmd('com! -bang QA :qa<bang>')
 
 -- [[ Basic Keymaps ]]
-
--- Keymaps for better default experience
--- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
--- Diagnostic keymaps
+-- disable some keys
+vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
+vim.keymap.set('n', 'Q', '<nop>')
+-- diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-
--- Custom keymaps
-vim.keymap.set('n', '<leader>h', '<cmd>noh<CR>')
-vim.keymap.set('n', 'Y', 'y$')
+-- change <paste> command behaviour
+vim.keymap.set('x', 'p', '"_dp', { noremap = true })
+vim.keymap.set('x', 'P', '"_dP', { noremap = true })
+-- disable highlight
+vim.keymap.set('n', '<leader>h', '<cmd>noh<CR>', { noremap = true })
+-- copy til EOL with Y
+vim.keymap.set('n', 'Y', 'y$', { noremap = true })
 -- quit
-vim.keymap.set('n', 'zq', 'ZQ')
+vim.keymap.set('n', 'zq', 'ZQ', { noremap = true })
 -- buffer close
-vim.keymap.set('n', '<C-q>', '<cmd>close<CR>')
+vim.keymap.set('n', '<C-q>', '<cmd>close<CR>', { noremap = true })
 -- update file and search
-vim.keymap.set('n', '<A-n>', '<cmd>e<CR>n')
-vim.keymap.set('n', '<A-N>', '<cmd>e<CR>N')
+vim.keymap.set('n', '<A-n>', '<cmd>e<CR>n', { noremap = true })
+vim.keymap.set('n', '<A-N>', '<cmd>e<CR>N', { noremap = true })
 
 -- [[ Split/resizing ]]
 local function toggle_resize_mode()
@@ -419,10 +336,33 @@ local function toggle_resize_mode()
 end
 vim.keymap.set('n', 'gR', toggle_resize_mode)
 
-vim.cmd("nn <silent> <expr> <C-h> !exists('g:resize_mode') ? '<C-w><C-h>' : ':vert res -1<CR>'")
-vim.cmd("nn <silent> <expr> <C-j> !exists('g:resize_mode') ? '<C-w><C-j>' : ':res -1<CR>'")
-vim.cmd("nn <silent> <expr> <C-k> !exists('g:resize_mode') ? '<C-w><C-k>' : ':res +1<CR>'")
-vim.cmd("nn <silent> <expr> <C-l> !exists('g:resize_mode') ? '<C-w><C-l>' : ':vert res +1<CR>'")
+-- Ctrl+h/j/k/l bindings
+vim.keymap.set('n', '<C-h>', "!exists('g:resize_mode') ? '<C-w><C-h>' : ':vert res -1<CR>'", { silent = true, expr = true, noremap = true })
+vim.keymap.set('n', '<C-j>', "!exists('g:resize_mode') ? '<C-w><C-j>' : ':res -1<CR>'", { silent = true, expr = true, noremap = true })
+vim.keymap.set('n', '<C-k>', "!exists('g:resize_mode') ? '<C-w><C-k>' : ':res +1<CR>'", { silent = true, expr = true, noremap = true })
+vim.keymap.set('n', '<C-l>', "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert res +1<CR>'", { silent = true, expr = true, noremap = true })
+
+-- [[ Tabs ]]
+vim.keymap.set('n', 'th', '<cmd>tabprev<CR>', { noremap = true })
+vim.keymap.set('n', 'tl', '<cmd>tabnext<CR>', { noremap = true })
+-- TODO:
+-- nn <silent> tn :exe "tabnew".(len(@%)>0?" %":"")<CR>
+vim.keymap.set('n', 'tn', '<cmd>tabnew<CR>', { noremap = true, expr = true })
+vim.keymap.set('n', 'tc', '<cmd>tabclose<CR>', { noremap = true })
+vim.keymap.set('n', 'tH', '<cmd>tabmove -1<CR>', { noremap = true })
+vim.keymap.set('n', 'tL', '<cmd>tabmove +1<CR>', { noremap = true })
+
+-- switch to tab by number
+vim.keymap.set('n', '<leader>1', '1gt', { noremap = true })
+vim.keymap.set('n', '<leader>2', '2gt', { noremap = true })
+vim.keymap.set('n', '<leader>3', '3gt', { noremap = true })
+vim.keymap.set('n', '<leader>4', '4gt', { noremap = true })
+vim.keymap.set('n', '<leader>5', '5gt', { noremap = true })
+vim.keymap.set('n', '<leader>6', '6gt', { noremap = true })
+vim.keymap.set('n', '<leader>7', '7gt', { noremap = true })
+vim.keymap.set('n', '<leader>8', '8gt', { noremap = true })
+vim.keymap.set('n', '<leader>9', '9gt', { noremap = true })
+vim.keymap.set('n', '<leader>0', '<cmd>tablast<CR>', { noremap = true, silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -454,23 +394,20 @@ pcall(require('telescope').load_extension, 'fzf')
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
-  -- Use the current buffer's path as the starting point for the git search
   local current_file = vim.api.nvim_buf_get_name(0)
   local current_dir
   local cwd = vim.fn.getcwd()
-  -- If the buffer is not associated with a file, return nil
+
   if current_file == "" then
     current_dir = cwd
   else
-    -- Extract the directory from the current file's path
     current_dir = vim.fn.fnamemodify(current_file, ":h")
   end
 
   -- Find the Git root directory from the current file's path
   local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
   if vim.v.shell_error ~= 0 then
-    print("Not a git repository. Searching on current working directory")
-    return cwd
+    return
   end
   return git_root
 end
@@ -480,7 +417,7 @@ local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
     require('telescope.builtin').live_grep({
-      search_dirs = {git_root},
+      search_dirs = {vim.fn.getcwd()},
     })
   end
 end
@@ -506,6 +443,22 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+
+-- [[ Session handling ]]
+local function set_session_file()
+  local git_root = find_git_root()
+  if git_root then
+    vim.g.session_file = git_root .. '/.ide/session.vim'
+  else
+    vim.g.session_file = 'session.vim'
+  end
+end
+set_session_file()
+
+vim.keymap.set('n', '<leader>m', '<cmd>mksession! ' .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<CR>', { silent = true })
+vim.keymap.set('n', '<leader>l', '<cmd>source ' .. vim.g.session_file .. '<CR>', { silent = true })
+vim.keymap.set('n', '<leader>R', function() vim.fn.system {'rm', vim.g.session_file} ; vim.print('Session removed') end, { silent = true })
+
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -619,6 +572,10 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
+
+  -- Custom bindings
+  nmap('<leader>o', '<cmd>ClangdSwitchSourceHeader<cr>', 'Switch Source/Header (C/C++)')
+  nmap('<C-f>', '<cmd>Format<cr>', 'Format code')
 end
 
 -- document existing key chains
@@ -647,6 +604,9 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   clangd = {},
+  -- ccls = {},
+  -- cmake = {},
+
   pyright = {},
 
   lua_ls = {
@@ -656,8 +616,6 @@ local servers = {
     },
   },
 }
-
--- TODO: setup linters with nvim-lint
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -685,20 +643,9 @@ mason_lspconfig.setup_handlers {
 }
 
 -- [[ Configure nvim-cmp ]]
--- See `:help cmp`
 local cmp = require 'cmp'
--- local luasnip = require 'luasnip'
--- require('luasnip.loaders.from_vscode').lazy_load()
--- luasnip.config.setup {}
 
 cmp.setup {
-  --[[
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  --]]
   completion = {
     completeopt = 'menu,menuone,noinsert'
   },
@@ -715,8 +662,6 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      -- elseif luasnip.expand_or_locally_jumpable() then
-      --   luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -724,8 +669,6 @@ cmp.setup {
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      -- elseif luasnip.locally_jumpable(-1) then
-      --   luasnip.jump(-1)
       else
         fallback()
       end
@@ -733,7 +676,6 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp' },
-    -- { name = 'luasnip' },
   },
 }
 
