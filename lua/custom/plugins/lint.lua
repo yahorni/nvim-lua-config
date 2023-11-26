@@ -1,9 +1,9 @@
 return {
   {
-    "mfussenegger/nvim-lint",
-    event = { "BufReadPost", "BufNewFile" },
+    'mfussenegger/nvim-lint',
+    event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
-      { "williamboman/mason.nvim" },
+      { 'williamboman/mason.nvim' },
     },
     config = function()
       local lint = require('lint')
@@ -21,9 +21,9 @@ return {
         xml = {'xmllint'},
       }
 
-      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
 
-      vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+      vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufEnter' }, {
         group = lint_augroup,
         callback = function()
           lint.try_lint()

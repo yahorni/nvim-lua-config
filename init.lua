@@ -54,6 +54,10 @@ require('lazy').setup({
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
+      -- Snippet Engine & its associated nvim-cmp source
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
     },
@@ -135,17 +139,22 @@ require('lazy').setup({
 
   {
     'numToStr/Comment.nvim',
-    -- TODO: checkhealth shows conflicting keymaps
     init = function()
       vim.keymap.set('n', '<C-_>', function()
         return vim.v.count == 0
             and '<Plug>(comment_toggle_linewise_current)'
             or '<Plug>(comment_toggle_linewise_count)'
       end, { expr = true })
+      vim.keymap.set('n', '<leader>gc', function()
+        return vim.v.count == 0
+            and '<Plug>(comment_toggle_blockwise_current)'
+            or '<Plug>(comment_toggle_blockwise_count)'
+      end, { expr = true })
       vim.keymap.set('x', '<C-_>', '<Plug>(comment_toggle_linewise_visual)')
+      vim.keymap.set('x', '<leader>gc', '<Plug>(comment_toggle_blockwise_visual)')
     end,
     opts = {
-      mappings = { extra = false },
+      mappings = { basic = false, extra = false },
       post_hook = function() vim.api.nvim_feedkeys('j', 't', false) end,
     }
   },
@@ -153,7 +162,6 @@ require('lazy').setup({
   -- Fuzzy Finder (files, lsp, etc)
   {
     -- TODO: how to make exclusions for project
-    -- TODO: ripgrep visual search
     -- TODO: pass telescope results to quickfix
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
@@ -303,6 +311,10 @@ vim.cmd('com! -bang Wq :wq<bang>')
 vim.cmd('com! -bang WQ :wq<bang>')
 vim.cmd('com! -bang Qa :qa<bang>')
 vim.cmd('com! -bang QA :qa<bang>')
+vim.cmd('com! Vs :vs')
+vim.cmd('com! VS :vs')
+vim.cmd('com! Sp :sp')
+vim.cmd('com! SP :sp')
 
 -- [[ Basic Keymaps ]]
 -- disable some keys
@@ -351,15 +363,16 @@ vim.keymap.set('n', '<C-l>', "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert r
   { silent = true, expr = true, noremap = true })
 
 -- [[ Tabs ]]
-vim.keymap.set('n', 'th', '<cmd>tabprev<CR>', { noremap = true })
-vim.keymap.set('n', 'tl', '<cmd>tabnext<CR>', { noremap = true })
-vim.keymap.set('n', 'tn', function()
+vim.keymap.set('n', 'gt', '<nop>')
+vim.keymap.set('n', 'gth', '<cmd>tabprev<CR>', { noremap = true, desc = "Previous tab" })
+vim.keymap.set('n', 'gtl', '<cmd>tabnext<CR>', { noremap = true, desc = "Next tab" })
+vim.keymap.set('n', 'gtt', function()
   local current_file = vim.api.nvim_buf_get_name(0)
   return '<cmd>tabnew' .. (current_file == '' and '' or ' %') .. '<CR>'
-end, { noremap = true, expr = true })
-vim.keymap.set('n', 'tc', '<cmd>tabclose<CR>', { noremap = true })
-vim.keymap.set('n', 'tH', '<cmd>tabmove -1<CR>', { noremap = true })
-vim.keymap.set('n', 'tL', '<cmd>tabmove +1<CR>', { noremap = true })
+end, { noremap = true, expr = true, desc = "Create new tab (same as current)" })
+vim.keymap.set('n', 'gtc', '<cmd>tabclose<CR>', { noremap = true, desc = "Close tab" })
+vim.keymap.set('n', 'gtH', '<cmd>tabmove -1<CR>', { noremap = true, desc = "Move tab to the left" })
+vim.keymap.set('n', 'gtL', '<cmd>tabmove +1<CR>', { noremap = true, desc = "Move tab to the right" })
 
 -- switch to tab by number
 vim.keymap.set('n', '<leader>1', '1gt', { noremap = true })
@@ -453,6 +466,8 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+
+vim.keymap.set('v', '<leader>gg', 'y:Telescope live_grep default_text=<C-r>0<CR>', { silent = true, noremap = true })
 
 -- [[ Session handling ]]
 local function set_session_file()
@@ -598,7 +613,6 @@ local on_attach = function(_, bufnr)
   -- sh: shfmt
 end
 
--- TODO: understand what is this
 -- document existing key chains
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
@@ -624,7 +638,9 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
+  -- TODO: resolve crash
   clangd = {},
+  gopls = {},
   cmake = {},
   pyright = {},
 
@@ -672,8 +688,16 @@ mason_lspconfig.setup_handlers {
 
 -- [[ Configure nvim-cmp ]]
 local cmp = require 'cmp'
+local luasnip = require 'luasnip'
+require('luasnip.loaders.from_vscode').lazy_load()
+luasnip.config.setup {}
 
 cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
   completion = {
     completeopt = 'menu,menuone,noinsert'
   },
@@ -690,6 +714,8 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
+      elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -697,6 +723,8 @@ cmp.setup {
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
+      elseif luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
       else
         fallback()
       end
@@ -704,14 +732,28 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp' },
+    { name = 'luasnip' },
   },
 }
+
+-- [[ Misc ]]
+
+-- file execution
+vim.keymap.set('n', '<leader>ce', ':!compiler %<CR>', { noremap = true, desc = "[C]ode [E]xecution" })
+vim.keymap.set('n', '<leader>cr', ':!compiler run %<CR>', { noremap = true, desc = "[C]ode [R]un" })
+vim.keymap.set('n', '<leader>cR', ':!compiler other %<CR>', { noremap = true, desc = "[C]ode [O]ther action" })
+
+-- file permissions
+vim.keymap.set('n', '<leader>x', ':!chmod +x %<CR>', { noremap = true, desc = "Add e[x]ecutable permissions"})
+vim.keymap.set('n', '<leader>X', ':!chmod -x %<CR>', { noremap = true, desc = "Remove e[X]ecutable permissions"})
 
 -- search visually selected text with '//'
 vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<CR><CR> ]]
 
 -- replace visually selected text
-vim.cmd [[ vn <leader>s y:%s/<C-R>+//g<Left><Left> ]]
+vim.cmd [[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]]
+
+vim.cmd [[ nn <silent> <leader>W :%s/\s\+$//e <bar> nohl<CR> ]]
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
