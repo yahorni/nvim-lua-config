@@ -135,11 +135,12 @@ require('lazy').setup({
 
   {
     'numToStr/Comment.nvim',
+    -- TODO: checkhealth shows conflicting keymaps
     init = function()
       vim.keymap.set('n', '<C-_>', function()
-          return vim.v.count == 0
-              and '<Plug>(comment_toggle_linewise_current)'
-              or '<Plug>(comment_toggle_linewise_count)'
+        return vim.v.count == 0
+            and '<Plug>(comment_toggle_linewise_current)'
+            or '<Plug>(comment_toggle_linewise_count)'
       end, { expr = true })
       vim.keymap.set('x', '<C-_>', '<Plug>(comment_toggle_linewise_visual)')
     end,
@@ -151,6 +152,9 @@ require('lazy').setup({
 
   -- Fuzzy Finder (files, lsp, etc)
   {
+    -- TODO: how to make exclusions for project
+    -- TODO: ripgrep visual search
+    -- TODO: pass telescope results to quickfix
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     dependencies = {
@@ -201,9 +205,9 @@ vim.o.hlsearch = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 -- tab/space
-vim.o.tabstop = 4       -- width for Tab
-vim.o.shiftwidth = 4    -- width for shifting with '>>'/'<<'
-vim.o.softtabstop = 4   -- width for Tab in inserting or deleting (Backspace)
+vim.o.tabstop = 4     -- width for Tab
+vim.o.shiftwidth = 4  -- width for shifting with '>>'/'<<'
+vim.o.softtabstop = 4 -- width for Tab in inserting or deleting (Backspace)
 vim.o.smarttab = true
 vim.o.expandtab = true
 -- indentation
@@ -211,10 +215,10 @@ vim.o.autoindent = true
 vim.o.breakindent = true
 -- nonprintable characters
 vim.o.list = true
-vim.opt.listchars = { tab = '> ', trail = '·'}
+vim.opt.listchars = { tab = '> ', trail = '·' }
 -- line numbers
 vim.wo.number = true
-vim.wo.relativenumber = true  -- can cause slowdown
+vim.wo.relativenumber = true -- can cause slowdown
 -- info/swap/backup
 vim.o.shadafile = 'NONE'
 vim.o.backup = false
@@ -225,7 +229,7 @@ vim.o.modeline = true
 vim.o.modelines = 5
 -- messages in last line
 vim.o.showmode = false
-vim.o.showcmd = false   -- can cause slowdown
+vim.o.showcmd = false -- can cause slowdown
 -- wildmenu
 vim.o.wildmenu = true
 vim.o.wildmode = 'longest,full'
@@ -242,7 +246,7 @@ vim.o.conceallevel = 0
 vim.o.concealcursor = 'nvic'
 -- tags
 vim.o.tags = './tags,tags,~/.local/share/tags'
-vim.o.tagrelative = false     -- disable directory prefix for tag file
+vim.o.tagrelative = false -- disable directory prefix for tag file
 -- spell
 vim.o.spell = true
 vim.o.spelllang = ''
@@ -256,7 +260,7 @@ vim.o.scrolloff = 5
 -- do not autoreload changed file
 vim.o.autoread = false
 -- highlight current line
-vim.o.cursorline = true        -- can cause slowdown
+vim.o.cursorline = true -- can cause slowdown
 -- do not indent: N-s - namespaces, g0 - public/private/protected
 vim.o.cinoptions = 'N-s,g0'
 -- enable <> pair
@@ -337,17 +341,22 @@ end
 vim.keymap.set('n', 'gR', toggle_resize_mode)
 
 -- Ctrl+h/j/k/l bindings
-vim.keymap.set('n', '<C-h>', "!exists('g:resize_mode') ? '<C-w><C-h>' : ':vert res -1<CR>'", { silent = true, expr = true, noremap = true })
-vim.keymap.set('n', '<C-j>', "!exists('g:resize_mode') ? '<C-w><C-j>' : ':res -1<CR>'", { silent = true, expr = true, noremap = true })
-vim.keymap.set('n', '<C-k>', "!exists('g:resize_mode') ? '<C-w><C-k>' : ':res +1<CR>'", { silent = true, expr = true, noremap = true })
-vim.keymap.set('n', '<C-l>', "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert res +1<CR>'", { silent = true, expr = true, noremap = true })
+vim.keymap.set('n', '<C-h>', "!exists('g:resize_mode') ? '<C-w><C-h>' : ':vert res -1<CR>'",
+  { silent = true, expr = true, noremap = true })
+vim.keymap.set('n', '<C-j>', "!exists('g:resize_mode') ? '<C-w><C-j>' : ':res -1<CR>'",
+  { silent = true, expr = true, noremap = true })
+vim.keymap.set('n', '<C-k>', "!exists('g:resize_mode') ? '<C-w><C-k>' : ':res +1<CR>'",
+  { silent = true, expr = true, noremap = true })
+vim.keymap.set('n', '<C-l>', "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert res +1<CR>'",
+  { silent = true, expr = true, noremap = true })
 
 -- [[ Tabs ]]
 vim.keymap.set('n', 'th', '<cmd>tabprev<CR>', { noremap = true })
 vim.keymap.set('n', 'tl', '<cmd>tabnext<CR>', { noremap = true })
--- TODO:
--- nn <silent> tn :exe "tabnew".(len(@%)>0?" %":"")<CR>
-vim.keymap.set('n', 'tn', '<cmd>tabnew<CR>', { noremap = true, expr = true })
+vim.keymap.set('n', 'tn', function()
+  local current_file = vim.api.nvim_buf_get_name(0)
+  return '<cmd>tabnew' .. (current_file == '' and '' or ' %') .. '<CR>'
+end, { noremap = true, expr = true })
 vim.keymap.set('n', 'tc', '<cmd>tabclose<CR>', { noremap = true })
 vim.keymap.set('n', 'tH', '<cmd>tabmove -1<CR>', { noremap = true })
 vim.keymap.set('n', 'tL', '<cmd>tabmove +1<CR>', { noremap = true })
@@ -385,6 +394,7 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
     },
+    file_ignore_patterns = { "node_modules", "extras" }
   },
 }
 
@@ -417,7 +427,7 @@ local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
     require('telescope.builtin').live_grep({
-      search_dirs = {vim.fn.getcwd()},
+      search_dirs = { git_root and vim.fn.getcwd() or git_root },
     })
   end
 end
@@ -448,16 +458,24 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 local function set_session_file()
   local git_root = find_git_root()
   if git_root then
-    vim.g.session_file = git_root .. '/.ide/session.vim'
+    if vim.fn.isdirectory(git_root .. '/.ide') ~= 0 then
+      vim.g.session_file = git_root .. '/.ide/session.vim'
+    else
+      vim.g.session_file = git_root .. '/session.vim'
+    end
   else
     vim.g.session_file = 'session.vim'
   end
 end
 set_session_file()
 
-vim.keymap.set('n', '<leader>m', '<cmd>mksession! ' .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<CR>', { silent = true })
+vim.keymap.set('n', '<leader>m',
+  '<cmd>mksession! ' .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<CR>',
+  { silent = true })
 vim.keymap.set('n', '<leader>l', '<cmd>source ' .. vim.g.session_file .. '<CR>', { silent = true })
-vim.keymap.set('n', '<leader>R', function() vim.fn.system {'rm', vim.g.session_file} ; vim.print('Session removed') end, { silent = true })
+vim.keymap.set('n', '<leader>R', function()
+  vim.fn.system { 'rm', vim.g.session_file }; vim.print('Session removed')
+end, { silent = true })
 
 
 -- [[ Configure Treesitter ]]
@@ -572,12 +590,15 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
-
-  -- Custom bindings
-  nmap('<leader>o', '<cmd>ClangdSwitchSourceHeader<cr>', 'Switch Source/Header (C/C++)')
-  nmap('<C-f>', '<cmd>Format<cr>', 'Format code')
+  nmap('<leader>f', '<cmd>Format<cr>', 'Format code')
+  -- python: isort, autoflake, autopep8
+  -- c/c++: clang-format
+  -- json: fixjson
+  -- html/css/js: prettier
+  -- sh: shfmt
 end
 
+-- TODO: understand what is this
 -- document existing key chains
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
@@ -604,9 +625,7 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   clangd = {},
-  -- ccls = {},
-  -- cmake = {},
-
+  cmake = {},
   pyright = {},
 
   lua_ls = {
@@ -640,6 +659,15 @@ mason_lspconfig.setup_handlers {
       filetypes = (servers[server_name] or {}).filetypes,
     }
   end,
+  ["clangd"] = function()
+    require('lspconfig').clangd.setup {
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+        vim.keymap.set('n', '<leader>o', '<cmd>ClangdSwitchSourceHeader<cr>',
+          { buffer = bufnr, desc = 'Switch Source/Header (C/C++)' })
+      end
+    }
+  end
 }
 
 -- [[ Configure nvim-cmp ]]
@@ -678,6 +706,12 @@ cmp.setup {
     { name = 'nvim_lsp' },
   },
 }
+
+-- search visually selected text with '//'
+vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<CR><CR> ]]
+
+-- replace visually selected text
+vim.cmd [[ vn <leader>s y:%s/<C-R>+//g<Left><Left> ]]
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
