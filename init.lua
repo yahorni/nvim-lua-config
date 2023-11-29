@@ -33,6 +33,9 @@ require('lazy').setup({
   -- rename files
   'vim-scripts/Rename2',
 
+  -- Uncomment for debug logs (use :MasonLog)
+  -- { 'williamboman/mason.nvim', settings = { log_level = vim.log.levels.DEBUG } },
+
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -49,6 +52,8 @@ require('lazy').setup({
       'folke/neodev.nvim',
     },
   },
+
+  { 'folke/neodev.nvim', opts = {} },
 
   {
     -- Autocompletion
@@ -126,15 +131,6 @@ require('lazy').setup({
         section_separators = '',
       },
     },
-  },
-
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-    opts = {},
   },
 
   {
@@ -237,7 +233,7 @@ vim.o.modeline = true
 vim.o.modelines = 5
 -- messages in last line
 vim.o.showmode = false
-vim.o.showcmd = false -- can cause slowdown
+vim.o.showcmd = true -- can cause slowdown
 -- wildmenu
 vim.o.wildmenu = true
 vim.o.wildmode = 'longest,full'
@@ -275,8 +271,8 @@ vim.o.cinoptions = 'N-s,g0'
 vim.opt.matchpairs:append '<:>'
 -- do not save quickfix to session file
 vim.opt.sessionoptions:remove 'blank,folds'
--- ignore local .vimrc
-vim.o.exrc = false
+-- enable local .vimrc/.nvim.lua
+vim.o.exrc = true
 -- shorten vim messages
 vim.o.shortmess = 'atT'
 -- text width
@@ -638,10 +634,10 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- TODO: resolve crash
   clangd = {},
   gopls = {},
   cmake = {},
+  -- able to run with nodejs 16 (default on ubuntu_18: nodejs 8)
   pyright = {},
 
   lua_ls = {
@@ -651,9 +647,6 @@ local servers = {
     },
   },
 }
-
--- Setup neovim lua configuration
-require('neodev').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -698,9 +691,9 @@ cmp.setup {
       luasnip.lsp_expand(args.body)
     end,
   },
-  completion = {
-    completeopt = 'menu,menuone,noinsert'
-  },
+  -- completion = {
+  --   completeopt = 'menu,menuone,noinsert'
+  -- },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
