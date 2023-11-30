@@ -2,6 +2,11 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
+-- disable some keys
+vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
+vim.keymap.set('n', 'Q', '<nop>')
+vim.keymap.set('n', '<C-f>', '<nop>')
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -141,16 +146,16 @@ require('lazy').setup({
             and '<Plug>(comment_toggle_linewise_current)'
             or '<Plug>(comment_toggle_linewise_count)'
       end, { expr = true })
-      vim.keymap.set('n', '<leader>gc', function()
+      vim.keymap.set('n', '<leader><C-_>', function()
         return vim.v.count == 0
             and '<Plug>(comment_toggle_blockwise_current)'
             or '<Plug>(comment_toggle_blockwise_count)'
       end, { expr = true })
       vim.keymap.set('x', '<C-_>', '<Plug>(comment_toggle_linewise_visual)')
-      vim.keymap.set('x', '<leader>gc', '<Plug>(comment_toggle_blockwise_visual)')
+      vim.keymap.set('x', '<leader><C-_>', '<Plug>(comment_toggle_blockwise_visual)')
     end,
     opts = {
-      mappings = { basic = false, extra = false },
+      mappings = { basic = true, extra = false },
       post_hook = function() vim.api.nvim_feedkeys('j', 't', false) end,
     }
   },
@@ -313,9 +318,6 @@ vim.cmd('com! Sp :sp')
 vim.cmd('com! SP :sp')
 
 -- [[ Basic Keymaps ]]
--- disable some keys
-vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
-vim.keymap.set('n', 'Q', '<nop>')
 -- diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })

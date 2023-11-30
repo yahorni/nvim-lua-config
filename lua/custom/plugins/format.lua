@@ -1,18 +1,21 @@
 return {
   {
-    'mhartington/formatter.nvim',
+    'stevearc/conform.nvim',
+    keys = {
+      { "<C-f>", function() require("conform").format({ lsp_fallback = true }) end },
+    },
     opts = {
-      filetype = {
+      formatters_by_ft = {
         cpp = { 'clang-format' },
         c = { 'clang-format' },
         cmake = { 'cmake-format' },
-        python = { 'isort', 'autopep8' },
-        json = { 'jq' },
-        ["*"] = { 'codespell', 'remove_trailing_whitespace' }
+        python = { 'isort', 'autoflake', 'autopep8' },
+        sh = { 'shfmt' }, -- shellcheck, shellharden
+        lua = { 'stylua' },
+        json = { 'jq' }, -- fixjson
+        xml = { 'xmlformat' },
+        ['*'] = { 'codespell', 'trim_whitespace', 'trim_newlines' }
       }
-    },
-    init = function()
-      vim.keymap.set('n', '<C-f>', '<cmd>FormatWrite<CR>', { noremap = true, silent = true })
-    end,
+    }
   }
 }
