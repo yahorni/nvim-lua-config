@@ -209,7 +209,7 @@ vim.o.fileformats = 'unix,dos,mac'
 vim.o.endofline = true
 -- search
 vim.o.incsearch = true
-vim.o.hlsearch = true
+vim.o.hlsearch = true   -- can cause slowdown in huge files
 -- case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
