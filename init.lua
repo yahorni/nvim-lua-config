@@ -58,7 +58,7 @@ require('lazy').setup({
     },
   },
 
-  { 'folke/neodev.nvim', opts = {} },
+  { 'folke/neodev.nvim',    opts = {} },
 
   {
     -- Autocompletion
@@ -89,7 +89,8 @@ require('lazy').setup({
       },
       on_attach = function(bufnr)
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
-        vim.keymap.set('n', '<leader>gb', require('gitsigns').toggle_current_line_blame, { buffer = bufnr, desc = 'Toggle current line blame' })
+        vim.keymap.set('n', '<leader>gb', require('gitsigns').toggle_current_line_blame,
+          { buffer = bufnr, desc = 'Toggle current line blame' })
 
         -- don't override the built-in and fugitive keymaps
         local gs = package.loaded.gitsigns
@@ -142,28 +143,28 @@ require('lazy').setup({
     'numToStr/Comment.nvim',
     init = function()
       vim.keymap.set('n', '<C-_>', function()
-        return vim.v.count == 0
-            and '<Plug>(comment_toggle_linewise_current)'
-            or '<Plug>(comment_toggle_linewise_count)'
+        return vim.v.count == 0 and '<Plug>(comment_toggle_linewise_current)' or '<Plug>(comment_toggle_linewise_count)'
       end, { expr = true })
       vim.keymap.set('n', '<leader><C-_>', function()
-        return vim.v.count == 0
-            and '<Plug>(comment_toggle_blockwise_current)'
-            or '<Plug>(comment_toggle_blockwise_count)'
+        return vim.v.count == 0 and '<Plug>(comment_toggle_blockwise_current)' or
+            '<Plug>(comment_toggle_blockwise_count)'
       end, { expr = true })
       vim.keymap.set('x', '<C-_>', '<Plug>(comment_toggle_linewise_visual)')
       vim.keymap.set('x', '<leader><C-_>', '<Plug>(comment_toggle_blockwise_visual)')
     end,
     opts = {
       mappings = { basic = true, extra = false },
-      post_hook = function() vim.api.nvim_feedkeys('j', 't', false) end,
-    }
+      post_hook = function()
+        vim.api.nvim_feedkeys('j', 't', false)
+      end,
+    },
   },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
     -- TODO: how to make exclusions for project
     -- TODO: pass telescope results to quickfix
+    -- TODO: ignore *.log files by default
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     dependencies = {
@@ -192,10 +193,16 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
-  -- require 'kickstart.plugins.autoformat',
-  require 'kickstart.plugins.debug',
+  -- Switch language keymap in insert mode
+  {
+    'lyokha/vim-xkbswitch',
+    init = function()
+      vim.g.XkbSwitchEnabled = 1
+      vim.g.XkbSwitchLib = '/usr/lib/libxkbswitch.so'
+    end,
+  },
 
-  { import = 'custom.plugins' },
+  { import = 'plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -209,7 +216,7 @@ vim.o.fileformats = 'unix,dos,mac'
 vim.o.endofline = true
 -- search
 vim.o.incsearch = true
-vim.o.hlsearch = true   -- can cause slowdown in huge files
+vim.o.hlsearch = true -- can cause slowdown in huge files
 -- case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -301,21 +308,21 @@ vim.o.timeoutlen = 300
 vim.o.termguicolors = true
 
 -- [[ Custom commands ]]
-vim.cmd('com! W :w')
-vim.cmd('com! Q :q')
-vim.cmd('com! Wq :wq')
-vim.cmd('com! WQ :wq')
-vim.cmd('com! Qa :qa')
-vim.cmd('com! QA :qa')
-vim.cmd('com! -bang Q :q<bang>')
-vim.cmd('com! -bang Wq :wq<bang>')
-vim.cmd('com! -bang WQ :wq<bang>')
-vim.cmd('com! -bang Qa :qa<bang>')
-vim.cmd('com! -bang QA :qa<bang>')
-vim.cmd('com! Vs :vs')
-vim.cmd('com! VS :vs')
-vim.cmd('com! Sp :sp')
-vim.cmd('com! SP :sp')
+vim.cmd 'com! W :w'
+vim.cmd 'com! Q :q'
+vim.cmd 'com! Wq :wq'
+vim.cmd 'com! WQ :wq'
+vim.cmd 'com! Qa :qa'
+vim.cmd 'com! QA :qa'
+vim.cmd 'com! -bang Q :q<bang>'
+vim.cmd 'com! -bang Wq :wq<bang>'
+vim.cmd 'com! -bang WQ :wq<bang>'
+vim.cmd 'com! -bang Qa :qa<bang>'
+vim.cmd 'com! -bang QA :qa<bang>'
+vim.cmd 'com! Vs :vs'
+vim.cmd 'com! VS :vs'
+vim.cmd 'com! Sp :sp'
+vim.cmd 'com! SP :sp'
 
 -- [[ Basic Keymaps ]]
 -- diagnostic keymaps
@@ -342,10 +349,10 @@ vim.keymap.set('n', '<A-N>', '<cmd>e<CR>N', { noremap = true })
 local function toggle_resize_mode()
   if vim.g.resize_mode then
     vim.g.resize_mode = nil
-    vim.print("Resize mode disabled")
+    vim.print 'Resize mode disabled'
   else
     vim.g.resize_mode = true
-    vim.print("Resize mode enabled")
+    vim.print 'Resize mode enabled'
   end
 end
 vim.keymap.set('n', 'gR', toggle_resize_mode)
@@ -362,15 +369,15 @@ vim.keymap.set('n', '<C-l>', "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert r
 
 -- [[ Tabs ]]
 vim.keymap.set('n', 'gt', '<nop>')
-vim.keymap.set('n', 'gth', '<cmd>tabprev<CR>', { noremap = true, desc = "Previous tab" })
-vim.keymap.set('n', 'gtl', '<cmd>tabnext<CR>', { noremap = true, desc = "Next tab" })
+vim.keymap.set('n', 'gth', '<cmd>tabprev<CR>', { noremap = true, desc = 'Previous tab' })
+vim.keymap.set('n', 'gtl', '<cmd>tabnext<CR>', { noremap = true, desc = 'Next tab' })
 vim.keymap.set('n', 'gtt', function()
   local current_file = vim.api.nvim_buf_get_name(0)
   return '<cmd>tabnew' .. (current_file == '' and '' or ' %') .. '<CR>'
-end, { noremap = true, expr = true, desc = "Create new tab (same as current)" })
-vim.keymap.set('n', 'gtc', '<cmd>tabclose<CR>', { noremap = true, desc = "Close tab" })
-vim.keymap.set('n', 'gtH', '<cmd>tabmove -1<CR>', { noremap = true, desc = "Move tab to the left" })
-vim.keymap.set('n', 'gtL', '<cmd>tabmove +1<CR>', { noremap = true, desc = "Move tab to the right" })
+end, { noremap = true, expr = true, desc = 'Create new tab (same as current)' })
+vim.keymap.set('n', 'gtc', '<cmd>tabclose<CR>', { noremap = true, desc = 'Close tab' })
+vim.keymap.set('n', 'gtH', '<cmd>tabmove -1<CR>', { noremap = true, desc = 'Move tab to the left' })
+vim.keymap.set('n', 'gtL', '<cmd>tabmove +1<CR>', { noremap = true, desc = 'Move tab to the right' })
 
 -- switch to tab by number
 vim.keymap.set('n', '<leader>1', '1gt', { noremap = true })
@@ -405,7 +412,7 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
     },
-    file_ignore_patterns = { "node_modules", "extras" }
+    file_ignore_patterns = { 'node_modules', 'extras' },
   },
 }
 
@@ -419,14 +426,14 @@ local function find_git_root()
   local current_dir
   local cwd = vim.fn.getcwd()
 
-  if current_file == "" then
+  if current_file == '' then
     current_dir = cwd
   else
-    current_dir = vim.fn.fnamemodify(current_file, ":h")
+    current_dir = vim.fn.fnamemodify(current_file, ':h')
   end
 
   -- Find the Git root directory from the current file's path
-  local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
+  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
   if vim.v.shell_error ~= 0 then
     return
   end
@@ -437,9 +444,9 @@ end
 local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
-    require('telescope.builtin').live_grep({
+    require('telescope.builtin').live_grep {
       search_dirs = { git_root and vim.fn.getcwd() or git_root },
-    })
+    }
   end
 end
 
@@ -461,11 +468,11 @@ vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { des
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
 
 vim.keymap.set('v', '<leader>gg', 'y:Telescope live_grep default_text=<C-r>0<CR>', { silent = true, noremap = true })
+vim.keymap.set('n', '<leader>gg', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 
 -- [[ Session handling ]]
 local function set_session_file()
@@ -482,14 +489,17 @@ local function set_session_file()
 end
 set_session_file()
 
-vim.keymap.set('n', '<leader>m',
+vim.keymap.set(
+  'n',
+  '<leader>m',
   '<cmd>mksession! ' .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<CR>',
-  { silent = true })
+  { silent = true }
+)
 vim.keymap.set('n', '<leader>l', '<cmd>source ' .. vim.g.session_file .. '<CR>', { silent = true })
 vim.keymap.set('n', '<leader>R', function()
-  vim.fn.system { 'rm', vim.g.session_file }; vim.print('Session removed')
+  vim.fn.system { 'rm', vim.g.session_file }
+  vim.print 'Session removed'
 end, { silent = true })
-
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -670,15 +680,15 @@ mason_lspconfig.setup_handlers {
       filetypes = (servers[server_name] or {}).filetypes,
     }
   end,
-  ["clangd"] = function()
+  ['clangd'] = function()
     require('lspconfig').clangd.setup {
       on_attach = function(client, bufnr)
         on_attach(client, bufnr)
         vim.keymap.set('n', '<leader>o', '<cmd>ClangdSwitchSourceHeader<cr>',
           { buffer = bufnr, desc = 'Switch Source/Header (C/C++)' })
-      end
+      end,
     }
-  end
+  end,
 }
 
 -- [[ Configure nvim-cmp ]]
@@ -733,21 +743,36 @@ cmp.setup {
 
 -- [[ Misc ]]
 
+-- custom ft styles
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'c', 'cpp', 'javascript', 'yaml', 'markdown', 'text' },
+  callback = function()
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+  end,
+})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'gitconfig', 'make' },
+  callback = function()
+    vim.bo.expandtab = false
+  end,
+})
+
 -- file execution
-vim.keymap.set('n', '<leader>ce', ':!compiler %<CR>', { noremap = true, desc = "[C]ode [E]xecution" })
-vim.keymap.set('n', '<leader>cr', ':!compiler run %<CR>', { noremap = true, desc = "[C]ode [R]un" })
-vim.keymap.set('n', '<leader>cR', ':!compiler other %<CR>', { noremap = true, desc = "[C]ode [O]ther action" })
+vim.keymap.set('n', '<leader>ce', ':!compiler %<CR>', { noremap = true, desc = '[C]ode [E]xecution' })
+vim.keymap.set('n', '<leader>cr', ':!compiler run %<CR>', { noremap = true, desc = '[C]ode [R]un' })
+vim.keymap.set('n', '<leader>cR', ':!compiler other %<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
 
 -- file permissions
-vim.keymap.set('n', '<leader>x', ':!chmod +x %<CR>', { noremap = true, desc = "Add e[x]ecutable permissions"})
-vim.keymap.set('n', '<leader>X', ':!chmod -x %<CR>', { noremap = true, desc = "Remove e[X]ecutable permissions"})
+vim.keymap.set('n', '<leader>x', ':!chmod +x %<CR>', { noremap = true, desc = 'Add e[x]ecutable permissions' })
+vim.keymap.set('n', '<leader>X', ':!chmod -x %<CR>', { noremap = true, desc = 'Remove e[X]ecutable permissions' })
 
 -- search visually selected text with '//'
 vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<CR><CR> ]]
 
 -- replace visually selected text
 vim.cmd [[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]]
-
 vim.cmd [[ nn <silent> <leader>W :%s/\s\+$//e <bar> nohl<CR> ]]
 
 -- The line beneath this is called `modeline`. See `:help modeline`

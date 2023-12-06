@@ -25,20 +25,21 @@ return {
       end
 
       local fern_group = vim.api.nvim_create_augroup('FernGroup', { clear = true })
-      vim.api.nvim_create_autocmd({'FileType'}, {
+      vim.api.nvim_create_autocmd({ 'FileType' }, {
         pattern = 'fern',
         group = fern_group,
         callback = fern_init,
       })
     end,
     keys = {
-      { '<C-n>', '<cmd>Fern . -reveal=%s<CR>', 'Open file tree in buffer' },
-      { '<leader>n', '<cmd>Fern %:p:h -reveal=%:p<CR>', 'Open file tree in buffer for current dir' },
-      { '<leader>N', '<cmd>Fern . -reveal=%s -drawer -toggle<CR>', 'Open file tree in drawer' },
+      { '<C-n>',     '<cmd>Fern . -reveal=%<CR>',                 'Open file tree in buffer' },
+      { '<leader>n', '<cmd>Fern %:p:h -reveal=%:p<CR>',           'Open file tree in buffer for current dir' },
+      { '<leader>N', '<cmd>Fern . -reveal=% -drawer -toggle<CR>', 'Open file tree in drawer' },
     },
   },
 
   -- Replace netrw with fern by default
+  -- TODO: make it work
   {
     'lambdalisue/fern-hijack.vim',
     dependencies = { 'lambdalisue/fern.vim', }
