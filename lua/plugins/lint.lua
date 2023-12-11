@@ -21,8 +21,8 @@ return {
       }
 
       local linters = require('lint').linters
-      table.insert(linters.pylint.args, '--max-line-length=' .. vim.o.textwidth)
-      table.insert(linters.flake8.args, '--max-line-length=' .. vim.o.textwidth)
+      table.insert(linters.pylint.args, '--max-line-length=120')
+      table.insert(linters.flake8.args, '--max-line-length=120')
 
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
 

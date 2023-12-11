@@ -24,7 +24,7 @@ return {
       },
       formatters = {
         autopep8 = {
-          prepend_args = { '--max-line-length=' .. vim.o.textwidth },
+          prepend_args = { '--max-line-length=120' },
         },
       },
     },
