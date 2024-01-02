@@ -507,7 +507,7 @@ end, { silent = true })
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'vim', 'bash', 'kotlin' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -646,6 +646,7 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
+  -- setup: https://www.lazyvim.org/extras/lang/clangd
   clangd = {},
   gopls = {},
   cmake = {},
@@ -773,7 +774,16 @@ vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<CR><CR> ]]
 
 -- replace visually selected text
 vim.cmd [[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]]
+
+-- remove trailing whitespacees
 vim.cmd [[ nn <silent> <leader>W :%s/\s\+$//e <bar> nohl<CR> ]]
+vim.cmd [[ vn <silent> <leader>W y:'<,'>s/\s\+$//e <bar> nohl<CR> ]]
+
+-- remove empty lines
+vim.cmd [[ nn <silent> <leader>E :g/^$/d<CR> ]]
+
+-- squish consecutive duplicate lines
+vim.cmd [[ nn <silent> <leader>D :%s;\v^(.*)(\n\1)+$;\1;<CR> ]]
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
