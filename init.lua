@@ -309,16 +309,18 @@ vim.o.termguicolors = true
 
 -- [[ Custom commands ]]
 vim.cmd 'com! W :w'
+vim.cmd 'com! -bang W :w<bang>'
 vim.cmd 'com! Q :q'
-vim.cmd 'com! Wq :wq'
-vim.cmd 'com! WQ :wq'
-vim.cmd 'com! Qa :qa'
-vim.cmd 'com! QA :qa'
 vim.cmd 'com! -bang Q :q<bang>'
+vim.cmd 'com! Wq :wq'
 vim.cmd 'com! -bang Wq :wq<bang>'
+vim.cmd 'com! WQ :wq'
 vim.cmd 'com! -bang WQ :wq<bang>'
+vim.cmd 'com! Qa :qa'
 vim.cmd 'com! -bang Qa :qa<bang>'
+vim.cmd 'com! QA :qa'
 vim.cmd 'com! -bang QA :qa<bang>'
+
 vim.cmd 'com! Vs :vs'
 vim.cmd 'com! VS :vs'
 vim.cmd 'com! Sp :sp'
