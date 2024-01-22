@@ -117,6 +117,14 @@ require('lazy').setup({
   },
 
   {
+    'sainnhe/sonokai',
+    priority = 999,
+    config = function()
+      vim.cmd.colorscheme 'sonokai'
+    end,
+  },
+
+  {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
     priority = 1000,
@@ -200,6 +208,13 @@ require('lazy').setup({
       vim.g.XkbSwitchEnabled = 1
       vim.g.XkbSwitchLib = '/usr/lib/libxkbswitch.so'
     end,
+  },
+
+  -- Text aligning
+  {
+    -- http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
+    -- align by '=': Tabularize /=
+    'godlygeek/tabular'
   },
 
   { import = 'plugins' },
