@@ -116,6 +116,9 @@ require('lazy').setup({
     },
   },
 
+  -- ]x and [x to jump; ct/co/cb/c0 - take theirs/ours/both/none changes
+  {'akinsho/git-conflict.nvim', version = "*", config = true},
+
   {
     'sainnhe/sonokai',
     priority = 999,
@@ -792,7 +795,7 @@ vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<CR><CR> ]]
 -- replace visually selected text
 vim.cmd [[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]]
 
--- remove trailing whitespacees
+-- remove trailing whitespaces
 vim.cmd [[ nn <silent> <leader>W :%s/\s\+$//e <bar> nohl<CR> ]]
 vim.cmd [[ vn <silent> <leader>W y:'<,'>s/\s\+$//e <bar> nohl<CR> ]]
 
