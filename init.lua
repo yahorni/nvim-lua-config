@@ -217,7 +217,10 @@ require('lazy').setup({
   {
     -- http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
     -- align by '=': Tabularize /=
-    'godlygeek/tabular'
+    'godlygeek/tabular',
+    init = function()
+      vim.keymap.set('v', '<leader>t', ":Tabularize /", { silent = false, noremap = true })
+    end,
   },
 
   { import = 'plugins' },
