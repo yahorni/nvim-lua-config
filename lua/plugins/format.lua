@@ -20,6 +20,9 @@ return {
         markdown = { 'markdownlint' },
         xml = { 'xmlformatter' },
         lua = { 'stylua' },
+        html = { 'prettier' },
+        css = { 'prettier' },
+        javascript = { 'prettier' }, -- clang-format
         ['*'] = { 'codespell', 'trim_whitespace', 'trim_newlines' },
       },
       formatters = {
