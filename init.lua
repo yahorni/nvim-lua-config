@@ -1,3 +1,5 @@
+-- vim: ts=2 sts=2 sw=2 et fdm=marker fdl=0
+
 -- Set leader/localleader keys
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
@@ -432,7 +434,7 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'gitconfig', 'make' },
   callback = function()
-    vim.bo.expandtab = false
+    vim.opt_local.expandtab = false
   end,
 })
 
@@ -463,5 +465,3 @@ vim.cmd [[ nn <silent> <leader>dl :%s;\v^(.*)(\n\1)+$;\1;<CR> ]]
 
 -- remove swaps
 vim.cmd [[ nn <leader>dw :!rm -f ~/.local/state/nvim/swap/*<CR> ]]
-
--- vim: ts=2 sts=2 sw=2 et

@@ -9,6 +9,11 @@ let mapleader=' '
 let maplocalleader=','
 ```
 
++ Run neovim with `-V1` and `--clean` to debug issue
+  `nvim --clean -V1 <file>`
++ To check when some variable was set use `verbose set <var>?`
+  `:verbose set expandtab?`
+
 ## reformat file for linux/utf-8
 
 ```vim
