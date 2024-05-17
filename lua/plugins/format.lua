@@ -5,8 +5,9 @@ return {
       {
         '<C-f>',
         function()
-          require('conform').format { lsp_fallback = true }
+          require('conform').format { async = true, lsp_fallback = true }
         end,
+        desc = '[F]ormat buffer',
       },
     },
     opts = {

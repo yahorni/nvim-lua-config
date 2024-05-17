@@ -9,6 +9,7 @@ return {
       local lint = require 'lint'
 
       -- 'cppcheck', 'clangtidy' - fail with exit code 1
+      -- TODO: disable flawfinder complains about tabs
       lint.linters_by_ft = {
         cpp = { 'cpplint', 'flawfinder' },
         c = { 'cpplint', 'flawfinder' },

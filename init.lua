@@ -140,7 +140,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('x', 'p', '"_dp', { noremap = true })
 vim.keymap.set('x', 'P', '"_dP', { noremap = true })
 -- disable highlight
-vim.keymap.set('n', '<leader>h', '<cmd>noh<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>H', '<cmd>noh<CR>', { noremap = true })
 -- copy til EOL with Y
 vim.keymap.set('n', 'Y', 'y$', { noremap = true })
 -- quit
@@ -196,7 +196,7 @@ require('lazy').setup({
 
   {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
-    event = 'VeryLazy', -- Sets the loading event to 'VeryLazy'
+    event = 'VimEnter',
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
       -- document existing key chains
@@ -207,7 +207,12 @@ require('lazy').setup({
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
       }
+      -- visual mode
+      require('which-key').register({
+        ['<leader>h'] = { 'Git [H]unk' },
+      }, { mode = 'v' })
     end,
   },
 
@@ -216,7 +221,7 @@ require('lazy').setup({
     -- TODO: how to make exclusions for project
     -- TODO: ignore *.log files by default
     'nvim-telescope/telescope.nvim',
-    event = 'VeryLazy',
+    event = 'VimEnter',
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -456,5 +461,4 @@ vim.cmd [[ nn <silent> <leader>E :g/^$/d<CR> ]]
 -- squish consecutive duplicate lines
 vim.cmd [[ nn <silent> <leader>D :%s;\v^(.*)(\n\1)+$;\1;<CR> ]]
 
--- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

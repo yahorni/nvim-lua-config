@@ -7,13 +7,16 @@ return {
     build = ':TSUpdate',
     config = function()
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+
+      -- Prefer git instead of curl in order to improve connectivity in some environments
+      require('nvim-treesitter.install').prefer_git = true
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
         -- Add languages to be installed here that you want installed for treesitter
-        ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'vim', 'bash', 'kotlin', 'markdown' },
+        ensure_installed = { 'c', 'cpp', 'diff', 'go', 'lua', 'python', 'vim', 'bash', 'kotlin', 'markdown' },
 
         -- Autoinstall languages that are not installed
-        auto_install = true,
+        auto_install = false,
         highlight = { enable = true },
         indent = { enable = true },
 
