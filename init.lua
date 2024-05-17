@@ -459,6 +459,9 @@ vim.cmd [[ vn <silent> <leader>W y:'<,'>s/\s\+$//e <bar> nohl<CR> ]]
 vim.cmd [[ nn <silent> <leader>E :g/^$/d<CR> ]]
 
 -- squish consecutive duplicate lines
-vim.cmd [[ nn <silent> <leader>D :%s;\v^(.*)(\n\1)+$;\1;<CR> ]]
+vim.cmd [[ nn <silent> <leader>dl :%s;\v^(.*)(\n\1)+$;\1;<CR> ]]
+
+-- remove swaps
+vim.cmd [[ nn <leader>dw :!rm -f ~/.local/state/nvim/swap/*<CR> ]]
 
 -- vim: ts=2 sts=2 sw=2 et
