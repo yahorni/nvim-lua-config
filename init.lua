@@ -321,14 +321,14 @@ vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<CR><CR> ]]
 vim.cmd [[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]]
 
 -- remove trailing whitespaces
-vim.cmd [[ nn <silent> <leader>W :%s/\s\+$//e <bar> nohl<CR> ]]
-vim.cmd [[ vn <silent> <leader>W y:'<,'>s/\s\+$//e <bar> nohl<CR> ]]
+vim.cmd [[ nn <silent> <leader>dw :%s/\s\+$//e <bar> nohl<CR> ]]
+vim.cmd [[ vn <silent> <leader>dw y:'<,'>s/\s\+$//e <bar> nohl<CR> ]]
 
 -- remove empty lines
-vim.cmd [[ nn <silent> <leader>E :g/^$/d<CR> ]]
+vim.cmd [[ nn <silent> <leader>de :g/^$/d<CR> ]]
 
 -- squish consecutive duplicate lines
 vim.cmd [[ nn <silent> <leader>dl :%s;\v^(.*)(\n\1)+$;\1;<CR> ]]
 
 -- remove swaps
-vim.cmd [[ nn <leader>dw :!rm -f ~/.local/state/nvim/swap/*<CR> ]]
+vim.cmd [[ nn <leader>dS :!rm -f ~/.local/state/nvim/swap/*<CR> ]]

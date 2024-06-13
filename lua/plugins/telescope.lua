@@ -15,7 +15,6 @@ return {
           return vim.fn.executable 'make' == 1
         end,
       },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
     },
     config = function()
       -- [[ Configure Telescope ]]
@@ -88,8 +87,7 @@ return {
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
-      vim.keymap.set('v', '<leader>gg', 'y:Telescope live_grep default_text=<C-r>0<CR>',
-        { silent = true, noremap = true })
+      vim.keymap.set('v', '<leader>gg', 'y:Telescope live_grep default_text=<C-r>0<CR>', { silent = true, noremap = true })
       vim.keymap.set('n', '<leader>gg', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 
       vim.keymap.set('n', '<leader>/', function()
@@ -100,5 +98,5 @@ return {
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
     end,
-  }
+  },
 }

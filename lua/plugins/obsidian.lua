@@ -29,6 +29,16 @@ return {
     'ObsidianSearch',
   },
 
+  keys = {
+    { '<localleader><localleader>q', '<cmd>ObsidianQuickSwitch<cr>', desc = 'Obsidian Quick Search' },
+    { '<localleader><localleader>n', '<cmd>ObsidianNew<cr>', desc = 'Obsidian New' },
+    { '<localleader><localleader>d', '<cmd>ObsidianToday<cr>', desc = 'Obsidian Today' },
+    { '<localleader><localleader>t', '<cmd>ObsidianToday +1<cr>', desc = 'Obsidian Tomorrow' },
+    { '<localleader><localleader>y', '<cmd>ObsidianToday -1<cr>', desc = 'Obsidian Yesterday' },
+    { '<localleader><localleader>s', '<cmd>ObsidianSearch<cr>', desc = 'Obsidian Search' },
+    { '<localleader><localleader>o', '<cmd>ObsidianOpen<cr>', desc = 'Obsidian Open' },
+  },
+
   opts = {
     workspaces = {
       {
@@ -113,6 +123,14 @@ return {
       },
     },
 
-    ui = { enable = false },
+    ui = {
+      enable = false,
+      checkboxes = {
+        ['*'] = { order = 0, char = '*', hl_group = 'ObsidianImportant' },
+        [' '] = { order = 1, char = ' ', hl_group = 'ObsidianTodo' },
+        ['/'] = { order = 2, char = '/', hl_group = 'ObsidianInProgress' },
+        ['x'] = { order = 3, char = 'x', hl_group = 'ObsidianDone' },
+      },
+    },
   },
 }
