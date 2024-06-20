@@ -291,7 +291,7 @@ end, { silent = true })
 
 -- custom ft styles
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'c', 'cpp', 'javascript', 'yaml', 'markdown', 'text' },
+  pattern = { 'c', 'cpp', 'lua', 'javascript', 'yaml', 'markdown', 'text' },
   callback = function()
     vim.bo.tabstop = 2
     vim.bo.shiftwidth = 2

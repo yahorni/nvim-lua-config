@@ -118,7 +118,7 @@ return {
       show_guides = true,
       layout = {
         resize_to_content = true,
-        min_width = 20,
+        min_width = 30,
         win_opts = {
           winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
           signcolumn = "yes",

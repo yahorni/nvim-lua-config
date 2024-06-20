@@ -4,13 +4,15 @@ return {
   'epwalsh/obsidian.nvim',
   version = '*', -- recommended, use latest release instead of latest commit
   lazy = true,
-  ft = 'markdown',
+  ft = { 'markdown', 'ledger' },
   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
   event = {
     -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
     -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
     'BufReadPre ~/dox/obsidian/**.md',
     'BufNewFile ~/dox/obsidian/**.md',
+    'BufReadPre ~/dox/obsidian/**.ledger',
+    'BufNewFile ~/dox/obsidian/**.ledger',
   },
 
   dependencies = {
@@ -27,6 +29,7 @@ return {
     'ObsidianTomorrow',
     'ObsidianYesterday',
     'ObsidianSearch',
+    'ObsidianOpen',
   },
 
   keys = {
@@ -48,11 +51,11 @@ return {
     },
 
     daily_notes = {
-      folder = 'daily',
+      folder = tostring(os.date 'daily/%B %Y'),
       date_format = '%Y-%m-%d',
       alias_format = '%B %-d, %Y',
       title_format = '%B %-d, %Y',
-      template = 'templates/daily.md',
+      template = 'templates/daily_nvim.md',
     },
 
     templates = {
