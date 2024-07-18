@@ -1,6 +1,12 @@
 return {
   {
     'numToStr/Comment.nvim',
+    opts = {
+      mappings = { basic = true, extra = false },
+      post_hook = function()
+        vim.api.nvim_feedkeys('j', 't', false)
+      end,
+    },
     init = function()
       vim.keymap.set('n', '<C-_>', function()
         return vim.v.count == 0 and '<Plug>(comment_toggle_linewise_current)' or '<Plug>(comment_toggle_linewise_count)'
@@ -12,11 +18,5 @@ return {
       vim.keymap.set('x', '<C-_>', '<Plug>(comment_toggle_linewise_visual)')
       vim.keymap.set('x', '<leader><C-_>', '<Plug>(comment_toggle_blockwise_visual)')
     end,
-    opts = {
-      mappings = { basic = true, extra = false },
-      post_hook = function()
-        vim.api.nvim_feedkeys('j', 't', false)
-      end,
-    },
   }
 }

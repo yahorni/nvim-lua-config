@@ -177,7 +177,7 @@ local function toggle_resize_mode()
     vim.print 'Resize mode enabled'
   end
 end
-vim.keymap.set('n', 'gR', toggle_resize_mode)
+vim.keymap.set('n', 'gR', toggle_resize_mode, { silent = true, desc = "[R]esize buffer"})
 
 -- Ctrl+h/j/k/l bindings
 vim.keymap.set(
@@ -308,7 +308,7 @@ vim.api.nvim_create_autocmd('FileType', {
 -- file execution
 vim.keymap.set('n', '<leader>ce', ':!compiler %<CR>', { noremap = true, desc = '[C]ode [E]xecution' })
 vim.keymap.set('n', '<leader>cr', ':!compiler run %<CR>', { noremap = true, desc = '[C]ode [R]un' })
-vim.keymap.set('n', '<leader>cR', ':!compiler other %<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
+vim.keymap.set('n', '<leader>co', ':!compiler other %<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
 
 -- file permissions
 vim.keymap.set('n', '<leader>x', ':!chmod +x %<CR>', { noremap = true, desc = 'Add e[x]ecutable permissions' })
