@@ -10,7 +10,7 @@ return {
     'ledger/vim-ledger',
     init = function()
       vim.g['ledger_fuzzy_account_completion'] = 1
-    end
+    end,
   },
 
   -- Uncomment for debug logs (use :MasonLog)
@@ -29,44 +29,33 @@ return {
     -- align by '=': Tabularize /=
     'godlygeek/tabular',
     init = function()
-      vim.keymap.set('v', '<leader>t', ':Tabularize /', { silent = false, noremap = true })
+      vim.keymap.set('v', '<leader>t', ':Tabularize /|<cr>', { silent = false, noremap = true, desc = 'Tabularize by symbol' })
+      vim.keymap.set('n', '<leader>t', 'vap:Tabularize /|<cr>', { silent = false, noremap = true, desc = 'Format markdown [t]able' })
     end,
   },
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VeryLazy',
-    opts = {
-      spec = {
-        -- { "<leader>c", group = "[C]ode", desc = "which_key_ignore" },
-        { "<leader>g", desc = "[G]it" },
-        -- ["<leader>g"] = { desc = "[G]it" },
-        -- ["<leader>g"] = { desc = "git" },
-    --     { "<leader>h", group = "Git [H]unk", desc = "which_key_ignore" },
-    --     { "<leader>r", group = "[R]ename", desc = "which_key_ignore" },
-    --     { "<leader>s", group = "[S]earch", desc = "which_key_ignore" },
-    --     { "<leader>w", group = "[W]orkspace", desc = "which_key_ignore" },
-      }
-    },
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
       -- document existing key chains
       require('which-key').add {
         -- { "<leader>c", group = "[C]ode", desc = "which_key_ignore" },
-        { '<leader>c', group = "[C]ode" },
-        { '<leader>d', group = '[D]elete', mode = {'n', 'v'} },
-        { '<leader>g', group = '[G]it', mode = {'n', 'v'} },
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>d', group = '[D]elete', mode = { 'n', 'v' } },
+        { '<leader>g', group = '[G]it', mode = { 'n', 'v' } },
         { '<leader>s', group = '[S]earch' },
         { '<leader>w', group = '[W]orkspace' },
       }
     end,
     keys = {
       {
-        "<leader>?",
+        '<leader>?',
         function()
-          require("which-key").show({ global = false })
+          require('which-key').show { global = false }
         end,
-        desc = "Buffer Local Keymaps (which-key)",
+        desc = 'Buffer Local Keymaps (which-key)',
       },
     },
   },
