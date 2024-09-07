@@ -40,6 +40,7 @@ return {
     { '<localleader><localleader>y', '<cmd>ObsidianToday -1<cr>', desc = 'Obsidian Yesterday' },
     { '<localleader><localleader>s', '<cmd>ObsidianSearch<cr>', desc = 'Obsidian Search' },
     { '<localleader><localleader>o', '<cmd>ObsidianOpen<cr>', desc = 'Obsidian Open' },
+    { '<localleader><localleader>b', '<cmd>ObsidianBacklinks<cr>', desc = 'Obsidian Backlinks' },
   },
 
   opts = {
@@ -51,18 +52,22 @@ return {
     },
 
     daily_notes = {
-      folder = tostring(os.date 'daily/%B %Y'),
+      folder = tostring(os.date 'journal/daily/%B %Y'),
       date_format = '%Y-%m-%d',
       alias_format = '%B %-d, %Y',
       title_format = '%B %-d, %Y',
-      template = 'templates/daily_nvim.md',
+      template = 'templates/daily-nvim.md',
     },
 
     templates = {
       folder = 'templates',
       date_format = '%Y-%m-%d',
       time_format = '%H:%M',
-      substitutions = {},
+      substitutions = {
+        week = function()
+          return os.date("%Y-W%W", os.time())
+        end
+      },
     },
 
     disable_frontmatter = false,
@@ -97,13 +102,6 @@ return {
         end,
         opts = { noremap = false, expr = true, buffer = true },
       },
-      -- Toggle check-boxes.
-      ['<leader>ch'] = {
-        action = function()
-          return require('obsidian').util.toggle_checkbox()
-        end,
-        opts = { buffer = true },
-      },
       -- Smart action depending on context, either follow link or toggle checkbox.
       ['<cr>'] = {
         action = function()
@@ -131,8 +129,10 @@ return {
       checkboxes = {
         ['*'] = { order = 0, char = '*', hl_group = 'ObsidianImportant' },
         [' '] = { order = 1, char = ' ', hl_group = 'ObsidianTodo' },
-        ['/'] = { order = 2, char = '/', hl_group = 'ObsidianInProgress' },
-        ['x'] = { order = 3, char = 'x', hl_group = 'ObsidianDone' },
+        ['/'] = { order = 3, char = '/', hl_group = 'ObsidianTilde' },
+        ['x'] = { order = 4, char = 'x', hl_group = 'ObsidianDone' },
+        ['!'] = { order = 5, char = '!', hl_group = 'ObsidianImportant' },
+        ['?'] = { order = 6, char = '?', hl_group = 'ObsidianTodo' },
       },
     },
   },

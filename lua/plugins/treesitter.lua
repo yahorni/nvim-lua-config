@@ -14,6 +14,7 @@ return {
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
         -- Add languages to be installed here that you want installed for treesitter
+        -- Location: ~/.local/share/nvim/lazy/nvim-treesitter/parser/
         ensure_installed = { 'c', 'cpp', 'diff', 'go', 'lua', 'python', 'vim', 'bash', 'vimdoc', 'kotlin', 'markdown', 'markdown_inline' },
 
         -- Autoinstall languages that are not installed

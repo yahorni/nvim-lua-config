@@ -20,13 +20,12 @@ return {
   {
     'catppuccin/nvim',
     lazy = false,
-    priority = 996,
+    priority = 997,
     background = { -- :h background
       light = 'latte',
       dark = 'mocha',
     },
-    styles = { comments = { 'italic' }, conditionals = { 'italic' },
-    },
+    styles = { comments = { 'italic' }, conditionals = { 'italic' } },
     config = function()
       -- vim.o.background = 'dark'
       vim.o.background = 'light'
@@ -36,7 +35,7 @@ return {
   {
     'morhetz/gruvbox',
     lazy = false,
-    priority = 997,
+    priority = 996,
     config = function()
       -- vim.o.background = 'dark'
       vim.o.background = 'light'

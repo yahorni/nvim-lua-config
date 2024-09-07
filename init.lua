@@ -112,6 +112,7 @@ vim.opt.termguicolors = true
 vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('n', '<C-f>', '<nop>')
+vim.keymap.set('n', '<F1>', '<nop>')
 
 -- [[ Custom commands ]]
 vim.cmd 'com! W :w'
@@ -299,16 +300,22 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'gitconfig', 'make' },
+  pattern = { 'gitconfig', 'make', 'just' },
   callback = function()
     vim.opt_local.expandtab = false
   end,
 })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'ledger' },
+  callback = function()
+    vim.bo.textwidth = 0
+  end,
+})
 
 -- file execution
-vim.keymap.set('n', '<leader>ce', ':!compiler %<CR>', { noremap = true, desc = '[C]ode [E]xecution' })
-vim.keymap.set('n', '<leader>cr', ':!compiler run %<CR>', { noremap = true, desc = '[C]ode [R]un' })
-vim.keymap.set('n', '<leader>co', ':!compiler other %<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
+vim.keymap.set('n', '<leader>ce', ':!compiler.sh %<CR>', { noremap = true, desc = '[C]ode [E]xecution' })
+vim.keymap.set('n', '<leader>cr', ':!compiler.sh run %<CR>', { noremap = true, desc = '[C]ode [R]un' })
+vim.keymap.set('n', '<leader>co', ':!compiler.sh other %<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
 
 -- file permissions
 vim.keymap.set('n', '<leader>x', ':!chmod +x %<CR>', { noremap = true, desc = 'Add e[x]ecutable permissions' })
