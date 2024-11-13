@@ -5,6 +5,8 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 -- [[ Setting options ]]
+-- colortheme
+vim.o.background = 'dark' -- 'dark'/'light'
 -- status line
 vim.opt.laststatus = 2
 -- encoding/fileformat
@@ -32,7 +34,7 @@ vim.opt.autoindent = true
 vim.opt.breakindent = true
 -- nonprintable characters
 vim.opt.list = true
-vim.opt.listchars = { tab = '> ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { eol = '↲', tab = '> ', trail = '·', nbsp = '␣', extends = '>', precedes = '<' }
 -- line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true -- can cause slowdown

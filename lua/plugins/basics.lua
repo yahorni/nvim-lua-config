@@ -6,13 +6,6 @@ return {
   -- rename files
   'tpope/vim-eunuch',
 
-  { -- ledger
-    'ledger/vim-ledger',
-    init = function()
-      vim.g['ledger_fuzzy_account_completion'] = 1
-    end,
-  },
-
   -- Uncomment for debug logs (use :MasonLog)
   -- { 'williamboman/mason.nvim', settings = { log_level = vim.log.levels.DEBUG } },
 

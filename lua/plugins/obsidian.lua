@@ -52,36 +52,45 @@ return {
     },
 
     daily_notes = {
-      folder = tostring(os.date 'journal/daily/%B %Y'),
+      folder = tostring(os.date '10 personal/11 daily/%B %Y'),
       date_format = '%Y-%m-%d',
       alias_format = '%B %-d, %Y',
       title_format = '%B %-d, %Y',
-      template = 'templates/daily-nvim.md',
+      template = '00 system/05 templates/daily-nvim.md',
     },
 
     templates = {
-      folder = 'templates',
+      folder = '00 system/05 templates',
       date_format = '%Y-%m-%d',
       time_format = '%H:%M',
       substitutions = {
         week = function()
-          return os.date("%Y-W%W", os.time())
-        end
+          return os.date('%Y-W%W', os.time())
+        end,
       },
     },
 
     disable_frontmatter = false,
 
-    note_id_func = function(title)
-      if title ~= nil then
-        return title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
+    -- Optional, alternatively you can customize the frontmatter data.
+    ---@return table
+    note_frontmatter_func = function(note)
+      local out = { aliases = note.aliases, tags = note.tags }
+
+      -- `note.metadata` contains any manually added fields in the frontmatter.
+      -- So here we just make sure those fields are kept in the frontmatter.
+      if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+        for k, v in pairs(note.metadata) do
+          out[k] = v
+        end
       end
 
-      local suffix = ''
-      for _ = 1, 4 do
-        suffix = suffix .. string.char(math.random(65, 90))
-      end
-      return tostring(os.time()) .. '-' .. suffix
+      return out
+    end,
+
+    follow_url_func = function(url)
+      -- vim.fn.jobstart({"xdg-open", url})  -- linux
+      vim.ui.open(url) -- need Neovim 0.10.0+
     end,
 
     -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
@@ -127,12 +136,13 @@ return {
     ui = {
       enable = false,
       checkboxes = {
-        ['*'] = { order = 0, char = '*', hl_group = 'ObsidianImportant' },
         [' '] = { order = 1, char = ' ', hl_group = 'ObsidianTodo' },
-        ['/'] = { order = 3, char = '/', hl_group = 'ObsidianTilde' },
-        ['x'] = { order = 4, char = 'x', hl_group = 'ObsidianDone' },
-        ['!'] = { order = 5, char = '!', hl_group = 'ObsidianImportant' },
-        ['?'] = { order = 6, char = '?', hl_group = 'ObsidianTodo' },
+        ['/'] = { order = 2, char = '/', hl_group = 'ObsidianTilde' },
+        ['x'] = { order = 3, char = 'x', hl_group = 'ObsidianDone' },
+        ['-'] = { order = 4, char = '!', hl_group = 'ObsidianCancelled' },
+        ['*'] = { order = 5, char = '*', hl_group = 'ObsidianImportant' },
+        ['!'] = { order = 6, char = '!', hl_group = 'ObsidianImportant' },
+        ['?'] = { order = 7, char = '?', hl_group = 'ObsidianTodo' },
       },
     },
   },

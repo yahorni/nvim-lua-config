@@ -1,6 +1,7 @@
 return {
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
   -- The lowest priority is set as a colorscheme
+  -- Make sure we load main colorscheme during startup
   {
     'sainnhe/sonokai',
     lazy = true,
@@ -18,8 +19,18 @@ return {
     end,
   },
   {
+    'folke/tokyonight.nvim',
+    lazy = true,
+    priority = 998,
+    config = function()
+      vim.cmd.colorscheme 'tokyonight'
+      -- vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  {
     'catppuccin/nvim',
-    lazy = false,
+    lazy = true,
     priority = 997,
     background = { -- :h background
       light = 'latte',
@@ -27,8 +38,6 @@ return {
     },
     styles = { comments = { 'italic' }, conditionals = { 'italic' } },
     config = function()
-      -- vim.o.background = 'dark'
-      vim.o.background = 'light'
       vim.cmd.colorscheme 'catppuccin'
     end,
   },
@@ -37,23 +46,7 @@ return {
     lazy = false,
     priority = 996,
     config = function()
-      -- vim.o.background = 'dark'
-      vim.o.background = 'light'
       vim.cmd.colorscheme 'gruvbox'
-    end,
-  },
-  {
-    'folke/tokyonight.nvim',
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 998,
-    config = function()
-      vim.o.background = 'light'
-      vim.cmd.colorscheme 'tokyonight'
-
-      -- vim.o.background = 'dark'
-      -- vim.cmd.colorscheme 'tokyonight-night'
-
-      vim.cmd.hi 'Comment gui=none'
     end,
   },
 }

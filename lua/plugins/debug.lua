@@ -9,6 +9,7 @@
 return {
   -- NOTE: Yes, you can install new plugins here!
   'mfussenegger/nvim-dap',
+  lazy = true,
   -- NOTE: And you can specify dependencies as well
   dependencies = {
     -- Creates a beautiful debugger UI
@@ -30,7 +31,9 @@ return {
       automatic_installation = true,
       handlers = {},
       ensure_installed = {
-        'cpptools', 'debugpy', 'delve'
+        'cpptools',
+        'debugpy',
+        'delve',
       },
     }
 
@@ -40,14 +43,14 @@ return {
       type = 'executable',
       command = 'OpenDebugAD7',
       attach = {
-        pidProperty = "processId",
-        pidSelect = "ask"
-      }
+        pidProperty = 'processId',
+        pidSelect = 'ask',
+      },
     }
 
     dap.defaults.fallback.external_terminal = {
       command = '/usr/local/bin/st',
-      args = { '-e' }
+      args = { '-e' },
     }
 
     -- Basic debugging keymaps, feel free to change to your liking!

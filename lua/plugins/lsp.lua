@@ -69,7 +69,7 @@ return {
       local servers = {
         -- setup: https://www.lazyvim.org/extras/lang/clangd
         clangd = {},
-        gopls = {},
+        -- gopls = {},
         cmake = {},
         -- able to run with nodejs 16 (default on ubuntu_18: nodejs 8)
         -- pyright = {},
