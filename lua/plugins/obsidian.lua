@@ -17,7 +17,6 @@ return {
 
   dependencies = {
     'nvim-lua/plenary.nvim', -- required
-    'hrsh7th/nvim-cmp', -- completion
     'nvim-telescope/telescope.nvim', -- search and quick-switch
     'nvim-treesitter/nvim-treesitter', -- markdown syntax highlight
   },
@@ -52,7 +51,7 @@ return {
     },
 
     daily_notes = {
-      folder = tostring(os.date '10 personal/11 daily/%B %Y'),
+      folder = tostring(os.date '10 personal/11 journal/%Y-%m %B'),
       date_format = '%Y-%m-%d',
       alias_format = '%B %-d, %Y',
       title_format = '%B %-d, %Y',
@@ -70,6 +69,7 @@ return {
       },
     },
 
+    ui = { enable = false, },
     disable_frontmatter = false,
 
     -- Optional, alternatively you can customize the frontmatter data.
@@ -93,14 +93,6 @@ return {
       vim.ui.open(url) -- need Neovim 0.10.0+
     end,
 
-    -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
-    completion = {
-      -- Set to false to disable completion.
-      nvim_cmp = true,
-      -- Trigger completion at 2 chars.
-      min_chars = 2,
-    },
-
     -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
     -- way then set 'mappings = {}'.
     mappings = {
@@ -108,7 +100,7 @@ return {
       ['gf'] = {
         action = function()
           return require('obsidian').util.gf_passthrough()
-        end,
+       end,
         opts = { noremap = false, expr = true, buffer = true },
       },
       -- Smart action depending on context, either follow link or toggle checkbox.
@@ -130,19 +122,6 @@ return {
         new = '<C-x>',
         -- Insert a link to the selected note.
         insert_link = '<C-l>',
-      },
-    },
-
-    ui = {
-      enable = false,
-      checkboxes = {
-        [' '] = { order = 1, char = ' ', hl_group = 'ObsidianTodo' },
-        ['/'] = { order = 2, char = '/', hl_group = 'ObsidianTilde' },
-        ['x'] = { order = 3, char = 'x', hl_group = 'ObsidianDone' },
-        ['-'] = { order = 4, char = '!', hl_group = 'ObsidianCancelled' },
-        ['*'] = { order = 5, char = '*', hl_group = 'ObsidianImportant' },
-        ['!'] = { order = 6, char = '!', hl_group = 'ObsidianImportant' },
-        ['?'] = { order = 7, char = '?', hl_group = 'ObsidianTodo' },
       },
     },
   },
