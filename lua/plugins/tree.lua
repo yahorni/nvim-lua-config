@@ -22,8 +22,7 @@ return {
         vim.keymap.set('n', 'za', '<Plug>(fern-action-hidden:toggle)', { buffer = true })
         vim.keymap.set('n', 'yy', '<Plug>(fern-action-yank:label)', { buffer = true })
         vim.keymap.set('n', 'yb', '<Plug>(fern-action-yank)', { buffer = true })
-        vim.keymap.set('n', 'r', '<Plug>(fern-action-reload:cursor)', { buffer = true, nowait = true })
-        vim.keymap.set('n', 'n', '<Plug>(fern-action-rename)', { buffer = true, nowait = true })
+        vim.keymap.set('n', 'm', '<Plug>(fern-action-rename)', { buffer = true, nowait = true })
       end
 
       local fern_group = vim.api.nvim_create_augroup('FernGroup', { clear = true })

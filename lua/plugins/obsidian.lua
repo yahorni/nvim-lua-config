@@ -17,7 +17,7 @@ return {
 
   dependencies = {
     'nvim-lua/plenary.nvim', -- required
-    'nvim-telescope/telescope.nvim', -- search and quick-switch
+    'ibhagwan/fzf-lua', -- search and quick-switch
     'nvim-treesitter/nvim-treesitter', -- markdown syntax highlight
   },
 
@@ -113,9 +113,7 @@ return {
     },
 
     picker = {
-      -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
-      name = 'telescope.nvim',
-      -- Optional, configure key mappings for the picker. These are the defaults.
+      name = 'fzf-lua',
       -- Not all pickers support all mappings.
       mappings = {
         -- Create a new note from your query.

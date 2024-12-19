@@ -24,7 +24,7 @@ return {
   opts = {
     keymap = {
       preset = 'enter',
-      ['<C-y>'] = { 'select_and_accept' },
+      -- ['<C-y>'] = { 'select_and_accept' },
     },
 
     appearance = {
@@ -41,6 +41,10 @@ return {
       documentation = {
         auto_show = false,
         auto_show_delay_ms = 500,
+      },
+      trigger = {
+        -- remove this when '{' is not triggered by default
+        show_on_trigger_character = false,
       },
     },
 

@@ -268,13 +268,9 @@ end
 local function set_session_file()
   local git_root = find_git_root()
   if git_root then
-    if vim.fn.isdirectory(git_root .. '/.ide') ~= 0 then
-      vim.g.session_file = git_root .. '/.ide/session.vim'
-    else
-      vim.g.session_file = git_root .. '/session.vim'
-    end
+    vim.g.session_file = git_root .. '/.session.vim'
   else
-    vim.g.session_file = 'session.vim'
+    vim.g.session_file = '.session.vim'
   end
 end
 set_session_file()

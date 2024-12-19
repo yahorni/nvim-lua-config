@@ -1,153 +1,104 @@
 return {
-  { -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependant
-      'williamboman/mason-lspconfig.nvim',
+  'neovim/nvim-lspconfig',
+  dependencies = {
+    { 'williamboman/mason.nvim', config = true },
+    'williamboman/mason-lspconfig.nvim',
 
-      -- Useful status updates for LSP
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+    -- Useful status updates for LSP
+    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+    { 'j-hui/fidget.nvim', opts = {} },
 
-      -- completion
-      'saghen/blink.cmp',
-    },
+    -- completion
+    'saghen/blink.cmp',
+  },
 
-    config = function()
-      vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(event)
-          -- [[ Configure LSP ]]
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
-
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-          map('K', vim.lsp.buf.hover, 'Hover Documentation')
-          map('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
-          map('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-          map('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-          map('<leader>wl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, '[W]orkspace [L]ist Folders')
-
-          -- Create a command `:Format` local to the LSP buffer
-          vim.api.nvim_buf_create_user_command(event.buf, 'Format', function(_)
-            vim.lsp.buf.format()
-          end, { desc = 'Format current buffer with LSP' })
-          map('<leader>f', '<cmd>Format<cr>', 'Format code')
-
-          -- The following two autocommands are used to highlight references of the
-          -- word under your cursor when your cursor rests there for a little while.
-          --    See `:help CursorHold` for information about when this is executed
-          --
-          -- When you move your cursor, the highlights will be cleared (the second autocommand).
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.server_capabilities.documentHighlightProvider then
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.document_highlight,
-            })
-
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.clear_references,
-            })
-          end
+  config = function()
+    vim.api.nvim_create_autocmd('LspAttach', {
+      callback = function(event)
+        -- [[ Configure LSP ]]
+        local map = function(keys, func, desc)
+          vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
-      })
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
+        -- https://neovim.io/doc/user/lsp.html#_lua-module:-vim.lsp.buf
 
-      -- LSP servers list
-      local servers = {
-        -- setup: https://www.lazyvim.org/extras/lang/clangd
-        clangd = {},
-        -- gopls = {},
-        cmake = {},
-        -- able to run with nodejs 16 (default on ubuntu_18: nodejs 8)
-        -- pyright = {},
-        basedpyright = {},
-        -- markdown notes
-        marksman = {},
+        map('gr', require('fzf-lua').lsp_references, '[G]oto [R]eferences') -- vim.lsp.buf.references
+        map('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinitions') -- vim.lsp.buf.definition
+        map('gD', require('fzf-lua').lsp_declarations, '[G]oto [D]eclarations') -- vim.lsp.buf.declaration
+        map('gI', require('fzf-lua').lsp_implementations, '[G]oto [I]mplementations') -- vim.lsp.buf.implementation
+        map('gy', require('fzf-lua').lsp_typedefs, '[G]oto T[y]pe Definition') -- vim.lsp.buf.type_definition
+        map('<leader>ds', require('fzf-lua').lsp_document_symbols, '[D]ocument [S]ymbols') -- vim.lsp.util.symbols_to_items
+        map('<leader>ca', require('fzf-lua').lsp_code_actions, '[C]ode [A]ction') -- vim.lsp.buf.code_action,
+        map('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
+        map('<leader>cl', require('fzf-lua').lsp_finder, 'All LSP locations, combined view')
+        map('<leader>dd', require('fzf-lua').diagnostics_document, 'Document Diagnostics')
+        map('<leader>cR', vim.lsp.buf.rename, '[C]ode [R]ename')
+        map('K', vim.lsp.buf.hover, 'Hover Documentation')
+        map('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
 
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = { callSnippet = 'Replace' },
-              telemetry = { enable = false },
-            },
+        -- The following two autocommands are used to highlight references of the
+        -- word under your cursor when your cursor rests there for a little while.
+        --    See `:help CursorHold` for information about when this is executed
+        --
+        -- When you move your cursor, the highlights will be cleared (the second autocommand).
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if client and client.server_capabilities.documentHighlightProvider then
+          vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+            buffer = event.buf,
+            callback = vim.lsp.buf.document_highlight,
+          })
+
+          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+            buffer = event.buf,
+            callback = vim.lsp.buf.clear_references,
+          })
+        end
+      end,
+    })
+
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
+
+    -- LSP servers list
+    local servers = {
+      -- setup: https://www.lazyvim.org/extras/lang/clangd
+      clangd = {},
+      -- gopls = {},
+      cmake = {},
+      -- able to run with nodejs 16 (default on ubuntu_18: nodejs 8)
+      -- pyright = {},
+      basedpyright = {},
+      -- markdown notes
+      marksman = {},
+
+      lua_ls = {
+        settings = {
+          Lua = {
+            completion = { callSnippet = 'Replace' },
+            telemetry = { enable = false },
           },
         },
-      }
-
-      -- Ensure the servers and tools above are installed
-      require('mason').setup()
-      require('mason-lspconfig').setup {
-        ensure_installed = vim.tbl_keys(servers),
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-          ['clangd'] = function()
-            require('lspconfig').clangd.setup {
-              on_attach = function(_, bufnr)
-                vim.keymap.set('n', '<leader>o', '<cmd>ClangdSwitchSourceHeader<cr>',
-                  { buffer = bufnr, desc = 'Switch Source/Header (C/C++)' })
-              end,
-            }
-          end,
-        }
-      }
-    end,
-  },
-
-  {
-    'stevearc/aerial.nvim',
-    -- event = "LazyFile",
-
-    opts = {
-      attach_mode = "global",
-      backends = { "lsp", "treesitter", "markdown"},
-      show_guides = true,
-      layout = {
-        resize_to_content = true,
-        min_width = 30,
-        win_opts = {
-          winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
-          signcolumn = "yes",
-          statuscolumn = " ",
-        },
       },
-      -- stylua: ignore
-      guides = {
-        mid_item   = "├╴",
-        last_item  = "└╴",
-        nested_top = "│ ",
-        whitespace = "  ",
-      },
-      -- optionally use on_attach to set keymaps when aerial has attached to a buffer
-      on_attach = function(bufnr)
-        -- Jump forwards/backwards with '{' and '}'
-        vim.keymap.set("n", "<leader>{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-        vim.keymap.set("n", "<leader>}", "<cmd>AerialNext<CR>", { buffer = bufnr })
-        -- You probably also want to set a keymap to toggle aerial
-        vim.keymap.set("n", "<leader>T", "<cmd>AerialToggle!<CR>")
-      end,
     }
 
-  },
-
-  { 'folke/neodev.nvim', opts = {} },
+    -- Ensure the servers and tools above are installed
+    require('mason').setup()
+    require('mason-lspconfig').setup {
+      ensure_installed = vim.tbl_keys(servers),
+      handlers = {
+        function(server_name)
+          local server = servers[server_name] or {}
+          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+          require('lspconfig')[server_name].setup(server)
+        end,
+        ['clangd'] = function()
+          require('lspconfig').clangd.setup {
+            on_attach = function(_, bufnr)
+              vim.keymap.set('n', '<leader>o', '<cmd>ClangdSwitchSourceHeader<cr>', { buffer = bufnr, desc = 'Switch Source/Header (C/C++)' })
+            end,
+          }
+        end,
+      },
+    }
+  end,
 }

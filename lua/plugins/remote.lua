@@ -1,3 +1,0 @@
-return {
-  'zenbro/mirror.vim'
-}
