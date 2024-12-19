@@ -22,20 +22,26 @@ return {
   version = 'v0.*',
 
   opts = {
-    keymap = { preset = 'default' },
-    -- <C-space>: 'show', 'show_documentation', 'hide_documentation'
-    -- <C-e>: hide
-    -- <C-y>: select_and_accept
-    -- <C-p>: select_prev
-    -- <C-n>: select_next
-    -- <C-b>: scroll_documentation_up
-    -- <C-f>: scroll_documentation_down
-    -- <Tab>: snippet_forward
-    -- <S-Tab>: snippet_backward
+    keymap = {
+      preset = 'enter',
+      ['<C-y>'] = { 'select_and_accept' },
+    },
 
     appearance = {
-      use_nvim_cmp_as_default = true,
+      use_nvim_cmp_as_default = false,
       nerd_font_variant = 'mono',
+    },
+
+    completion = {
+      menu = {
+        draw = {
+          treesitter = { 'lsp' },
+        },
+      },
+      documentation = {
+        auto_show = false,
+        auto_show_delay_ms = 500,
+      },
     },
 
     snippets = {
