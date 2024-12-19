@@ -17,8 +17,7 @@ return {
         cmake = { 'cmakelint' },
         sh = { 'shellcheck' },
         json = { 'jsonlint' }, -- jq
-        markdown = { 'markdownlint' },
-        ['*'] = { 'write-good' },
+        markdown = { 'markdownlint', 'write_good' },
       }
 
       local linters = require('lint').linters

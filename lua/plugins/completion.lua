@@ -1,75 +1,58 @@
 return {
-  { -- Autocompletion
-    'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
-    dependencies = {
-      {
-        -- Snippet Engine & its associated nvim-cmp source
-        'L3MON4D3/LuaSnip',
-        version = 'v2.*',
-        config = function ()
-          require('luasnip.loaders.from_vscode').lazy_load({ paths = {"~/.config/nvim/snippets"} })
-        end,
-        dependencies = {
-          {
-            'rafamadriz/friendly-snippets',
-            config = function()
-              require('luasnip.loaders.from_vscode').lazy_load()
-            end,
-          },
-        },
-      },
-
-      -- Adds LSP completion capabilities
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      'rafamadriz/friendly-snippets',
-    },
-    config = function()
-      local cmp = require 'cmp'
-      local luasnip = require 'luasnip'
-      luasnip.config.setup {}
-
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
+  'saghen/blink.cmp',
+  lazy = false,
+  dependencies = {
+    'rafamadriz/friendly-snippets',
+    {
+      'L3MON4D3/LuaSnip',
+      version = 'v2.*',
+      config = function()
+        require('luasnip.loaders.from_vscode').lazy_load { paths = { '~/.config/nvim/snippets' } }
+      end,
+      dependencies = {
+        {
+          'rafamadriz/friendly-snippets',
+          config = function()
+            require('luasnip.loaders.from_vscode').lazy_load()
           end,
         },
-        -- may be problematic
-        completion = { completeopt = 'menu,menuone,noinsert' },
+      },
+    },
+  },
+  version = 'v0.*',
 
-        mapping = cmp.mapping.preset.insert {
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
-          ['<C-Space>'] = cmp.mapping.complete {},
+  opts = {
+    keymap = { preset = 'default' },
+    -- <C-space>: 'show', 'show_documentation', 'hide_documentation'
+    -- <C-e>: hide
+    -- <C-y>: select_and_accept
+    -- <C-p>: select_prev
+    -- <C-n>: select_next
+    -- <C-b>: scroll_documentation_up
+    -- <C-f>: scroll_documentation_down
+    -- <Tab>: snippet_forward
+    -- <S-Tab>: snippet_backward
 
-          -- If you prefer more traditional completion keymaps,
-          -- you can uncomment the following lines
-          --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    appearance = {
+      use_nvim_cmp_as_default = true,
+      nerd_font_variant = 'mono',
+    },
 
-          ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
-          end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            end
-          end, { 'i', 's' }),
-        },
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'path' },
-        },
-      }
-    end,
+    snippets = {
+      expand = function(snippet)
+        require('luasnip').lsp_expand(snippet)
+      end,
+      active = function(filter)
+        if filter and filter.direction then
+          return require('luasnip').jumpable(filter.direction)
+        end
+        return require('luasnip').in_snippet()
+      end,
+      jump = function(direction)
+        require('luasnip').jump(direction)
+      end,
+    },
+    sources = { default = { 'lsp', 'path', 'luasnip', 'buffer' } },
+    signature = { enabled = true },
   },
 }

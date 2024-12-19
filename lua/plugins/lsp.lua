@@ -9,6 +9,9 @@ return {
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
+
+      -- completion
+      'saghen/blink.cmp',
     },
 
     config = function()
@@ -63,7 +66,7 @@ return {
       })
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
 
       -- LSP servers list
       local servers = {
@@ -74,6 +77,8 @@ return {
         -- able to run with nodejs 16 (default on ubuntu_18: nodejs 8)
         -- pyright = {},
         basedpyright = {},
+        -- markdown notes
+        marksman = {},
 
         lua_ls = {
           settings = {

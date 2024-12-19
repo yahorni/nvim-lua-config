@@ -136,11 +136,7 @@ vim.cmd 'com! Sp :sp'
 vim.cmd 'com! SP :sp'
 
 -- [[ Basic Keymaps ]]
--- diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
 -- change <paste> command behaviour
 vim.keymap.set('x', 'p', '"_dp', { noremap = true })
 vim.keymap.set('x', 'P', '"_dP', { noremap = true })
@@ -156,8 +152,13 @@ vim.keymap.set('n', '<C-q>', '<cmd>close<CR>', { noremap = true })
 vim.keymap.set('n', '<A-n>', '<cmd>e<CR>n', { noremap = true })
 vim.keymap.set('n', '<A-N>', '<cmd>e<CR>N', { noremap = true })
 
--- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
+-- diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
+-- [[ `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -180,7 +181,7 @@ local function toggle_resize_mode()
     vim.print 'Resize mode enabled'
   end
 end
-vim.keymap.set('n', 'gR', toggle_resize_mode, { silent = true, desc = "[R]esize buffer"})
+vim.keymap.set('n', 'gR', toggle_resize_mode, { silent = true, desc = '[R]esize buffer' })
 
 -- Ctrl+h/j/k/l bindings
 vim.keymap.set(
