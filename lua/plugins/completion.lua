@@ -23,8 +23,22 @@ return {
 
   opts = {
     keymap = {
-      preset = 'enter',
-      -- ['<C-y>'] = { 'select_and_accept' },
+      preset = 'none',
+
+      ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+      ['<C-e>'] = { 'cancel', 'fallback' },
+      ['<C-s>'] = { 'select_and_accept', 'fallback' },
+
+      ['<Tab>'] = { 'snippet_forward', 'fallback' },
+      ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+
+      ['<Up>'] = { 'select_prev', 'fallback' },
+      ['<Down>'] = { 'select_next', 'fallback' },
+      ['<C-p>'] = { 'select_prev', 'fallback' },
+      ['<C-n>'] = { 'select_next', 'fallback' },
+
+      ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+      ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
     },
 
     appearance = {
@@ -42,10 +56,6 @@ return {
         auto_show = false,
         auto_show_delay_ms = 500,
       },
-      trigger = {
-        -- remove this when '{' is not triggered by default
-        show_on_trigger_character = false,
-      },
     },
 
     snippets = {
@@ -62,7 +72,10 @@ return {
         require('luasnip').jump(direction)
       end,
     },
-    sources = { default = { 'lsp', 'path', 'luasnip', 'buffer' } },
+    sources = {
+      default = { 'lsp', 'path', 'luasnip', 'buffer' },
+      cmdline = {},
+    },
     signature = { enabled = true },
   },
 }
