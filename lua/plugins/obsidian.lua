@@ -21,12 +21,11 @@ return {
     'nvim-treesitter/nvim-treesitter', -- markdown syntax highlight
   },
 
+  -- 'ObsidianTomorrow' and 'ObsidianYesterday' are broken, use 'ObsidianToday ±1'
   cmd = {
     'ObsidianQuickSwitch',
     'ObsidianNew',
     'ObsidianToday',
-    'ObsidianTomorrow',
-    'ObsidianYesterday',
     'ObsidianSearch',
     'ObsidianOpen',
   },

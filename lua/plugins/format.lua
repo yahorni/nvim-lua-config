@@ -30,6 +30,9 @@ return {
         autopep8 = {
           prepend_args = { '--max-line-length=120' },
         },
+        fixjson = {
+          prepend_args = { '--indent=2' },
+        },
       },
     },
   },

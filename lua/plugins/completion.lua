@@ -3,21 +3,7 @@ return {
   lazy = false,
   dependencies = {
     'rafamadriz/friendly-snippets',
-    {
-      'L3MON4D3/LuaSnip',
-      version = 'v2.*',
-      config = function()
-        require('luasnip.loaders.from_vscode').lazy_load { paths = { '~/.config/nvim/snippets' } }
-      end,
-      dependencies = {
-        {
-          'rafamadriz/friendly-snippets',
-          config = function()
-            require('luasnip.loaders.from_vscode').lazy_load()
-          end,
-        },
-      },
-    },
+    'L3MON4D3/LuaSnip',
   },
   version = 'v0.*',
 
@@ -27,7 +13,7 @@ return {
 
       ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
       ['<C-e>'] = { 'cancel', 'fallback' },
-      ['<C-s>'] = { 'select_and_accept', 'fallback' },
+      ['<C-t>'] = { 'select_and_accept', 'fallback' },
 
       ['<Tab>'] = { 'snippet_forward', 'fallback' },
       ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
@@ -47,11 +33,7 @@ return {
     },
 
     completion = {
-      menu = {
-        draw = {
-          treesitter = { 'lsp' },
-        },
-      },
+      menu = { draw = { treesitter = { 'lsp' }, }, },
       documentation = {
         auto_show = false,
         auto_show_delay_ms = 500,
@@ -72,10 +54,12 @@ return {
         require('luasnip').jump(direction)
       end,
     },
+
     sources = {
       default = { 'lsp', 'path', 'luasnip', 'buffer' },
       cmdline = {},
     },
+
     signature = { enabled = true },
   },
 }
