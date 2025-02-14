@@ -54,11 +54,11 @@ return {
       date_format = '%Y-%m-%d',
       alias_format = '%B %-d, %Y',
       title_format = '%B %-d, %Y',
-      template = '00 system/05 templates/daily-nvim.md',
+      template = '~/dox/obsidian/00 system/05 templates/daily-nvim.md',
     },
 
     templates = {
-      folder = '00 system/05 templates',
+      folder = '~/dox/obsidian/00 system/05 templates',
       date_format = '%Y-%m-%d',
       time_format = '%H:%M',
       substitutions = {

@@ -24,7 +24,7 @@ return {
         html = { 'prettier' },
         css = { 'prettier' },
         javascript = { 'prettier' }, -- clang-format
-        ['*'] = { 'codespell', 'trim_whitespace', 'trim_newlines' },
+        ['*'] = { 'trim_whitespace', 'trim_newlines' }, -- codespell
       },
       formatters = {
         autopep8 = {

@@ -1,6 +1,6 @@
 return {
   'ibhagwan/fzf-lua',
-  opts = function(_, opts)
+  opts = function()
     local config = require 'fzf-lua.config'
 
     -- Quickfix
@@ -15,6 +15,7 @@ return {
   end,
   keys = {
     -- editor
+    { '<leader>f', '<cmd>FzfLua files cwd=%:p:h<cr>', desc = '[S]earch [F]iles' },
     { '<leader>sf', '<cmd>FzfLua files<cr>', desc = '[S]earch [F]iles' },
     { '<leader>sq', '<cmd>FzfLua quickfix<cr>', desc = '[S]earch [Q]uickfix List' },
     { '<leader>st', '<cmd>FzfLua treesitter<cr>', desc = '[S]earch [T]reesitter Symbols' },

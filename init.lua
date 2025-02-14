@@ -6,7 +6,7 @@ vim.g.maplocalleader = ','
 
 -- [[ Setting options ]]
 -- colortheme
-vim.o.background = 'dark' -- 'dark'/'light'
+vim.o.background = 'light' -- 'dark'/'light'
 -- status line
 vim.opt.laststatus = 2
 -- encoding/fileformat
@@ -34,6 +34,7 @@ vim.opt.autoindent = true
 vim.opt.breakindent = true
 -- nonprintable characters
 vim.opt.list = true
+-- eol = '↲' - doesn't work in raw terminal
 vim.opt.listchars = { eol = '↲', tab = '> ', trail = '·', nbsp = '␣', extends = '>', precedes = '<' }
 -- line numbers
 vim.opt.number = true
@@ -87,14 +88,14 @@ vim.opt.matchpairs:append '<:>'
 -- do not save quickfix to session file
 vim.opt.sessionoptions:remove 'blank,folds'
 -- enable local .vimrc/.nvim.lua
-vim.opt.exrc = true
+vim.opt.exrc = false
 -- shorten vim messages
 vim.opt.shortmess = 'atT'
 -- text width
 vim.opt.textwidth = 120
 vim.opt.colorcolumn = '+0' -- can cause slowdown
 -- window title
-vim.opt.title = true
+vim.opt.title = true -- causes nvim to black screen in raw console
 -- make buffer hidden when it's abandoned
 vim.opt.hidden = true
 -- keep signcolumn on
@@ -108,13 +109,13 @@ vim.opt.completeopt = 'menuone,noselect'
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 -- extended color support
-vim.opt.termguicolors = true
+vim.opt.termguicolors = true -- makes everything ugly in raw console
 
 -- Disable some keys before plugins
 vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('n', '<C-f>', '<nop>')
-vim.keymap.set('n', '<F1>', '<nop>')
+vim.keymap.set({'n', 'i'}, '<F1>', '<nop>')
 
 -- [[ Custom commands ]]
 vim.cmd 'com! W :w'
@@ -153,6 +154,7 @@ vim.keymap.set('n', '<A-n>', '<cmd>e<CR>n', { noremap = true })
 vim.keymap.set('n', '<A-N>', '<cmd>e<CR>N', { noremap = true })
 
 -- diagnostic keymaps
+vim.diagnostic.config { virtual_lines = true }  -- TODO: test in nvim v0.11
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
@@ -312,9 +314,9 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- file execution
-vim.keymap.set('n', '<leader>ce', ':!compiler.sh %<CR>', { noremap = true, desc = '[C]ode [E]xecution' })
-vim.keymap.set('n', '<leader>cr', ':!compiler.sh run %<CR>', { noremap = true, desc = '[C]ode [R]un' })
-vim.keymap.set('n', '<leader>co', ':!compiler.sh other %<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
+vim.keymap.set('n', '<leader>cb', ':!compiler.sh build "%"<CR>', { noremap = true, desc = '[C]ode [B]uild' })
+vim.keymap.set('n', '<leader>cr', ':!compiler.sh run "%"<CR>', { noremap = true, desc = '[C]ode [R]un' })
+vim.keymap.set('n', '<leader>co', ':!compiler.sh other "%"<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
 
 -- file permissions
 vim.keymap.set('n', '<leader>x', ':!chmod +x %<CR>', { noremap = true, desc = 'Add e[x]ecutable permissions' })

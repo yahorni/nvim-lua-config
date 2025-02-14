@@ -6,6 +6,7 @@ return {
     attach_mode = 'global',
     backends = { 'lsp', 'treesitter', 'markdown' },
     show_guides = true,
+    filter_kind = false,
     layout = {
       resize_to_content = true,
       min_width = 30,
