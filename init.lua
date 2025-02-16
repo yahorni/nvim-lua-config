@@ -11,7 +11,7 @@ vim.o.background = 'light' -- 'dark'/'light'
 vim.opt.laststatus = 2
 -- encoding/fileformat
 vim.opt.encoding = 'utf-8'
-vim.opt.fileencodings = 'utf-8,cp1251,ucs-2,koi8-r,cp866'
+vim.opt.fileencodings = 'utf-8,cp1251,koi8-r,ucs-2,cp866'
 vim.opt.fileformat = 'unix'
 vim.opt.fileformats = 'unix,dos,mac'
 vim.opt.endofline = true

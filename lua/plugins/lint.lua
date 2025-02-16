@@ -49,4 +49,14 @@ return {
       })
     end,
   },
+  {
+    "rshkarin/mason-nvim-lint",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "mfussenegger/nvim-lint",
+    },
+    opts = {
+      automatic_installation = false  -- enable when setting up repository
+    }
+  }
 }
