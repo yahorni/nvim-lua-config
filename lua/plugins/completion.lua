@@ -23,8 +23,8 @@ return {
       ['<C-p>'] = { 'select_prev', 'fallback' },
       ['<C-n>'] = { 'select_next', 'fallback' },
 
-      ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
-      ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+      ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
+      ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
     },
 
     appearance = {
@@ -42,9 +42,9 @@ return {
 
     snippets = { preset = 'luasnip', },
 
+    cmdline = { enabled = false, },
     sources = {
       default = { 'lsp', 'path', 'snippets', 'buffer' },
-      cmdline = {},
       per_filetype = {
         ['ledger'] = { 'lsp', 'path', 'snippets' },
       }
