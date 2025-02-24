@@ -155,6 +155,8 @@ vim.keymap.set('n', '<A-N>', '<cmd>e<CR>N', { noremap = true })
 
 -- diagnostic keymaps
 vim.diagnostic.config { virtual_lines = true }  -- TODO: test in nvim v0.11
+vim.keymap.set('n', '<leader>dn', vim.diagnostic.enable, { desc = 'Enable diagnostic messages' })
+vim.keymap.set('n', '<leader>df', vim.diagnostic.disable, { desc = 'Disable diagnostic messages' })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })

@@ -30,8 +30,8 @@ return {
         map('<leader>ds', require('fzf-lua').lsp_document_symbols, '[D]ocument [S]ymbols') -- vim.lsp.util.symbols_to_items
         map('<leader>ca', require('fzf-lua').lsp_code_actions, '[C]ode [A]ction') -- vim.lsp.buf.code_action,
         map('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
-        map('<leader>cl', require('fzf-lua').lsp_finder, 'All LSP locations, combined view')
-        map('<leader>dd', require('fzf-lua').diagnostics_document, 'Document Diagnostics')
+        map('<leader>cl', require('fzf-lua').lsp_finder, '[C]ombined view of all LSP [L]ocations')
+        map('<leader>dd', require('fzf-lua').diagnostics_document, '[D]ocument [D]iagnostics')
         map('<leader>cR', vim.lsp.buf.rename, '[C]ode [R]ename')
         map('K', vim.lsp.buf.hover, 'Hover Documentation')
         map('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
