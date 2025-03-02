@@ -317,7 +317,7 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'ledger' },
+  pattern = { 'ledger', 'markdown' },
   callback = function()
     vim.bo.textwidth = 0
   end,

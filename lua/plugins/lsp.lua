@@ -70,6 +70,8 @@ return {
       basedpyright = {},
       -- markdown notes
       marksman = {},
+      -- typst
+      tinymist = {},
 
       lua_ls = {
         settings = {
