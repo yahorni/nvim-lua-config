@@ -22,21 +22,20 @@ return {
     -- align by '=': Tabularize /=
     'godlygeek/tabular',
     init = function()
-      vim.keymap.set('v', '<leader>t', ':Tabularize /|<cr>', { silent = false, noremap = true, desc = 'Tabularize by symbol' })
-      vim.keymap.set('n', '<leader>t', 'vap:Tabularize /|<cr>', { silent = false, noremap = true, desc = 'Format markdown [t]able' })
+      vim.keymap.set('v', '<leader>T', ':Tabularize /|<cr>', { silent = false, noremap = true, desc = 'Tabularize by symbol' })
+      vim.keymap.set('n', '<leader>T', 'vap:Tabularize /|<cr>', { silent = false, noremap = true, desc = 'Format markdown [t]able' })
     end,
   },
 
-  { -- Useful plugin to show you pending keybinds.
+  { -- Show pending keybinds.
     'folke/which-key.nvim',
     event = 'VeryLazy',
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
       -- document existing key chains
       require('which-key').add {
-        -- { "<leader>c", group = "[C]ode", desc = "which_key_ignore" },
         { '<leader>c', group = '[C]ode' },
-        { '<leader>d', group = '[D]elete', mode = { 'n', 'v' } },
+        { '<leader>d', group = '[D]ocument', mode = { 'n', 'v' } },
         { '<leader>g', group = '[G]it', mode = { 'n', 'v' } },
         { '<leader>s', group = '[S]earch' },
         { '<leader>w', group = '[W]orkspace' },

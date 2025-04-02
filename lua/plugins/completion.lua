@@ -41,15 +41,8 @@ return {
     },
 
     snippets = { preset = 'luasnip', },
-
     cmdline = { enabled = false, },
-    sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer' },
-      per_filetype = {
-        ['ledger'] = { 'lsp', 'path', 'snippets' },
-      }
-    },
-
+    sources = { default = { 'lsp', 'path', 'snippets', 'buffer' }, },
     signature = { enabled = true },
   },
 }

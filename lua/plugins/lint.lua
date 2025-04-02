@@ -9,11 +9,11 @@ return {
       local lint = require 'lint'
 
       -- 'cppcheck', 'clangtidy' - fail with exit code 1
-      -- TODO: disable flawfinder complains about tabs
+      -- TODO: disable flawfinder complaints about tabs
       lint.linters_by_ft = {
         cpp = { 'cpplint', 'flawfinder' },
         -- c = { 'flawfinder' },
-        python = { 'flake8', 'pylint', 'mypy' },
+        -- python = { 'flake8', 'pylint', 'mypy' },
         cmake = { 'cmakelint' },
         sh = { 'shellcheck' },
         json = { 'jsonlint' }, -- jq

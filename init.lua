@@ -1,12 +1,12 @@
 -- vim: ts=2 sts=2 sw=2 et fdm=marker fdl=0
 
--- Set leader/localleader keys
+-- {{{ [[ Options ]]
+
+-- leader/localleader keys
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
-
--- [[ Setting options ]]
 -- colortheme
-vim.o.background = 'light' -- 'dark'/'light'
+vim.o.background = 'dark' -- 'dark'/'light'
 -- status line
 vim.opt.laststatus = 2
 -- encoding/fileformat
@@ -24,8 +24,8 @@ vim.opt.inccommand = 'split'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 -- tab/space
-vim.opt.tabstop = 4 -- width for Tab
-vim.opt.shiftwidth = 4 -- width for shifting with '>>'/'<<'
+vim.opt.tabstop = 4     -- width for Tab
+vim.opt.shiftwidth = 4  -- width for shifting with '>>'/'<<'
 vim.opt.softtabstop = 4 -- width for Tab in inserting or deleting (Backspace)
 vim.opt.smarttab = true
 vim.opt.expandtab = true
@@ -95,7 +95,7 @@ vim.opt.shortmess = 'atT'
 vim.opt.textwidth = 120
 vim.opt.colorcolumn = '+0' -- can cause slowdown
 -- window title
-vim.opt.title = true -- causes nvim to black screen in raw console
+vim.opt.title = true       -- causes nvim to black screen in raw console
 -- make buffer hidden when it's abandoned
 vim.opt.hidden = true
 -- keep signcolumn on
@@ -111,13 +111,10 @@ vim.opt.timeoutlen = 300
 -- extended color support
 vim.opt.termguicolors = true -- makes everything ugly in raw console
 
--- Disable some keys before plugins
-vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
-vim.keymap.set('n', 'Q', '<nop>')
-vim.keymap.set('n', '<C-f>', '<nop>')
-vim.keymap.set({'n', 'i'}, '<F1>', '<nop>')
+--- }}}
 
--- [[ Custom commands ]]
+-- {{{ [[ Commands ]]
+
 vim.cmd 'com! W :w'
 vim.cmd 'com! -bang W :w<bang>'
 vim.cmd 'com! Q :q'
@@ -136,95 +133,42 @@ vim.cmd 'com! VS :vs'
 vim.cmd 'com! Sp :sp'
 vim.cmd 'com! SP :sp'
 
--- [[ Basic Keymaps ]]
+-- }}}
+
+-- {{{ [[ Keymaps ]]
+
+-- disable some keys before plugins
+vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
+vim.keymap.set('n', 'Q', '<nop>')
+vim.keymap.set('n', '<C-f>', '<nop>')
+vim.keymap.set({ 'n', 'i' }, '<F1>', '<nop>')
 
 -- change <paste> command behaviour
 vim.keymap.set('x', 'p', '"_dp', { noremap = true })
 vim.keymap.set('x', 'P', '"_dP', { noremap = true })
 -- disable highlight
-vim.keymap.set('n', '<leader>H', '<cmd>noh<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>H', '<cmd>noh<cr>', { noremap = true })
 -- copy til EOL with Y
 vim.keymap.set('n', 'Y', 'y$', { noremap = true })
 -- quit
 vim.keymap.set('n', 'zq', 'ZQ', { noremap = true })
 -- buffer close
-vim.keymap.set('n', '<C-q>', '<cmd>close<CR>', { noremap = true })
+vim.keymap.set('n', '<C-q>', '<cmd>close<cr>', { noremap = true })
 -- update file and search
-vim.keymap.set('n', '<A-n>', '<cmd>e<CR>n', { noremap = true })
-vim.keymap.set('n', '<A-N>', '<cmd>e<CR>N', { noremap = true })
+vim.keymap.set('n', '<A-n>', '<cmd>e<cr>n', { noremap = true })
+vim.keymap.set('n', '<A-N>', '<cmd>e<cr>N', { noremap = true })
 
--- diagnostic keymaps
-vim.diagnostic.config { virtual_lines = true }  -- TODO: test in nvim v0.11
-vim.keymap.set('n', '<leader>dn', vim.diagnostic.enable, { desc = 'Enable diagnostic messages' })
-vim.keymap.set('n', '<leader>df', vim.diagnostic.disable, { desc = 'Disable diagnostic messages' })
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-
--- [[ `lazy.nvim` plugin manager ]]
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
-
--- [[ Configure plugins ]]
-require('lazy').setup('plugins', {
-  change_detection = { notify = false },
-})
-
--- [[ Split/resizing ]]
-local function toggle_resize_mode()
-  if vim.g.resize_mode then
-    vim.g.resize_mode = nil
-    vim.print 'Resize mode disabled'
-  else
-    vim.g.resize_mode = true
-    vim.print 'Resize mode enabled'
-  end
-end
-vim.keymap.set('n', 'gR', toggle_resize_mode, { silent = true, desc = '[R]esize buffer' })
-
--- Ctrl+h/j/k/l bindings
-vim.keymap.set(
-  'n',
-  '<C-h>',
-  "!exists('g:resize_mode') ? '<C-w><C-h>' : ':vert res -1<CR>'",
-  { silent = true, expr = true, noremap = true, desc = 'Move focus to the left window' }
-)
-vim.keymap.set(
-  'n',
-  '<C-j>',
-  "!exists('g:resize_mode') ? '<C-w><C-j>' : ':res -1<CR>'",
-  { silent = true, expr = true, noremap = true, desc = 'Move focus to the right window' }
-)
-vim.keymap.set(
-  'n',
-  '<C-k>',
-  "!exists('g:resize_mode') ? '<C-w><C-k>' : ':res +1<CR>'",
-  { silent = true, expr = true, noremap = true, desc = 'Move focus to the lower window' }
-)
-vim.keymap.set(
-  'n',
-  '<C-l>',
-  "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert res +1<CR>'",
-  { silent = true, expr = true, noremap = true, desc = 'Move focus to the upper window' }
-)
-
--- [[ Tabs ]]
+-- tabs
 vim.keymap.set('n', 'gt', '<nop>')
-vim.keymap.set('n', 'gth', '<cmd>tabprev<CR>', { noremap = true, desc = 'Previous tab' })
-vim.keymap.set('n', 'gtl', '<cmd>tabnext<CR>', { noremap = true, desc = 'Next tab' })
+vim.keymap.set('n', 'gth', '<cmd>tabprev<cr>', { noremap = true, desc = 'Previous tab' })
+vim.keymap.set('n', 'gtl', '<cmd>tabnext<cr>', { noremap = true, desc = 'Next tab' })
 vim.keymap.set('n', 'gtt', function()
-  local current_file = vim.api.nvim_buf_get_name(0)
-  return '<cmd>tabnew' .. (current_file == '' and '' or ' %') .. '<CR>'
+local current_file = vim.api.nvim_buf_get_name(0)
+return '<cmd>tabnew' .. (current_file == '' and '' or ' %') .. '<cr>'
 end, { noremap = true, expr = true, desc = 'Create new tab (same as current)' })
-vim.keymap.set('n', 'gtc', '<cmd>tabclose<CR>', { noremap = true, desc = 'Close tab' })
-vim.keymap.set('n', 'gtH', '<cmd>tabmove -1<CR>', { noremap = true, desc = 'Move tab to the left' })
-vim.keymap.set('n', 'gtL', '<cmd>tabmove +1<CR>', { noremap = true, desc = 'Move tab to the right' })
-
+vim.keymap.set('n', 'gtc', '<cmd>tabclose<cr>', { noremap = true, desc = 'Close tab' })
+vim.keymap.set('n', 'gtH', '<cmd>tabmove -1<cr>', { noremap = true, desc = 'Move tab to the left' })
+vim.keymap.set('n', 'gtL', '<cmd>tabmove +1<cr>', { noremap = true, desc = 'Move tab to the right' })
 -- switch to tab by number
 vim.keymap.set('n', '<leader>1', '1gt', { noremap = true })
 vim.keymap.set('n', '<leader>2', '2gt', { noremap = true })
@@ -235,20 +179,106 @@ vim.keymap.set('n', '<leader>6', '6gt', { noremap = true })
 vim.keymap.set('n', '<leader>7', '7gt', { noremap = true })
 vim.keymap.set('n', '<leader>8', '8gt', { noremap = true })
 vim.keymap.set('n', '<leader>9', '9gt', { noremap = true })
-vim.keymap.set('n', '<leader>0', '<cmd>tablast<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>0', '<cmd>tablast<cr>', { noremap = true, silent = true })
 
--- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = highlight_group,
-  pattern = '*',
+-- file execution
+vim.keymap.set('n', '<leader>cb', ':!compiler.sh build "%"<cr>', { noremap = true, desc = '[C]ode [B]uild' })
+vim.keymap.set('n', '<leader>cr', ':!compiler.sh run "%"<cr>', { noremap = true, desc = '[C]ode [R]un' })
+vim.keymap.set('n', '<leader>co', ':!compiler.sh other "%"<cr>', { noremap = true, desc = '[C]ode [O]ther action' })
+
+-- file permissions
+vim.keymap.set('n', '<leader>xa', ':!chmod +x %<cr>', { noremap = true, desc = '[A]dd e[X]ecutable permissions' })
+vim.keymap.set('n', '<leader>xr', ':!chmod -x %<cr>', { noremap = true, desc = '[R]emove e[X]ecutable permissions' })
+
+-- search visually selected text with '//'
+vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<cr><cr> ]]
+-- replace visually selected text
+vim.cmd [[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]]
+
+-- remove trailing whitespaces
+vim.cmd [[ nn <leader>xw :%s/\s\+$//e <bar> nohl<cr> ]]
+vim.cmd [[ vn <leader>xw y:'<,'>s/\s\+$//e <bar> nohl<cr> ]]
+-- remove empty lines
+vim.cmd [[ nn <leader>xe :g/^$/d <bar> nohl<cr> ]]
+vim.cmd [[ vn <leader>xe y:'<,'>g/^$/d <bar> nohl<cr> ]]
+-- squish consecutive duplicate lines
+vim.cmd [[ nn <leader>xl :%s;\v^(.*)(\n\1)+$;\1;<cr> ]]
+-- remove swaps
+vim.cmd [[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<cr> ]]
+
+-- }}}
+
+-- {{{ [[ Diagnostics ]]
+
+-- keymaps
+vim.keymap.set('n', '<leader>dn', vim.diagnostic.enable, { desc = 'Enable diagnostic messages' })
+vim.keymap.set('n', '<leader>df', vim.diagnostic.disable, { desc = 'Disable diagnostic messages' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+-- virtual lines
+vim.diagnostic.config({ virtual_lines = { current_line = true } })
+
+-- }}}
+
+-- {{{ [[ Plugins ]]
+
+-- `lazy.nvim` plugin manager
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+end ---@diagnostic disable-next-line: undefined-field
+vim.opt.rtp:prepend(lazypath)
+
+-- configure plugins
+require('lazy').setup('plugins', {
+  change_detection = { notify = false },
 })
 
--- [[ Session handling ]]
+-- }}}
+
+-- {{{ [[ Split/resize ]]
+
+local function toggle_resize_mode()
+  if vim.g.resize_mode then
+    vim.g.resize_mode = nil
+    vim.print 'Resize mode disabled'
+  else
+    vim.g.resize_mode = true
+    vim.print 'Resize mode enabled'
+  end
+end
+vim.keymap.set('n', '<leader>xt', toggle_resize_mode, { silent = true, desc = '[R]esize buffer' })
+
+-- Ctrl+h/j/k/l bindings
+vim.keymap.set(
+  'n',
+  '<C-h>',
+  "!exists('g:resize_mode') ? '<C-w><C-h>' : ':vert res -1<cr>'",
+  { silent = true, expr = true, noremap = true, desc = 'Move focus to the left window' }
+)
+vim.keymap.set(
+  'n',
+  '<C-j>',
+  "!exists('g:resize_mode') ? '<C-w><C-j>' : ':res -1<cr>'",
+  { silent = true, expr = true, noremap = true, desc = 'Move focus to the right window' }
+)
+vim.keymap.set(
+  'n',
+  '<C-k>',
+  "!exists('g:resize_mode') ? '<C-w><C-k>' : ':res +1<cr>'",
+  { silent = true, expr = true, noremap = true, desc = 'Move focus to the lower window' }
+)
+vim.keymap.set(
+  'n',
+  '<C-l>',
+  "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert res +1<cr>'",
+  { silent = true, expr = true, noremap = true, desc = 'Move focus to the upper window' }
+)
+
+-- }}}
+
+-- {{{ [[ Session ]]
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
   local current_file = vim.api.nvim_buf_get_name(0)
@@ -282,20 +312,22 @@ set_session_file()
 vim.keymap.set(
   'n',
   '<leader>m',
-  '<cmd>mksession! ' .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<CR>',
+  '<cmd>mksession! ' .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<cr>',
   { silent = true }
 )
-vim.keymap.set('n', '<leader>l', '<cmd>source ' .. vim.g.session_file .. '<CR>', { silent = true })
+vim.keymap.set('n', '<leader>l', '<cmd>source ' .. vim.g.session_file .. '<cr>', { silent = true })
 vim.keymap.set('n', '<leader>R', function()
   vim.fn.system { 'rm', vim.g.session_file }
   vim.print 'Session removed'
 end, { silent = true })
 
--- [[ Misc ]]
+-- }}}
+
+-- {{{ [[ Autocmds ]]
 
 -- custom ft styles
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'lua', 'javascript', 'yaml', 'markdown', 'text', 'json' },
+  pattern = { 'lua', 'javascript', 'yaml', 'markdown', 'text', 'json', 'typst' },
   callback = function()
     vim.bo.tabstop = 2
     vim.bo.shiftwidth = 2
@@ -317,36 +349,19 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'ledger', 'markdown' },
+  pattern = { 'ledger', 'markdown', 'typst', 'AvanteInput' },
   callback = function()
     vim.bo.textwidth = 0
   end,
 })
+-- highlight on yank `:help vim.highlight.on_yank()`
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = '*',
+})
 
--- file execution
-vim.keymap.set('n', '<leader>cb', ':!compiler.sh build "%"<CR>', { noremap = true, desc = '[C]ode [B]uild' })
-vim.keymap.set('n', '<leader>cr', ':!compiler.sh run "%"<CR>', { noremap = true, desc = '[C]ode [R]un' })
-vim.keymap.set('n', '<leader>co', ':!compiler.sh other "%"<CR>', { noremap = true, desc = '[C]ode [O]ther action' })
-
--- file permissions
-vim.keymap.set('n', '<leader>x', ':!chmod +x %<CR>', { noremap = true, desc = 'Add e[x]ecutable permissions' })
-vim.keymap.set('n', '<leader>X', ':!chmod -x %<CR>', { noremap = true, desc = 'Remove e[X]ecutable permissions' })
-
--- search visually selected text with '//'
-vim.cmd [[ vn // y/\V<C-R>=escape(@",'/\')<CR><CR> ]]
-
--- replace visually selected text
-vim.cmd [[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]]
-
--- remove trailing whitespaces
-vim.cmd [[ nn <silent> <leader>dw :%s/\s\+$//e <bar> nohl<CR> ]]
-vim.cmd [[ vn <silent> <leader>dw y:'<,'>s/\s\+$//e <bar> nohl<CR> ]]
-
--- remove empty lines
-vim.cmd [[ nn <silent> <leader>de :g/^$/d<CR> ]]
-
--- squish consecutive duplicate lines
-vim.cmd [[ nn <silent> <leader>dl :%s;\v^(.*)(\n\1)+$;\1;<CR> ]]
-
--- remove swaps
-vim.cmd [[ nn <leader>dS :!rm -f ~/.local/state/nvim/swap/*<CR> ]]
+-- }}}

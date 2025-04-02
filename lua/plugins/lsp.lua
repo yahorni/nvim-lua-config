@@ -21,7 +21,6 @@ return {
         end
 
         -- https://neovim.io/doc/user/lsp.html#_lua-module:-vim.lsp.buf
-
         map('gr', require('fzf-lua').lsp_references, '[G]oto [R]eferences') -- vim.lsp.buf.references
         map('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinitions') -- vim.lsp.buf.definition
         map('gD', require('fzf-lua').lsp_declarations, '[G]oto [D]eclarations') -- vim.lsp.buf.declaration
@@ -61,21 +60,17 @@ return {
 
     -- LSP servers list
     local servers = {
-      -- setup: https://www.lazyvim.org/extras/lang/clangd
       clangd = {},
-      -- gopls = {},
       cmake = {},
-      -- able to run with nodejs 16 (default on ubuntu_18: nodejs 8)
-      -- pyright = {},
-      basedpyright = {},
-      -- markdown notes
+      -- basedpyright = {},
+      -- pylsp = {},
       marksman = {},
-      -- typst
       tinymist = {},
 
       lua_ls = {
         settings = {
           Lua = {
+            diagnostics = { globals = { "vim" }, },
             completion = { callSnippet = 'Replace' },
             telemetry = { enable = false },
           },
@@ -93,14 +88,28 @@ return {
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
           require('lspconfig')[server_name].setup(server)
         end,
-        ['clangd'] = function()
-          require('lspconfig').clangd.setup {
-            on_attach = function(_, bufnr)
-              vim.keymap.set('n', '<leader>o', '<cmd>ClangdSwitchSourceHeader<cr>', { buffer = bufnr, desc = 'Switch Source/Header (C/C++)' })
-            end,
-          }
-        end,
       },
     }
+
+    -- Define a helper function
+    local function switch_header_source()
+      local params = { uri = vim.uri_from_bufnr(0) }
+      vim.lsp.buf_request(0, 'textDocument/switchSourceHeader', params, function(err, result)
+        if err then
+          vim.notify('Error switching: ' .. err.message, vim.log.levels.ERROR)
+          return
+        end
+        if not result then
+          vim.notify('No alternate file found', vim.log.levels.WARN)
+          return
+        end
+        -- Open the target file
+        local filepath = vim.uri_to_fname(result)
+        vim.cmd('edit ' .. filepath)
+      end)
+    end
+
+    -- Map the function to a key (e.g., <leader>hs)
+    vim.keymap.set('n', '<leader>hs', switch_header_source, { desc = 'Switch header/source' })
   end,
 }

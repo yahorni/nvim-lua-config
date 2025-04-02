@@ -8,7 +8,7 @@ return {
       vim.g['fern#disable_viewer_hide_cursor'] = 1
 
       local fern_init = function()
-        vim.keymap.set('n', '<CR>', '<Plug>(fern-action-open-or-expand)', { buffer = true, nowait = true })
+        vim.keymap.set('n', '<cr>', '<Plug>(fern-action-open-or-expand)', { buffer = true, nowait = true })
         vim.keymap.set('n', 'l', '<Plug>(fern-action-open-or-expand)', { buffer = true, nowait = true })
         vim.keymap.set('n', 'h', '<Plug>(fern-action-collapse)', { buffer = true, nowait = true })
         vim.keymap.set('n', 's', '<Plug>(fern-action-open:split)', { buffer = true, nowait = true })
@@ -33,9 +33,9 @@ return {
       })
     end,
     keys = {
-      { '<C-n>',     '<cmd>Fern . -reveal=%<CR>',                 'Open file tree in buffer' },
-      { '<leader>n', '<cmd>Fern %:p:h -reveal=%:p<CR>',           'Open file tree in buffer for current dir' },
-      { '<leader>N', '<cmd>Fern . -reveal=% -drawer -toggle<CR>', 'Open file tree in drawer' },
+      { '<C-n>',     '<cmd>Fern . -reveal=%<cr>',                 'Open file tree in buffer' },
+      { '<leader>n', '<cmd>Fern %:p:h -reveal=%:p<cr>',           'Open file tree in buffer for current dir' },
+      { '<leader>N', '<cmd>Fern . -reveal=% -drawer -toggle<cr>', 'Open file tree in drawer' },
     },
   },
 

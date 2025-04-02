@@ -1,4 +1,14 @@
 return {
+  -- ]x and [x to jump; ct/co/cb/c0 - take theirs/ours/both/none changes
+  {
+    'akinsho/git-conflict.nvim',
+    version = '*',
+    config = true,
+    keys = {
+      { '[x', '<cmd>GitConflictPrevConflict<cr>', 'Go to Previous Conflict' },
+      { ']x', '<cmd>GitConflictNextConflict<cr>', 'Go to Next Conflict' },
+    }
+  },
   {
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -55,7 +65,4 @@ return {
       end,
     },
   },
-
-  -- ]x and [x to jump; ct/co/cb/c0 - take theirs/ours/both/none changes
-  { 'akinsho/git-conflict.nvim', version = '*', config = true },
 }
