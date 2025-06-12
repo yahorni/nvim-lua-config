@@ -1,6 +1,5 @@
 return {
   'stevearc/aerial.nvim',
-  -- event = "LazyFile",
 
   opts = {
     attach_mode = 'global',
@@ -16,13 +15,12 @@ return {
         statuscolumn = ' ',
       },
     },
-      -- stylua: ignore
-      guides = {
-        mid_item   = "├╴",
-        last_item  = "└╴",
-        nested_top = "│ ",
-        whitespace = "  ",
-      },
+    guides = {
+      mid_item = '├╴',
+      last_item = '└╴',
+      nested_top = '│ ',
+      whitespace = '  ',
+    },
     -- optionally use on_attach to set keymaps when aerial has attached to a buffer
     on_attach = function(bufnr)
       -- Jump forwards/backwards with '{' and '}'

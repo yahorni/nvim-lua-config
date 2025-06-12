@@ -1,6 +1,5 @@
 return {
-  {
-    -- File tree setup with Fern
+  { -- File tree setup with Fern
     'lambdalisue/fern.vim',
     init = function()
       vim.g['fern#default_hidden'] = 1
@@ -33,8 +32,8 @@ return {
       })
     end,
     keys = {
-      { '<C-n>',     '<cmd>Fern . -reveal=%<cr>',                 'Open file tree in buffer' },
-      { '<leader>n', '<cmd>Fern %:p:h -reveal=%:p<cr>',           'Open file tree in buffer for current dir' },
+      { '<C-n>', '<cmd>Fern . -reveal=%<cr>', 'Open file tree in buffer' },
+      { '<leader>n', '<cmd>Fern %:p:h -reveal=%:p<cr>', 'Open file tree in buffer for current dir' },
       { '<leader>N', '<cmd>Fern . -reveal=% -drawer -toggle<cr>', 'Open file tree in drawer' },
     },
   },
@@ -43,16 +42,16 @@ return {
   -- TODO: make it work
   {
     'lambdalisue/fern-hijack.vim',
-    dependencies = { 'lambdalisue/fern.vim', }
+    dependencies = { 'lambdalisue/fern.vim' },
   },
 
   -- Show git status in file tree
   {
     'lambdalisue/fern-git-status.vim',
-    dependencies = { 'lambdalisue/fern.vim', },
+    dependencies = { 'lambdalisue/fern.vim' },
     init = function()
       vim.g['fern_git_status#disable_ignored'] = 1
       vim.g['fern_git_status#disable_submodules'] = 1
-    end
-  }
+    end,
+  },
 }

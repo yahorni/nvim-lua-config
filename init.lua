@@ -24,8 +24,8 @@ vim.opt.inccommand = 'split'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 -- tab/space
-vim.opt.tabstop = 4     -- width for Tab
-vim.opt.shiftwidth = 4  -- width for shifting with '>>'/'<<'
+vim.opt.tabstop = 4 -- width for Tab
+vim.opt.shiftwidth = 4 -- width for shifting with '>>'/'<<'
 vim.opt.softtabstop = 4 -- width for Tab in inserting or deleting (Backspace)
 vim.opt.smarttab = true
 vim.opt.expandtab = true
@@ -95,7 +95,7 @@ vim.opt.shortmess = 'atT'
 vim.opt.textwidth = 120
 vim.opt.colorcolumn = '+0' -- can cause slowdown
 -- window title
-vim.opt.title = true       -- causes nvim to black screen in raw console
+vim.opt.title = true -- causes nvim to black screen in raw console
 -- make buffer hidden when it's abandoned
 vim.opt.hidden = true
 -- keep signcolumn on
@@ -163,8 +163,8 @@ vim.keymap.set('n', 'gt', '<nop>')
 vim.keymap.set('n', 'gth', '<cmd>tabprev<cr>', { noremap = true, desc = 'Previous tab' })
 vim.keymap.set('n', 'gtl', '<cmd>tabnext<cr>', { noremap = true, desc = 'Next tab' })
 vim.keymap.set('n', 'gtt', function()
-local current_file = vim.api.nvim_buf_get_name(0)
-return '<cmd>tabnew' .. (current_file == '' and '' or ' %') .. '<cr>'
+  local current_file = vim.api.nvim_buf_get_name(0)
+  return '<cmd>tabnew' .. (current_file == '' and '' or ' %') .. '<cr>'
 end, { noremap = true, expr = true, desc = 'Create new tab (same as current)' })
 vim.keymap.set('n', 'gtc', '<cmd>tabclose<cr>', { noremap = true, desc = 'Close tab' })
 vim.keymap.set('n', 'gtH', '<cmd>tabmove -1<cr>', { noremap = true, desc = 'Move tab to the left' })
@@ -216,7 +216,7 @@ vim.keymap.set('n', '<leader>df', vim.diagnostic.disable, { desc = 'Disable diag
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 -- virtual lines
-vim.diagnostic.config({ virtual_lines = { current_line = true } })
+vim.diagnostic.config { virtual_lines = { current_line = true } }
 
 -- }}}
 

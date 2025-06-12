@@ -37,7 +37,7 @@ return {
       table.insert(linters.pylint.args, '--disable=unspecified-encoding')
 
       -- https://github.com/markdownlint/markdownlint/blob/main/docs/RULES.md
-      linters.markdownlint.args = { '--disable',  'MD013',  '--'}
+      linters.markdownlint.args = { '--disable', 'MD013', '--' }
 
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
 
@@ -50,13 +50,13 @@ return {
     end,
   },
   {
-    "rshkarin/mason-nvim-lint",
+    'rshkarin/mason-nvim-lint',
     dependencies = {
-      "williamboman/mason.nvim",
-      "mfussenegger/nvim-lint",
+      'williamboman/mason.nvim',
+      'mfussenegger/nvim-lint',
     },
     opts = {
-      automatic_installation = false  -- enable when setting up repository
-    }
-  }
+      automatic_installation = false, -- enable when setting up repository
+    },
+  },
 }

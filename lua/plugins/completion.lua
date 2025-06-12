@@ -33,16 +33,16 @@ return {
     },
 
     completion = {
-      menu = { draw = { treesitter = { 'lsp' }, }, },
+      menu = { draw = { treesitter = { 'lsp' } } },
       documentation = {
         auto_show = false,
         auto_show_delay_ms = 500,
       },
     },
 
-    snippets = { preset = 'luasnip', },
-    cmdline = { enabled = false, },
-    sources = { default = { 'lsp', 'path', 'snippets', 'buffer' }, },
+    snippets = { preset = 'luasnip' },
+    cmdline = { enabled = false },
+    sources = { default = { 'lsp', 'path', 'snippets', 'buffer' } },
     signature = { enabled = true },
   },
 }

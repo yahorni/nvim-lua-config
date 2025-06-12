@@ -1,6 +1,8 @@
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
+    -- Uncomment for debug logs (use :MasonLog)
+    -- { 'williamboman/mason.nvim', settings = { log_level = vim.log.levels.DEBUG } },
     { 'williamboman/mason.nvim', config = true },
     'williamboman/mason-lspconfig.nvim',
 
@@ -70,7 +72,7 @@ return {
       lua_ls = {
         settings = {
           Lua = {
-            diagnostics = { globals = { "vim" }, },
+            diagnostics = { globals = { 'vim' } },
             completion = { callSnippet = 'Replace' },
             telemetry = { enable = false },
           },
