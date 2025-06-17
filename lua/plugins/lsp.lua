@@ -1,55 +1,20 @@
 return {
-  'neovim/nvim-lspconfig',
-  dependencies = {
-    -- Uncomment for debug logs (use :MasonLog)
-    -- { 'williamboman/mason.nvim', settings = { log_level = vim.log.levels.DEBUG } },
-    { 'williamboman/mason.nvim', config = true },
-    'williamboman/mason-lspconfig.nvim',
-
-    -- Useful status updates for LSP
-    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    { 'j-hui/fidget.nvim', opts = {} },
-
-    -- completion
-    'saghen/blink.cmp',
-  },
+  "neovim/nvim-lspconfig",
+  dependencies = { "williamboman/mason.nvim" },
 
   config = function()
-    vim.api.nvim_create_autocmd('LspAttach', {
+    -- Override LspAttach
+    vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(event)
-        -- [[ Configure LSP ]]
-        local map = function(keys, func, desc)
-          vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-        end
+        vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { buffer = event.buf, desc = "[C]ode [F]ormat" })
 
-        -- https://neovim.io/doc/user/lsp.html#_lua-module:-vim.lsp.buf
-        map('gr', require('fzf-lua').lsp_references, '[G]oto [R]eferences') -- vim.lsp.buf.references
-        map('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinitions') -- vim.lsp.buf.definition
-        map('gD', require('fzf-lua').lsp_declarations, '[G]oto [D]eclarations') -- vim.lsp.buf.declaration
-        map('gI', require('fzf-lua').lsp_implementations, '[G]oto [I]mplementations') -- vim.lsp.buf.implementation
-        map('gy', require('fzf-lua').lsp_typedefs, '[G]oto T[y]pe Definition') -- vim.lsp.buf.type_definition
-        map('<leader>ds', require('fzf-lua').lsp_document_symbols, '[D]ocument [S]ymbols') -- vim.lsp.util.symbols_to_items
-        map('<leader>ca', require('fzf-lua').lsp_code_actions, '[C]ode [A]ction') -- vim.lsp.buf.code_action,
-        map('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
-        map('<leader>cl', require('fzf-lua').lsp_finder, '[C]ombined view of all LSP [L]ocations')
-        map('<leader>dd', require('fzf-lua').diagnostics_document, '[D]ocument [D]iagnostics')
-        map('<leader>cR', vim.lsp.buf.rename, '[C]ode [R]ename')
-        map('K', vim.lsp.buf.hover, 'Hover Documentation')
-        map('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-        -- The following two autocommands are used to highlight references of the
-        -- word under your cursor when your cursor rests there for a little while.
-        --    See `:help CursorHold` for information about when this is executed
-        --
-        -- When you move your cursor, the highlights will be cleared (the second autocommand).
         local client = vim.lsp.get_client_by_id(event.data.client_id)
         if client and client.server_capabilities.documentHighlightProvider then
-          vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
             buffer = event.buf,
             callback = vim.lsp.buf.document_highlight,
           })
-
-          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+          vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
             buffer = event.buf,
             callback = vim.lsp.buf.clear_references,
           })
@@ -57,61 +22,42 @@ return {
       end,
     })
 
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
-
-    -- LSP servers list
-    local servers = {
-      clangd = {},
-      cmake = {},
-      -- basedpyright = {},
-      -- pylsp = {},
-      marksman = {},
-      tinymist = {},
-
-      lua_ls = {
-        settings = {
-          Lua = {
-            diagnostics = { globals = { 'vim' } },
-            completion = { callSnippet = 'Replace' },
-            telemetry = { enable = false },
+    vim.lsp.config("lua_ls", {
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" },
           },
         },
       },
-    }
+    })
 
-    -- Ensure the servers and tools above are installed
-    require('mason').setup()
-    require('mason-lspconfig').setup {
-      ensure_installed = vim.tbl_keys(servers),
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-        end,
-      },
-    }
+    -- Enable language servers
+    vim.lsp.enable("clangd")
+    vim.lsp.enable("marksman")
+    vim.lsp.enable("lua_ls")
+    vim.lsp.enable("tinymist")
+    vim.lsp.enable("basedpyright")
 
-    -- Define a helper function
+    -- Define a helper function to switch header/source files
     local function switch_header_source()
       local params = { uri = vim.uri_from_bufnr(0) }
-      vim.lsp.buf_request(0, 'textDocument/switchSourceHeader', params, function(err, result)
+      vim.lsp.buf_request(0, "textDocument/switchSourceHeader", params, function(err, result)
         if err then
-          vim.notify('Error switching: ' .. err.message, vim.log.levels.ERROR)
+          vim.notify("Error switching: " .. err.message, vim.log.levels.ERROR)
           return
         end
         if not result then
-          vim.notify('No alternate file found', vim.log.levels.WARN)
+          vim.notify("No alternate file found", vim.log.levels.WARN)
           return
         end
         -- Open the target file
         local filepath = vim.uri_to_fname(result)
-        vim.cmd('edit ' .. filepath)
+        vim.cmd("edit " .. filepath)
       end)
     end
 
     -- Map the function to a key (e.g., <leader>hs)
-    vim.keymap.set('n', '<leader>hs', switch_header_source, { desc = 'Switch header/source' })
+    vim.keymap.set("n", "<leader>hs", switch_header_source, { desc = "Switch header/source" })
   end,
 }
