@@ -159,6 +159,9 @@ vim.keymap.set("n", "<C-q>", "<cmd>close<cr>", { noremap = true })
 -- update file and search
 vim.keymap.set("n", "<A-n>", "<cmd>e<cr>n", { noremap = true })
 vim.keymap.set("n", "<A-N>", "<cmd>e<cr>N", { noremap = true })
+-- comments
+vim.keymap.set("n", "<C-_>", "gccj", { remap = true })
+vim.keymap.set("x", "<C-_>", "gc", { remap = true })
 
 -- tabs
 vim.keymap.set("n", "gt", "<nop>")

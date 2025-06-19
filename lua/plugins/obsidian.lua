@@ -45,6 +45,12 @@ return {
         action = ":ObsidianSearch<cr>",
         opts = { desc = "Open fuzzy search" },
       },
+      -- Smart action depending on context:
+      -- follow link, show notes with tag, toggle checkbox, or toggle heading fold
+      ["<cr>"] = {
+        action = function() return require("obsidian").util.smart_action() end,
+        opts = { buffer = true, expr = true },
+      },
     },
 
     follow_url_func = function(url) vim.ui.open(url) end,
