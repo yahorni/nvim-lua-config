@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*",
