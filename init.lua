@@ -240,8 +240,14 @@ require("lazy").setup("plugins", {
   change_detection = { notify = false },
 })
 
--- configure colorscheme
-vim.cmd("colorscheme gruvbox")
+-- }}}
+
+-- {{{ [[ Colorscheme ]]
+
+local status_ok, _ = pcall(vim.cmd, "colorscheme gruvbox")
+if not status_ok then
+  vim.cmd("colorscheme retrobox")
+end
 
 -- }}}
 

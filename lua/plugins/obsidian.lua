@@ -12,7 +12,7 @@ return {
   },
   dependencies = { "nvim-lua/plenary.nvim" },
 
-  cmd = { "ObsidianQuickSwitch", "ObsidianToday" },
+  cmd = { "ObsidianQuickSwitch", "ObsidianToday", "ObsidianSearch" },
 
   opts = {
     workspaces = {
@@ -26,23 +26,23 @@ return {
     backlinks = { parse_headers = true },
     mappings = {
       ["<localleader>q"] = {
-        action = function() vim.cmd("ObsidianQuickSwitch") end,
+        action = "<cmd>ObsidianQuickSwitch<cr>",
         opts = { desc = "Open quick switcher" },
       },
       ["<localleader>d"] = {
-        action = ":ObsidianToday<cr>",
+        action = "<cmd>ObsidianToday<cr>",
         opts = { desc = "Open today's note" },
       },
       ["<localleader>y"] = {
-        action = ":ObsidianToday -1<cr>",
+        action = "<cmd>ObsidianToday -1<cr>",
         opts = { desc = "Open yesterday's note" },
       },
       ["<localleader>t"] = {
-        action = ":ObsidianToday +1<cr>",
+        action = "<cmd>ObsidianToday +1<cr>",
         opts = { desc = "Open tomorrow's note" },
       },
       ["<localleader>s"] = {
-        action = ":ObsidianSearch<cr>",
+        action = "<cmd>ObsidianSearch<cr>",
         opts = { desc = "Open fuzzy search" },
       },
       -- Smart action depending on context:
