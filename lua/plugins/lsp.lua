@@ -33,11 +33,18 @@ return {
     })
 
     -- Enable language servers
-    vim.lsp.enable("clangd")
-    vim.lsp.enable("marksman")
-    vim.lsp.enable("lua_ls")
-    vim.lsp.enable("tinymist")
-    vim.lsp.enable("basedpyright")
+    local function enable_server_if_present(name, executable)
+      executable = executable or name
+      if vim.fn.executable(executable) == 1 then
+        vim.lsp.enable(name)
+      end
+    end
+
+    enable_server_if_present("clangd")
+    enable_server_if_present("lua_ls", "lua-language-server")
+    enable_server_if_present("marksman")
+    enable_server_if_present("basedpyright")
+    enable_server_if_present("tinymist")
 
     -- Define a helper function to switch header/source files
     local function switch_header_source()

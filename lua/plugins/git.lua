@@ -3,11 +3,11 @@ return {
     -- ]x and [x to jump; ct/co/cb/c0 - take theirs/ours/both/none changes
     "akinsho/git-conflict.nvim",
     version = "*",
-    config = true,
     keys = {
       { "[x", "<cmd>GitConflictPrevConflict<cr>", "Go to Previous Conflict" },
       { "]x", "<cmd>GitConflictNextConflict<cr>", "Go to Next Conflict" },
     },
+    opts = {},
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -23,20 +23,20 @@ return {
 
         -- Navigation
         map("n", "]c", function()
-          if vim.wo.diff then
-            vim.cmd.normal({ "]c", bang = true })
-          else
-            gitsigns.nav_hunk("next")
-          end
-        end, { desc = "Jump to next git [c]hange" })
+              if vim.wo.diff then
+                vim.cmd.normal({ "]c", bang = true })
+              else
+                gitsigns.nav_hunk("next")
+              end
+            end, { desc = "Jump to next git [c]hange" })
 
         map("n", "[c", function()
-          if vim.wo.diff then
-            vim.cmd.normal({ "[c", bang = true })
-          else
-            gitsigns.nav_hunk("prev")
-          end
-        end, { desc = "Jump to previous git [c]hange" })
+              if vim.wo.diff then
+                vim.cmd.normal({ "[c", bang = true })
+              else
+                gitsigns.nav_hunk("prev")
+              end
+            end, { desc = "Jump to previous git [c]hange" })
 
         -- Actions
         -- visual mode

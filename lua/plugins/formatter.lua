@@ -13,15 +13,15 @@ return {
       c = { "clang-format" },
       cmake = { "cmake-format" },
       python = { "isort", "autoflake", "autopep8" },
-      sh = { "shfmt" }, -- shellcheck, shellharden
-      json = { "fixjson" }, -- jq
+      sh = { "shfmt" },
+      json = { "fixjson" },
       markdown = { "markdownlint" },
       xml = { "xmlformatter" },
       lua = { "stylua" },
       html = { "prettier" },
       css = { "prettier" },
-      javascript = { "prettier" }, -- clang-format
-      ["*"] = { "trim_whitespace", "trim_newlines" }, -- codespell
+      javascript = { "prettier" },
+      ["*"] = { "trim_whitespace", "trim_newlines" },
     },
     formatters = {
       autopep8 = {
