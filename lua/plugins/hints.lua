@@ -6,7 +6,7 @@ return { -- show pending keybinds
     require("which-key").add({
       { "<leader>c", group = "[C]ode" },
       { "<leader>d", group = "[D]ocument", mode = { "n", "v" } },
-      { "<leader>g", group = "[G]it", mode = { "n", "v" } },
+      { "<leader>g", group = "[G]it",      mode = { "n", "v" } },
       { "<leader>s", group = "[S]earch" },
       { "<leader>w", group = "[W]orkspace" },
     })

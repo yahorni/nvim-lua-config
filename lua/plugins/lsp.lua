@@ -1,7 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  dependencies = { "williamboman/mason.nvim" },
-
+  dependencies = { "mason-org/mason.nvim" },
   config = function()
     -- Override LspAttach
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -33,11 +32,17 @@ return {
     })
 
     -- Enable language servers
-    vim.lsp.enable("clangd")
-    vim.lsp.enable("marksman")
-    vim.lsp.enable("lua_ls")
-    vim.lsp.enable("tinymist")
-    vim.lsp.enable("basedpyright")
+    local function enable_server_if_present(name, executable)
+      if vim.fn.executable(executable or name) == 1 then
+        vim.lsp.enable(name)
+      end
+    end
+
+    enable_server_if_present("clangd")
+    enable_server_if_present("lua_ls", "lua-language-server")
+    enable_server_if_present("marksman")
+    enable_server_if_present("basedpyright")
+    enable_server_if_present("tinymist")
 
     -- Define a helper function to switch header/source files
     local function switch_header_source()

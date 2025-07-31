@@ -1,15 +1,11 @@
 return {
   "yetone/avante.nvim",
-  -- https://github.com/Kaiser-Yang/blink-cmp-avante
   event = "VeryLazy",
   version = false,
   dependencies = {
-    "nvim-treesitter/nvim-treesitter",
-    "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    --- The below dependencies are optional,
-    "ibhagwan/fzf-lua", -- for file_selector provider fzf
+    "ibhagwan/fzf-lua",
   },
   build = "make",
   opts = {
@@ -29,4 +25,15 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    require("avante").setup(opts)
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "AvanteInput",
+      callback = function() vim.bo.textwidth = 0 end,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "Avante",
+      callback = function() vim.bo.filetype = "markdown" end,
+    })
+  end,
 }

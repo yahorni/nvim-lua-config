@@ -24,8 +24,8 @@ vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 -- tab/space
-vim.opt.tabstop = 4 -- width for Tab
-vim.opt.shiftwidth = 4 -- width for shifting with '>>'/'<<'
+vim.opt.tabstop = 4     -- width for Tab
+vim.opt.shiftwidth = 4  -- width for shifting with '>>'/'<<'
 vim.opt.softtabstop = 4 -- width for Tab in inserting or deleting (Backspace)
 vim.opt.smarttab = true
 vim.opt.expandtab = true
@@ -87,16 +87,16 @@ vim.opt.cinoptions = "N-s,g0"
 -- enable <> pair
 vim.opt.matchpairs:append("<:>")
 -- do not save quickfix to session file
-vim.opt.sessionoptions:remove("blank,folds")
--- enable local .vimrc/.nvim.lua
-vim.opt.exrc = false
+vim.opt.sessionoptions:remove("blank,folds,terminal")
+-- enable local configuration
+vim.opt.exrc = true
 -- shorten vim messages
 vim.opt.shortmess = "atT"
 -- text width
 vim.opt.textwidth = 120
 vim.opt.colorcolumn = "+0" -- can cause slowdown
 -- window title
-vim.opt.title = true -- causes nvim to black screen in raw console
+vim.opt.title = true       -- causes nvim to black screen in raw console
 -- make buffer hidden when it's abandoned
 vim.opt.hidden = true
 -- keep signcolumn on
@@ -115,25 +115,22 @@ vim.opt.termguicolors = true -- makes everything ugly in raw console
 
 --- }}}
 
--- {{{ [[ Commands ]]
+-- {{{ [[ Abbreviations ]]
 
-vim.cmd("com! W :w")
-vim.cmd("com! -bang W :w<bang>")
-vim.cmd("com! Q :q")
-vim.cmd("com! -bang Q :q<bang>")
-vim.cmd("com! Wq :wq")
-vim.cmd("com! -bang Wq :wq<bang>")
-vim.cmd("com! WQ :wq")
-vim.cmd("com! -bang WQ :wq<bang>")
-vim.cmd("com! Qa :qa")
-vim.cmd("com! -bang Qa :qa<bang>")
-vim.cmd("com! QA :qa")
-vim.cmd("com! -bang QA :qa<bang>")
+vim.cmd("cnoreabbrev W w")
+vim.cmd("cnoreabbrev Q q")
+vim.cmd("cnoreabbrev Wq wq")
+vim.cmd("cnoreabbrev WQ wq")
+vim.cmd("cnoreabbrev Qa qa")
+vim.cmd("cnoreabbrev QA qa")
 
-vim.cmd("com! Vs :vs")
-vim.cmd("com! VS :vs")
-vim.cmd("com! Sp :sp")
-vim.cmd("com! SP :sp")
+vim.cmd("cnoreabbrev w\\ w")
+vim.cmd("cnoreabbrev q1 q!")
+
+vim.cmd("cnoreabbrev Vs vs")
+vim.cmd("cnoreabbrev VS vs")
+vim.cmd("cnoreabbrev Sp sp")
+vim.cmd("cnoreabbrev SP sp")
 
 -- }}}
 
@@ -168,9 +165,9 @@ vim.keymap.set("n", "gt", "<nop>")
 vim.keymap.set("n", "gth", "<cmd>tabprev<cr>", { noremap = true, desc = "Previous tab" })
 vim.keymap.set("n", "gtl", "<cmd>tabnext<cr>", { noremap = true, desc = "Next tab" })
 vim.keymap.set("n", "gtt", function()
-  local current_file = vim.api.nvim_buf_get_name(0)
-  return "<cmd>tabnew" .. (current_file == "" and "" or " %") .. "<cr>"
-end, { noremap = true, expr = true, desc = "Create new tab (same as current)" })
+                 local current_file = vim.api.nvim_buf_get_name(0)
+                 return "<cmd>tabnew" .. (current_file == "" and "" or " %") .. "<cr>"
+               end, { noremap = true, expr = true, desc = "Create new tab (same as current)" })
 vim.keymap.set("n", "gtc", "<cmd>tabclose<cr>", { noremap = true, desc = "Close tab" })
 vim.keymap.set("n", "gtH", "<cmd>tabmove -1<cr>", { noremap = true, desc = "Move tab to the left" })
 vim.keymap.set("n", "gtL", "<cmd>tabmove +1<cr>", { noremap = true, desc = "Move tab to the right" })
@@ -186,17 +183,29 @@ vim.keymap.set("n", "<leader>8", "8gt", { noremap = true })
 vim.keymap.set("n", "<leader>9", "9gt", { noremap = true })
 vim.keymap.set("n", "<leader>0", "<cmd>tablast<cr>", { noremap = true, silent = true })
 
+-- file build
+vim.keymap.set("n", "<leader>cb", function()
+                 local makeprg = vim.bo.makeprg
+                 vim.bo.makeprg = "compiler.sh build %"
+                 vim.cmd.make()
+                 vim.bo.makeprg = makeprg
+               end, { silent = true, noremap = true, desc = "[C]ode [B]uild" })
+vim.keymap.set("n", "<leader>cB", function()
+                 local makeprg = vim.bo.makeprg
+                 vim.bo.makeprg = "compiler.sh build-alt %"
+                 vim.cmd.make()
+                 vim.bo.makeprg = makeprg
+               end, { silent = true, noremap = true, desc = "[C]ode [B]uild (alternative)" })
+
 -- file execution
-vim.keymap.set("n", "<leader>cb", ":!compiler.sh build '%'<cr>", { noremap = true, desc = "[C]ode [B]uild" })
 vim.keymap.set("n", "<leader>cr", ":!compiler.sh run '%'<cr>", { noremap = true, desc = "[C]ode [R]un" })
-vim.keymap.set("n", "<leader>co", ":!compiler.sh other '%'<cr>", { noremap = true, desc = "[C]ode [O]ther action" })
+vim.keymap.set("n", "<leader>cR", ":!compiler.sh run-alt '%'<cr>",
+               { noremap = true, desc = "[C]ode [R]un (alternative)" })
 
 -- file permissions
 vim.keymap.set("n", "<leader>xa", ":!chmod +x '%'<cr>", { noremap = true, desc = "[A]dd e[X]ecutable permissions" })
 vim.keymap.set("n", "<leader>xr", ":!chmod -x '%'<cr>", { noremap = true, desc = "[R]emove e[X]ecutable permissions" })
 
--- search visually selected text with '//'
-vim.cmd([[ vn // y/\V<C-R>=escape(@",'/\')<cr><cr> ]])
 -- replace visually selected text
 vim.cmd([[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]])
 
@@ -210,6 +219,17 @@ vim.cmd([[ vn <leader>xe y:'<,'>g/^$/d <bar> nohl<cr> ]])
 vim.cmd([[ nn <leader>xl :%s;\v^(.*)(\n\1)+$;\1;<cr> ]])
 -- remove swaps
 vim.cmd([[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<cr> ]])
+
+-- }}}
+
+-- {{{ [[ Custom ]]
+
+local custom_config_path = vim.fn.stdpath("config") .. "/lua/custom"
+
+-- center buffer
+if vim.loop.fs_stat(custom_config_path .. "/center-buffer.lua") then
+  vim.keymap.set("n", "<C-w>b", require("custom/center-buffer"), { desc = "Center [B]uffer" })
+end
 
 -- }}}
 
@@ -328,44 +348,23 @@ vim.keymap.set(
   { silent = true }
 )
 vim.keymap.set("n", "<leader>l", "<cmd>source " .. vim.g.session_file .. "<cr>", { silent = true })
-vim.keymap.set("n", "<leader>R", function()
-  vim.fn.system({ "rm", vim.g.session_file })
-  vim.print("Session removed")
-end, { silent = true })
 
 -- }}}
 
 -- {{{ [[ Autocmds ]]
 
--- custom ft styles
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "lua", "javascript", "yaml", "markdown", "text", "json", "typst" },
-  callback = function()
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.softtabstop = 2
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "c", "cpp" },
-  callback = function()
-    vim.bo.tabstop = 4
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
-  end,
-})
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "gitconfig", "make", "just" },
-  callback = function() vim.opt_local.expandtab = false end,
+  callback = function() vim.bo.expandtab = false end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "ledger", "markdown", "typst", "AvanteInput" },
+  pattern = { "markdown", "typst" },
   callback = function() vim.bo.textwidth = 0 end,
 })
--- highlight on yank `:help vim.highlight.on_yank()`
+-- highlight on yank
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function() vim.highlight.on_yank() end,
+  callback = function() vim.hl.on_yank() end,
   group = highlight_group,
   pattern = "*",
 })

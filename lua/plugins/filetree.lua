@@ -32,8 +32,8 @@ return {
       })
     end,
     keys = {
-      { "<C-n>", "<cmd>Fern . -reveal=%<cr>", "Open file tree in buffer" },
-      { "<leader>n", "<cmd>Fern %:p:h -reveal=%:p<cr>", "Open file tree in buffer for current dir" },
+      { "<C-n>",     "<cmd>Fern . -reveal=%<cr>",                 "Open file tree in buffer" },
+      { "<leader>n", "<cmd>Fern %:p:h -reveal=%:p<cr>",           "Open file tree in buffer for current dir" },
       { "<leader>N", "<cmd>Fern . -reveal=% -drawer -toggle<cr>", "Open file tree in drawer" },
     },
   },

@@ -1,0 +1,18 @@
+# description:
+# https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config_EN.md
+# example:
+# https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
+
+root = true
+
+[*.lua]
+indent_style = space
+indent_size = 2
+quote_style = double
+max_line_length = 120
+trailing_table_separator = smart
+call_arg_parentheses = always
+space_around_table_field_list = true
+space_inside_function_call_parentheses = false
+align_call_args = true
+align_function_params = true
