@@ -56,7 +56,7 @@ return {
         map("n", "<leader>gb", gitsigns.blame_line, { desc = "[g]it [b]lame line" })
         map("n", "<leader>gB", gitsigns.blame, { desc = "[g]it [b]lame" })
         map("n", "<leader>gd", gitsigns.diffthis, { desc = "[g]it [d]iff against index" })
-        map("n", "<leader>gD", function() gitsigns.diffthis("@") end, { desc = "[g]it [D]iff against last commit" })
+        map("n", "<leader>gD", function() gitsigns.diffthis("HEAD^") end, { desc = "[g]it [D]iff against last commit" })
 
         -- Toggles
         map("n", "<leader>gtb", gitsigns.toggle_current_line_blame, { desc = "[g]it [t]oggle [b]lame" })

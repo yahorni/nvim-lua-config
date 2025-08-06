@@ -35,7 +35,7 @@ vim.opt.breakindent = true
 -- nonprintable characters
 vim.opt.list = true
 -- eol = '↲' - doesn't work in raw terminal
-vim.opt.listchars = { eol = "↲", tab = "> ", trail = "·", nbsp = "␣", extends = ">", precedes = "<" }
+vim.opt.listchars = { tab = "> ", trail = "·", nbsp = "␣", extends = ">", precedes = "<", leadmultispace = "|   ", eol = "↲" }
 -- line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true -- can cause slowdown
@@ -149,6 +149,10 @@ vim.keymap.set("x", "P", '"_dP', { desc = "Paste without yanking", noremap = tru
 vim.keymap.set("n", "<leader>H", "<cmd>noh<cr>", { noremap = true })
 -- copy til EOL with Y
 vim.keymap.set("n", "Y", "y$", { noremap = true })
+-- copy file name
+vim.keymap.set("n", "ygr", "<cmd>let @+ = expand('%')<cr>", { noremap = true, desc = "Yank file relative path" })
+vim.keymap.set("n", "ygp", "<cmd>let @+ = expand('%:p')<cr>", { noremap = true, desc = "Yank file full path" })
+vim.keymap.set("n", "ygt", "<cmd>let @+ = expand('%:t')<cr>", { noremap = true, desc = "Yank file title" })
 -- quit
 vim.keymap.set("n", "zq", "ZQ", { noremap = true })
 -- buffer close
@@ -358,7 +362,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function() vim.bo.expandtab = false end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "typst" },
+  pattern = { "markdown", "typst", "csv" },
   callback = function() vim.bo.textwidth = 0 end,
 })
 -- highlight on yank
