@@ -15,8 +15,9 @@ return {
   end,
   keys = {
     -- editor
-    { "<leader>f",        "<cmd>FzfLua files<cr>",                 desc = "Search [F]iles" },
-    { "<leader>F",        "<cmd>FzfLua files cwd=%:p:h<cr>",       desc = "Search [F]iles in current directory" },
+    { "<leader>n",        "<cmd>FzfLua files<cr>",                 desc = "Search [F]iles" },
+    { "<leader>f",        "<cmd>FzfLua files resume=true<cr>",     desc = "Search [F]iles resume" },
+    { "<leader>N",        "<cmd>FzfLua files cwd=%:h<cr>",         desc = "Search [F]iles in same dir as current" },
     { "<leader>/",        "<cmd>FzfLua blines<cr>",                desc = "Search buffer lines" },
     { "<leader>sq",       "<cmd>FzfLua quickfix<cr>",              desc = "[S]earch [Q]uickfix List" },
     { "<leader>sb",       "<cmd>FzfLua buffers<cr>",               desc = "[S]earch [B]uffers" },
@@ -27,10 +28,11 @@ return {
     { "<leader>dd",       "<cmd>FzfLua diagnostics_document<cr>",  desc = "[D]ocument [D]iagnostics" },
     -- grep
     { "<leader><leader>", "<cmd>FzfLua live_grep<cr>",             desc = "Search w/ grep" },
+    { "<leader>sr",       "<cmd>FzfLua live_grep resume=true<cr>", desc = "[S]earch w/ grep [R]esume" },
+    { "<leader>ss",       "<cmd>FzfLua live_grep cwd=%:h<cr>",     desc = "[S]earch w/ grep in current file dir" },
     { "<leader>sg",       "<cmd>FzfLua grep<cr>",                  desc = "[S]earch w/ [G]rep" },
-    { "<leader>sr",       "<cmd>FzfLua live_grep resume=true<cr>", desc = "[S]earch [R]esume w/ grep" },
     { "<leader>sp",       "<cmd>FzfLua grep_project<cr>",          desc = "[S]earch w/ grep in [P]roject" },
-    { "<leader>s",        "<cmd>FzfLua grep_visual<cr>",           mode = "v",                                     desc = "[S]earch w/ grep visual selection" },
+    { "<leader>s",        "<cmd>FzfLua grep_visual<cr>",           desc = "[S]earch w/ grep visual selection",     mode = "v" },
     -- git
     { "<localleader>gf",  "<cmd>FzfLua git_files<cr>",             desc = "[G]it [F]iles" },
     { "<localleader>gs",  "<cmd>FzfLua git_status<cr>",            desc = "[G]it [S]tatus" },
