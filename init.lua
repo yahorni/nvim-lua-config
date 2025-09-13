@@ -6,7 +6,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 -- colortheme
-vim.o.background = "dark" -- 'dark'/'light'
+vim.o.background = "light" -- 'dark'/'light'
 -- status line
 vim.opt.laststatus = 2
 -- encoding/fileformat
@@ -42,8 +42,7 @@ vim.opt.listchars = {
   extends = ">",
   precedes = "<",
   leadmultispace = "|   ",
-  eol =
-  "↲",
+  eol = "↲",
 }
 -- line numbers
 vim.opt.number = true
