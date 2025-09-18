@@ -5,7 +5,7 @@
 -- leader/localleader keys
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
--- colortheme
+-- colorscheme
 vim.o.background = "light" -- 'dark'/'light'
 -- status line
 vim.opt.laststatus = 2
@@ -154,7 +154,7 @@ vim.keymap.set({ "n", "i" }, "<F1>", "<nop>")
 vim.keymap.set("x", "p", '"_dp', { desc = "Paste without yanking", noremap = true })
 vim.keymap.set("x", "P", '"_dP', { desc = "Paste without yanking", noremap = true })
 -- disable highlight
-vim.keymap.set("n", "<leader>H", "<cmd>noh<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>h", "<cmd>noh<cr>", { noremap = true })
 -- copy til EOL with Y
 vim.keymap.set("n", "Y", "y$", { noremap = true })
 -- copy file name

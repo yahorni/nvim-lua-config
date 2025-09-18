@@ -28,11 +28,11 @@ return {
     { "<leader>dd",       "<cmd>FzfLua diagnostics_document<cr>",  desc = "[D]ocument [D]iagnostics" },
     -- grep
     { "<leader><leader>", "<cmd>FzfLua live_grep<cr>",             desc = "Search w/ grep" },
+    { "<leader><leader>", "<cmd>FzfLua grep_visual<cr>",           desc = "Search w/ grep visual selection",       mode = "v" },
     { "<leader>sr",       "<cmd>FzfLua live_grep resume=true<cr>", desc = "[S]earch w/ grep [R]esume" },
     { "<leader>ss",       "<cmd>FzfLua live_grep cwd=%:h<cr>",     desc = "[S]earch w/ grep in current file dir" },
     { "<leader>sg",       "<cmd>FzfLua grep<cr>",                  desc = "[S]earch w/ [G]rep" },
     { "<leader>sp",       "<cmd>FzfLua grep_project<cr>",          desc = "[S]earch w/ grep in [P]roject" },
-    { "<leader>s",        "<cmd>FzfLua grep_visual<cr>",           desc = "[S]earch w/ grep visual selection",     mode = "v" },
     -- git
     { "<localleader>gf",  "<cmd>FzfLua git_files<cr>",             desc = "[G]it [F]iles" },
     { "<localleader>gs",  "<cmd>FzfLua git_status<cr>",            desc = "[G]it [S]tatus" },
