@@ -133,7 +133,11 @@ vim.cmd("cnoreabbrev Qa qa")
 vim.cmd("cnoreabbrev QA qa")
 
 vim.cmd("cnoreabbrev w\\ w")
+vim.cmd("cnoreabbrev e\\ e")
+vim.cmd("cnoreabbrev w' w")
+vim.cmd("cnoreabbrev e' e")
 vim.cmd("cnoreabbrev q1 q!")
+vim.cmd("cnoreabbrev qw wq")
 
 vim.cmd("cnoreabbrev Vs vs")
 vim.cmd("cnoreabbrev VS vs")
