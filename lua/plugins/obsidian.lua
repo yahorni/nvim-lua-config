@@ -52,23 +52,22 @@ return {
       folder = "00 system/05 templates",
       date_format = "%Y-%m-%d",
       time_format = "%H:%M",
-      substitutions = {
-        week = function() return os.date("%Y-W%W", os.time()) end,
-      },
     },
 
-    note_frontmatter_func = function(note)
-      local out = { tags = note.tags }
-      if #note.aliases ~= 0 then
-        out["aliases"] = note.aliases
-      end
-      -- `note.metadata` contains any manually added fields in the frontmatter.
-      if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-        for k, v in pairs(note.metadata) do
-          out[k] = v
+    frontmatter = {
+      func = function(note)
+        local out = { tags = note.tags }
+        if #note.aliases ~= 0 then
+          out["aliases"] = note.aliases
         end
-      end
-      return out
-    end,
+        -- `note.metadata` contains any manually added fields in the frontmatter.
+        if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+          for k, v in pairs(note.metadata) do
+            out[k] = v
+          end
+        end
+        return out
+      end,
+    },
   },
 }

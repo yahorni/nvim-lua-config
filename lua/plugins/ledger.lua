@@ -1,5 +1,5 @@
 return {
-  "yahorni/vim-ledger",
+  "ledger/vim-ledger",
   ft = { "ledger" },
   init = function()
     vim.g["ledger_fuzzy_account_completion"] = 1
