@@ -5,8 +5,6 @@
 -- leader/localleader keys
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
--- colorscheme
-vim.o.background = "light" -- 'dark'/'light'
 -- status line
 vim.opt.laststatus = 2
 -- encoding/fileformat
@@ -279,6 +277,9 @@ require("lazy").setup("plugins", {
 -- }}}
 
 -- {{{ [[ Colorscheme ]]
+-- lua/plugins/colorscheme.lua
+
+vim.o.background = "light" -- 'dark'/'light'
 
 local status_ok, _ = pcall(vim.cmd, "colorscheme gruvbox")
 if not status_ok then
