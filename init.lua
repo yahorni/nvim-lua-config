@@ -148,9 +148,8 @@ vim.cmd("cnoreabbrev SP sp")
 
 -- disable some keys before plugins
 vim.keymap.set({ "n", "v" }, "<space>", "<nop>", { silent = true })
-vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<C-f>", "<nop>")
 vim.keymap.set({ "n", "i" }, "<F1>", "<nop>")
+vim.keymap.set("n", "Q", "<nop>")
 
 -- change <paste> command behaviour
 vim.keymap.set("x", "p", '"_dp', { desc = "Paste without yanking", noremap = true })
