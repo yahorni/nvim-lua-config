@@ -15,15 +15,12 @@ return {
     event = {
       "BufReadPre " .. notes.dir .. "/*.md",
       "BufNewFile " .. notes.dir .. "/*.md",
-      "BufReadPre " .. notes.job_dir .. "/*.md",
-      "BufNewFile " .. notes.job_dir .. "/*.md",
     },
     cmd = "Obsidian",
 
     opts = {
       workspaces = {
         { name = "notes", path = notes.dir },
-        { name = "job",   path = notes.job_dir },
       },
 
       completion = { blink = false, nvim_cmp = false, create_new = false },

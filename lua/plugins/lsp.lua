@@ -41,6 +41,7 @@ return {
     enable_server_if_present("marksman")
     enable_server_if_present("basedpyright")
     enable_server_if_present("tinymist")
+    enable_server_if_present("zls")
 
     local function switch_header_source()
       local params = { uri = vim.uri_from_bufnr(0) }

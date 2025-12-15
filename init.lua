@@ -174,16 +174,16 @@ vim.keymap.set("n", "<C-_>", "gccj", { remap = true })
 vim.keymap.set("x", "<C-_>", "gc", { remap = true })
 
 -- tabs
-vim.keymap.set("n", "gt", "<nop>")
-vim.keymap.set("n", "gth", "<cmd>tabprev<cr>", { noremap = true, desc = "Previous tab" })
-vim.keymap.set("n", "gtl", "<cmd>tabnext<cr>", { noremap = true, desc = "Next tab" })
-vim.keymap.set("n", "gtt", function()
+vim.keymap.set("n", "t", "<nop>")
+vim.keymap.set("n", "th", "<cmd>tabprev<cr>", { noremap = true, desc = "Previous tab" })
+vim.keymap.set("n", "tl", "<cmd>tabnext<cr>", { noremap = true, desc = "Next tab" })
+vim.keymap.set("n", "tt", function()
                  local current_file = vim.api.nvim_buf_get_name(0)
                  return "<cmd>tabnew" .. (current_file == "" and "" or " %") .. "<cr>"
                end, { noremap = true, expr = true, desc = "Create new tab (same as current)" })
-vim.keymap.set("n", "gtc", "<cmd>tabclose<cr>", { noremap = true, desc = "Close tab" })
-vim.keymap.set("n", "gtH", "<cmd>tabmove -1<cr>", { noremap = true, desc = "Move tab to the left" })
-vim.keymap.set("n", "gtL", "<cmd>tabmove +1<cr>", { noremap = true, desc = "Move tab to the right" })
+vim.keymap.set("n", "tc", "<cmd>tabclose<cr>", { noremap = true, desc = "Close tab" })
+vim.keymap.set("n", "tH", "<cmd>tabmove -1<cr>", { noremap = true, desc = "Move tab to the left" })
+vim.keymap.set("n", "tL", "<cmd>tabmove +1<cr>", { noremap = true, desc = "Move tab to the right" })
 -- switch to tab by number
 vim.keymap.set("n", "<leader>1", "1gt", { noremap = true })
 vim.keymap.set("n", "<leader>2", "2gt", { noremap = true })
@@ -235,17 +235,6 @@ vim.cmd([[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<cr> ]])
 
 -- }}}
 
--- {{{ [[ Custom ]]
-
-local custom_config_path = vim.fn.stdpath("config") .. "/lua/custom"
-
--- center buffer
-if vim.loop.fs_stat(custom_config_path .. "/center-buffer.lua") then
-  vim.keymap.set("n", "<C-w>b", require("custom/center-buffer"), { desc = "Center [B]uffer" })
-end
-
--- }}}
-
 -- {{{ [[ Diagnostics ]]
 
 -- keymaps
@@ -255,6 +244,16 @@ vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open float
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 -- virtual lines
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
+
+-- }}}
+
+-- {{{ [[ Custom ]]
+
+local custom_config_path = vim.fn.stdpath("config") .. "/lua/custom"
+-- center buffer
+if vim.loop.fs_stat(custom_config_path .. "/center-buffer.lua") then
+  vim.keymap.set("n", "<C-w>b", require("custom/center-buffer"), { desc = "Center [B]uffer" })
+end
 
 -- }}}
 
@@ -278,7 +277,8 @@ require("lazy").setup("plugins", {
 -- {{{ [[ Colorscheme ]]
 -- lua/plugins/colorscheme.lua
 
-vim.o.background = "light" -- 'dark'/'light'
+-- 'dark'/'light'
+vim.o.background = "light"
 
 local status_ok, _ = pcall(vim.cmd, "colorscheme gruvbox")
 if not status_ok then

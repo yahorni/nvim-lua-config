@@ -1,7 +1,5 @@
-# description:
-# https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config_EN.md
-# example:
-# https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
+# description: https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/docs/format_config_EN.md
+# example: https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
 
 root = true
 
