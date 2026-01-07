@@ -32,15 +32,14 @@ vim.opt.autoindent = true
 vim.opt.breakindent = true
 -- nonprintable characters
 vim.opt.list = true
--- eol = '↲' - doesn't work in raw terminal
 vim.opt.listchars = {
   tab = "> ",
   trail = "·",
-  nbsp = "␣",
+  nbsp = "␣", -- type: <C-k><space><space>
   extends = ">",
   precedes = "<",
   leadmultispace = "|   ",
-  eol = "↲",
+  eol = "↲", -- doesn't work in raw terminal
 }
 -- line numbers
 vim.opt.number = true
@@ -247,12 +246,13 @@ vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
 -- }}}
 
--- {{{ [[ Custom ]]
+-- {{{ [[ Private ]]
 
-local custom_config_path = vim.fn.stdpath("config") .. "/lua/custom"
+local private_config_path = vim.fn.stdpath("config") .. "/lua/private"
+
 -- center buffer
-if vim.loop.fs_stat(custom_config_path .. "/center-buffer.lua") then
-  vim.keymap.set("n", "<C-w>b", require("custom/center-buffer"), { desc = "Center [B]uffer" })
+if vim.loop.fs_stat(private_config_path .. "/center-buffer.lua") then
+  vim.keymap.set("n", "<C-w>b", require("private.center-buffer"), { desc = "Center [B]uffer" })
 end
 
 -- }}}
@@ -390,13 +390,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.hl.on_yank() end,
   group = highlight_group,
   pattern = "*",
-})
--- disable markdown treesitter, because it throws too many errors for some reason
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "typst", "csv" },
-  callback = function(args)
-    vim.treesitter.stop(args.buf, "markdown")
-  end,
 })
 
 -- }}}

@@ -49,9 +49,9 @@ return {
     { "gd",               "<cmd>FzfLua lsp_definitions<cr>",       desc = "[G]oto [D]efinitions" },     -- vim.lsp.buf.definition
     { "gD",               "<cmd>FzfLua lsp_declarations<cr>",      desc = "[G]oto [D]eclarations" },    -- vim.lsp.buf.declaration
     { "gri",              "<cmd>FzfLua lsp_implementations<cr>",   desc = "[G]oto [I]mplementations" }, -- vim.lsp.buf.implementation
-    { "grt",              "<cmd>FzfLua lsp_typedefs<cr>",          desc = "[G]oto T[y]pe Definition" }, -- vim.lsp.buf.type_definition
-    { "gO",               "<cmd>FzfLua lsp_document_symbols<cr>",  desc = "[D]ocument [S]ymbols" },     -- vim.lsp.document_symbol
+    { "grt",              "<cmd>FzfLua lsp_typedefs<cr>",          desc = "[G]oto [T]ype Definition" }, -- vim.lsp.buf.type_definition
+    { "gO",               "<cmd>FzfLua lsp_document_symbols<cr>",  desc = "[D]ocument Symbols" },       -- vim.lsp.document_symbol
     { "gra",              "<cmd>FzfLua lsp_code_actions<cr>",      desc = "[C]ode [A]ction" },          -- vim.lsp.buf.code_action,
-    { "grf",              "<cmd>FzfLua lsp_finder<cr>",            desc = "[C]ombined view of all LSP [L]ocations" },
+    { "grl",              "<cmd>FzfLua lsp_finder<cr>",            desc = "[C]ombined view of all LSP [L]ocations" },
   },
 }

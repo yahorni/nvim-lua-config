@@ -1,10 +1,11 @@
 return {
   "neovim/nvim-lspconfig",
   dependencies = { "mason-org/mason.nvim" },
+
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(event)
-        vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { buffer = event.buf, desc = "[C]ode [F]ormat" })
+        vim.keymap.set("n", "grf", vim.lsp.buf.format, { buffer = event.buf, desc = "[C]ode [F]ormat" })
 
         local client = vim.lsp.get_client_by_id(event.data.client_id)
         if client and client.server_capabilities.documentHighlightProvider then
@@ -19,29 +20,6 @@ return {
         end
       end,
     })
-
-    vim.lsp.config("lua_ls", {
-      settings = {
-        Lua = {
-          diagnostics = {
-            globals = { "vim" },
-          },
-        },
-      },
-    })
-
-    local function enable_server_if_present(name, executable)
-      if vim.fn.executable(executable or name) == 1 then
-        vim.lsp.enable(name)
-      end
-    end
-
-    enable_server_if_present("clangd")
-    enable_server_if_present("lua_ls", "lua-language-server")
-    enable_server_if_present("marksman")
-    enable_server_if_present("basedpyright")
-    enable_server_if_present("tinymist")
-    enable_server_if_present("zls")
 
     local function switch_header_source()
       local params = { uri = vim.uri_from_bufnr(0) }
@@ -59,6 +37,26 @@ return {
       end)
     end
 
-    vim.keymap.set("n", "<leader>cs", switch_header_source, { desc = "[C]ode [S]witch header/source" })
+    local function enable_server_if_present(name, executable)
+      if vim.fn.executable(executable or name) ~= 1 then
+        return
+      end
+
+      vim.lsp.enable(name)
+
+      if name == "clangd" then
+        vim.keymap.set("n", "grs", switch_header_source, { desc = "[S]witch header/source" })
+      end
+    end
+
+    vim.lsp.config("lua_ls", { settings = { Lua = { diagnostics = { globals = { "vim" } } } } })
+
+    enable_server_if_present("clangd")
+    enable_server_if_present("basedpyright")
+    enable_server_if_present("ruff")
+    enable_server_if_present("zls")
+    enable_server_if_present("lua_ls", "lua-language-server")
+    enable_server_if_present("markdown_oxide", "markdown-oxide")
+    enable_server_if_present("tinymist")
   end,
 }
