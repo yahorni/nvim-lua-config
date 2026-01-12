@@ -60,10 +60,11 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = "longest,full"
 -- mouse
 vim.opt.mouse = "a"
+vim.opt.mousescroll = "ver:5"
 -- folding
-vim.opt.foldmethod = "indent"
 vim.opt.foldlevel = 99
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
 -- splits
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -161,8 +162,6 @@ vim.keymap.set("n", "Y", "y$", { noremap = true })
 vim.keymap.set("n", "ygr", "<cmd>let @+ = expand('%')<cr>", { noremap = true, desc = "Yank file relative path" })
 vim.keymap.set("n", "ygp", "<cmd>let @+ = expand('%:p')<cr>", { noremap = true, desc = "Yank file full path" })
 vim.keymap.set("n", "ygt", "<cmd>let @+ = expand('%:t')<cr>", { noremap = true, desc = "Yank file title" })
--- quit
-vim.keymap.set("n", "zq", "ZQ", { noremap = true })
 -- buffer close
 vim.keymap.set("n", "<C-q>", "<cmd>close<cr>", { noremap = true })
 -- update file and search

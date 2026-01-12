@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  dependencies = { "mason-org/mason.nvim" },
+  dependencies = { { "mason-org/mason.nvim", opts = {} } },
 
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -21,22 +21,6 @@ return {
       end,
     })
 
-    local function switch_header_source()
-      local params = { uri = vim.uri_from_bufnr(0) }
-      vim.lsp.buf_request(0, "textDocument/switchSourceHeader", params, function(err, result)
-        if err then
-          vim.notify("Error switching: " .. err.message, vim.log.levels.ERROR)
-          return
-        end
-        if not result then
-          vim.notify("No alternate file found", vim.log.levels.WARN)
-          return
-        end
-        local filepath = vim.uri_to_fname(result)
-        vim.cmd("edit " .. filepath)
-      end)
-    end
-
     local function enable_server_if_present(name, executable)
       if vim.fn.executable(executable or name) ~= 1 then
         return
@@ -45,7 +29,7 @@ return {
       vim.lsp.enable(name)
 
       if name == "clangd" then
-        vim.keymap.set("n", "grs", switch_header_source, { desc = "[S]witch header/source" })
+        vim.keymap.set("n", "grs", "<cmd>LspClangdSwitchSourceHeader<cr>", { desc = "[S]witch header/source" })
       end
     end
 
