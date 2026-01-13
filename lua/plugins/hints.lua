@@ -1,5 +1,5 @@
-return { -- show pending keybinds
-  "folke/which-key.nvim",
+return {
+  "folke/which-key.nvim", -- show pending keybinds
   event = "VeryLazy",
   config = function()
     require("which-key").setup()

@@ -1,7 +1,5 @@
-return { -- text/tables aligning
-  -- http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
-  -- align by '=': Tabularize /=
-  "godlygeek/tabular",
+return {
+  "godlygeek/tabular", -- text/tables aligning
   init = function()
     vim.keymap.set("v", "<leader>T", ":Tabularize /|<cr>",
                    { silent = true, noremap = true, desc = "Tabularize by symbol" })
