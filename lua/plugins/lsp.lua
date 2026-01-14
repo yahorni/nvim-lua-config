@@ -22,18 +22,13 @@ return {
     })
 
     local function enable_server_if_present(name, executable)
-      if vim.fn.executable(executable or name) ~= 1 then
-        return
-      end
-
-      vim.lsp.enable(name)
-
-      if name == "clangd" then
-        vim.keymap.set("n", "grs", "<cmd>LspClangdSwitchSourceHeader<cr>", { desc = "[S]witch header/source" })
+      if vim.fn.executable(executable or name) == 1 then
+        vim.lsp.enable(name)
+        if name == "clangd" then
+          vim.keymap.set("n", "grs", "<cmd>LspClangdSwitchSourceHeader<cr>", { desc = "[S]witch header/source" })
+        end
       end
     end
-
-    vim.lsp.config("lua_ls", { settings = { Lua = { diagnostics = { globals = { "vim" } } } } })
 
     enable_server_if_present("clangd")
     enable_server_if_present("basedpyright")
