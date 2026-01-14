@@ -217,9 +217,6 @@ vim.keymap.set("n", "<leader>cR", ":!compiler.sh run-alt '%'<cr>",
 vim.keymap.set("n", "<leader>xa", ":!chmod +x '%'<cr>", { noremap = true, desc = "[A]dd e[X]ecutable permissions" })
 vim.keymap.set("n", "<leader>xr", ":!chmod -x '%'<cr>", { noremap = true, desc = "[R]emove e[X]ecutable permissions" })
 
--- replace visually selected text
-vim.cmd([[ vn <leader>S y:%s/<C-R>+//g<Left><Left> ]])
-
 -- remove trailing whitespaces
 vim.cmd([[ nn <leader>xw :%s/\s\+$//e <bar> nohl<cr> ]])
 vim.cmd([[ vn <leader>xw y:'<,'>s/\s\+$//e <bar> nohl<cr> ]])
