@@ -39,7 +39,6 @@ vim.opt.listchars = {
   extends = ">",
   precedes = "<",
   leadmultispace = "|   ",
-  eol = "↲", -- doesn't work in raw terminal
 }
 -- line numbers
 vim.opt.number = true
