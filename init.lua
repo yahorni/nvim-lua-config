@@ -232,10 +232,10 @@ vim.cmd([[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<cr> ]])
 -- {{{ [[ Diagnostics ]]
 
 -- keymaps
-vim.keymap.set("n", "<leader>dn", vim.diagnostic.enable, { desc = "Enable diagnostic messages" })
-vim.keymap.set("n", "<leader>df", vim.diagnostic.disable, { desc = "Disable diagnostic messages" })
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+vim.keymap.set("n", "<leader>de", vim.diagnostic.enable, { desc = "Enable diagnostic messages" })
+vim.keymap.set("n", "<leader>dd", vim.diagnostic.disable, { desc = "Disable diagnostic messages" })
+vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 -- virtual lines
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
 
