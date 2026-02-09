@@ -4,18 +4,16 @@ return {
   config = function()
     require("which-key").setup()
     require("which-key").add({
-      { "<leader>c", group = "[C]ode" },
-      { "<leader>d", group = "[D]ocument", mode = { "n", "v" } },
-      { "<leader>g", group = "[G]it",      mode = { "n", "v" } },
-      { "<leader>s", group = "[S]earch" },
-      { "<leader>w", group = "[W]orkspace" },
+      { "<leader>c",      group = "[c]ode" },
+      { "<leader>d",      group = "[d]ocument" },
+      { "<leader>g",      group = "[g]it" },
+      { "<leader>s",      group = "[s]earch" },
+      { "<leader>f",      group = "[f]ile search" },
+      { "<localleader>g", group = "[g]itsigns" },
     })
   end,
   keys = {
-    {
-      "<leader>?",
-      function() require("which-key").show({ global = false }) end,
-      desc = "Buffer Local Keymaps (which-key)",
-    },
+    { "<leader>?",      function() require("which-key").show() end,                   desc = "global keymaps" },
+    { "<localleader>?", function() require("which-key").show({ global = false }) end, desc = "buffer local keymaps" },
   },
 }

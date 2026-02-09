@@ -11,6 +11,6 @@ return {
         m.open(vim.api.nvim_buf_get_name(0))
         m.reveal_cwd()
       end,
-      { desc = "Open mini.files and reveal file" })
+      { desc = "open mini.files and reveal file" })
   end,
 }

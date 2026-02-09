@@ -52,7 +52,7 @@ vim.opt.undofile = false
 vim.opt.modeline = true
 vim.opt.modelines = 5
 -- messages in last line
-vim.opt.showmode = false
+vim.opt.showmode = true
 vim.opt.showcmd = true -- can cause slowdown
 -- wildmenu
 vim.opt.wildmenu = true
@@ -106,11 +106,8 @@ vim.opt.title = true       -- causes nvim to black screen in raw console
 vim.opt.hidden = true
 -- keep signcolumn on
 vim.opt.signcolumn = "yes"
--- do show extra information about the currently selected completion
--- vim.opt.completeopt:remove "preview"
--- TODO: test all options below
--- Set completeopt to have a better completion experience
-vim.opt.completeopt = "menuone,noselect"
+-- configure completion
+vim.opt.completeopt = "fuzzy,menuone,noselect,popup"
 -- decrease update time
 vim.opt.updatetime = 250
 -- decrease timeout length
@@ -133,6 +130,7 @@ vim.cmd("cnoreabbrev w\\ w")
 vim.cmd("cnoreabbrev e\\ e")
 vim.cmd("cnoreabbrev w' w")
 vim.cmd("cnoreabbrev e' e")
+vim.cmd("cnoreabbrev E! e!")
 vim.cmd("cnoreabbrev q1 q!")
 vim.cmd("cnoreabbrev qw wq")
 
@@ -231,13 +229,14 @@ vim.cmd([[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<cr> ]])
 
 -- {{{ [[ Diagnostics ]]
 
--- keymaps
-vim.keymap.set("n", "<leader>de", vim.diagnostic.enable, { desc = "Enable diagnostic messages" })
-vim.keymap.set("n", "<leader>dd", vim.diagnostic.disable, { desc = "Disable diagnostic messages" })
-vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 -- virtual lines
 vim.diagnostic.config({ virtual_lines = { current_line = true } })
+-- keymaps
+vim.keymap.set("n", "<leader>de", vim.diagnostic.enable, { desc = "[d]iagnostic [e]nable" })
+vim.keymap.set("n", "<leader>dd", function() vim.diagnostic.enable(false) end, { desc = "[d]iagnostics [d]isable" })
+vim.keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "open [d]iagnostics [f]loating window" })
+vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "open [d]iagnostics [l]oclist" })
+vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "open [d]iagnostics [q]uickfix" })
 
 -- }}}
 
