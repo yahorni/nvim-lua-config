@@ -4,7 +4,7 @@
 
 -- leader/localleader keys
 vim.g.mapleader = " "
-vim.g.maplocalleader = ","
+vim.g.maplocalleader = "\\"
 -- status line
 vim.opt.laststatus = 2
 -- encoding/fileformat
@@ -35,7 +35,7 @@ vim.opt.list = true
 vim.opt.listchars = {
   tab = "> ",
   trail = "·",
-  nbsp = "␣", -- type: <C-k><space><space>
+  nbsp = "␣", -- type: <C-K><space><space>
   extends = ">",
   precedes = "<",
   leadmultispace = "|   ",
@@ -51,7 +51,7 @@ vim.opt.undofile = false
 -- modeline
 vim.opt.modeline = true
 vim.opt.modelines = 5
--- messages in last line
+-- messages in command line
 vim.opt.showmode = true
 vim.opt.showcmd = true -- can cause slowdown
 -- wildmenu
@@ -76,9 +76,9 @@ vim.opt.tagrelative = false -- disable directory prefix for tag file
 -- spell
 vim.opt.spell = true
 vim.opt.spelllang = ""
--- file search
+-- file search (:find, :vim)
 vim.opt.path:append("**")
-vim.opt.wildignore:append("*/build/*,*/.git/*,*/node_modules/*")
+vim.opt.wildignore:append("*/?build/*,*/.git/*,*/node_modules/*")
 --  enable system clipboard
 vim.opt.clipboard = "unnamedplus"
 -- minimal lines before/after cursor
@@ -143,42 +143,36 @@ vim.cmd("cnoreabbrev SP sp")
 
 -- {{{ [[ Keymaps ]]
 
--- disable some keys before plugins
-vim.keymap.set({ "n", "v" }, "<space>", "<nop>", { silent = true })
+-- disable some keys
+vim.keymap.set({ "n", "x" }, "<space>", "<nop>", { silent = true })
 vim.keymap.set({ "n", "i" }, "<F1>", "<nop>")
 vim.keymap.set("n", "Q", "<nop>")
 
 -- change <paste> command behaviour
-vim.keymap.set("x", "p", '"_dp', { desc = "Paste without yanking", noremap = true })
-vim.keymap.set("x", "P", '"_dP', { desc = "Paste without yanking", noremap = true })
+vim.keymap.set("x", "p", '"_dp', { noremap = true, desc = "[p]aste without yanking" })
+vim.keymap.set("x", "P", '"_dP', { noremap = true, desc = "[P]aste without yanking" })
 -- disable highlight
-vim.keymap.set("n", "<leader>h", "<cmd>noh<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>h", "<Cmd>noh<CR>", { noremap = true })
 -- copy til EOL with Y
 vim.keymap.set("n", "Y", "y$", { noremap = true })
 -- copy file name
-vim.keymap.set("n", "ygr", "<cmd>let @+ = expand('%')<cr>", { noremap = true, desc = "Yank file relative path" })
-vim.keymap.set("n", "ygp", "<cmd>let @+ = expand('%:p')<cr>", { noremap = true, desc = "Yank file full path" })
-vim.keymap.set("n", "ygt", "<cmd>let @+ = expand('%:t')<cr>", { noremap = true, desc = "Yank file title" })
--- buffer close
-vim.keymap.set("n", "<C-q>", "<cmd>close<cr>", { noremap = true })
--- update file and search
-vim.keymap.set("n", "<A-n>", "<cmd>e<cr>n", { noremap = true })
-vim.keymap.set("n", "<A-N>", "<cmd>e<cr>N", { noremap = true })
+vim.keymap.set("n", "ygr", "<Cmd>let @+ = expand('%')<CR>", { noremap = true, desc = "[y]ank file [r]elative path" })
+vim.keymap.set("n", "ygf", "<Cmd>let @+ = expand('%:p')<CR>", { noremap = true, desc = "[y]ank file [f]ull path" })
+vim.keymap.set("n", "ygn", "<Cmd>let @+ = expand('%:t')<CR>", { noremap = true, desc = "[y]ank file [n]ame" })
 -- comments
-vim.keymap.set("n", "<C-_>", "gccj", { remap = true })
-vim.keymap.set("x", "<C-_>", "gc", { remap = true })
+vim.keymap.set("n", "<C-_>", "gccj", { remap = true, desc = "comment line" })
+vim.keymap.set("x", "<C-_>", "gc", { remap = true, desc = "comment visual selection" })
 
 -- tabs
-vim.keymap.set("n", "t", "<nop>")
-vim.keymap.set("n", "th", "<cmd>tabprev<cr>", { noremap = true, desc = "Previous tab" })
-vim.keymap.set("n", "tl", "<cmd>tabnext<cr>", { noremap = true, desc = "Next tab" })
-vim.keymap.set("n", "tt", function()
+vim.keymap.set("n", "<leader>t", function()
                  local current_file = vim.api.nvim_buf_get_name(0)
-                 return "<cmd>tabnew" .. (current_file == "" and "" or " %") .. "<cr>"
-               end, { noremap = true, expr = true, desc = "Create new tab (same as current)" })
-vim.keymap.set("n", "tc", "<cmd>tabclose<cr>", { noremap = true, desc = "Close tab" })
-vim.keymap.set("n", "tH", "<cmd>tabmove -1<cr>", { noremap = true, desc = "Move tab to the left" })
-vim.keymap.set("n", "tL", "<cmd>tabmove +1<cr>", { noremap = true, desc = "Move tab to the right" })
+                 return "<Cmd>tabnew" .. (current_file == "" and "" or " %") .. "<CR>"
+               end, { noremap = true, expr = true, desc = "create new [t]ab (same as current or empty)" })
+vim.keymap.set("n", "<leader>T", "<Cmd>tabclose<CR>", { noremap = true, desc = "close [T]ab" })
+vim.keymap.set("n", "<leader>[", "<Cmd>tabprev<CR>", { noremap = true, desc = "previous tab" })
+vim.keymap.set("n", "<leader>]", "<Cmd>tabnext<CR>", { noremap = true, desc = "next tab" })
+vim.keymap.set("n", "<leader>{", "<Cmd>tabmove -1<CR>", { noremap = true, desc = "move tab to the left" })
+vim.keymap.set("n", "<leader>}", "<Cmd>tabmove +1<CR>", { noremap = true, desc = "move tab to the right" })
 -- switch to tab by number
 vim.keymap.set("n", "<leader>1", "1gt", { noremap = true })
 vim.keymap.set("n", "<leader>2", "2gt", { noremap = true })
@@ -188,8 +182,18 @@ vim.keymap.set("n", "<leader>5", "5gt", { noremap = true })
 vim.keymap.set("n", "<leader>6", "6gt", { noremap = true })
 vim.keymap.set("n", "<leader>7", "7gt", { noremap = true })
 vim.keymap.set("n", "<leader>8", "8gt", { noremap = true })
-vim.keymap.set("n", "<leader>9", "9gt", { noremap = true })
-vim.keymap.set("n", "<leader>0", "<cmd>tablast<cr>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>9", "<Cmd>tablast<CR>", { noremap = true })
+
+-- column alignment
+vim.api.nvim_create_user_command(
+  "AlignColumn",
+  function(opts)
+    local delim = opts.fargs[1] or "|"
+    vim.cmd(string.format("%d,%d!column -t -s '%s' -o '%s'", opts.line1, opts.line2, delim, delim))
+  end,
+  { nargs = "?", range = true })
+vim.keymap.set("n", "<leader>a", "vip:AlignColumn<CR>", { noremap = true, desc = "select paragraph and [a]lign it" })
+vim.keymap.set("x", "<leader>a", "<Cmd>AlignColumn<CR>", { noremap = true, desc = "[a]lign selected text" })
 
 -- file build
 vim.keymap.set("n", "<leader>cb", function()
@@ -197,33 +201,32 @@ vim.keymap.set("n", "<leader>cb", function()
                  vim.bo.makeprg = "compiler.sh build %"
                  vim.cmd.make()
                  vim.bo.makeprg = makeprg
-               end, { silent = true, noremap = true, desc = "[C]ode [B]uild" })
+               end, { silent = true, noremap = true, desc = "[c]ode [b]uild" })
 vim.keymap.set("n", "<leader>cB", function()
                  local makeprg = vim.bo.makeprg
                  vim.bo.makeprg = "compiler.sh build-alt %"
                  vim.cmd.make()
                  vim.bo.makeprg = makeprg
-               end, { silent = true, noremap = true, desc = "[C]ode [B]uild (alternative)" })
+               end, { silent = true, noremap = true, desc = "[c]ode [B]uild (alt)" })
 
 -- file execution
-vim.keymap.set("n", "<leader>cr", ":!compiler.sh run '%'<cr>", { noremap = true, desc = "[C]ode [R]un" })
-vim.keymap.set("n", "<leader>cR", ":!compiler.sh run-alt '%'<cr>",
-               { noremap = true, desc = "[C]ode [R]un (alternative)" })
+vim.keymap.set("n", "<leader>cr", ":!compiler.sh run '%'<CR>", { noremap = true, desc = "[c]ode [r]un" })
+vim.keymap.set("n", "<leader>cR", ":!compiler.sh run-alt '%'<CR>", { noremap = true, desc = "[c]ode [R]un (alt)" })
 
 -- file permissions
-vim.keymap.set("n", "<leader>xa", ":!chmod +x '%'<cr>", { noremap = true, desc = "[A]dd e[X]ecutable permissions" })
-vim.keymap.set("n", "<leader>xr", ":!chmod -x '%'<cr>", { noremap = true, desc = "[R]emove e[X]ecutable permissions" })
+vim.keymap.set("n", "<leader>xa", ":!chmod +x '%'<CR>", { noremap = true, desc = "e[X]ecute permission: [a]dd" })
+vim.keymap.set("n", "<leader>xr", ":!chmod -x '%'<CR>", { noremap = true, desc = "e[X]ecute permission: [r]emove" })
 
 -- remove trailing whitespaces
-vim.cmd([[ nn <leader>xw :%s/\s\+$//e <bar> nohl<cr> ]])
-vim.cmd([[ vn <leader>xw y:'<,'>s/\s\+$//e <bar> nohl<cr> ]])
+vim.cmd([[ nn <leader>xw :%s/\s\+$//e <bar> nohl<CR> ]])
+vim.cmd([[ vn <leader>xw y:'<,'>s/\s\+$//e <bar> nohl<CR> ]])
 -- remove empty lines
-vim.cmd([[ nn <leader>xe :g/^$/d <bar> nohl<cr> ]])
-vim.cmd([[ vn <leader>xe y:'<,'>g/^$/d <bar> nohl<cr> ]])
+vim.cmd([[ nn <leader>xe :g/^$/d <bar> nohl<CR> ]])
+vim.cmd([[ vn <leader>xe y:'<,'>g/^$/d <bar> nohl<CR> ]])
 -- squish consecutive duplicate lines
-vim.cmd([[ nn <leader>xl :%s;\v^(.*)(\n\1)+$;\1;<cr> ]])
+vim.cmd([[ nn <leader>xl :%s;\v^(.*)(\n\1)+$;\1;<CR> ]])
 -- remove swaps
-vim.cmd([[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<cr> ]])
+vim.cmd([[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<CR> ]])
 
 -- }}}
 
@@ -246,7 +249,7 @@ local private_config_path = vim.fn.stdpath("config") .. "/lua/private"
 
 -- center buffer
 if vim.loop.fs_stat(private_config_path .. "/center-buffer.lua") then
-  vim.keymap.set("n", "<C-w>b", require("private.center-buffer"), { desc = "Center [B]uffer" })
+  vim.keymap.set("n", "<C-W>b", require("private.center-buffer"), { desc = "Center [B]uffer" })
 end
 
 -- }}}
@@ -262,18 +265,16 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- configure plugins
-require("lazy").setup("plugins", {
-  change_detection = { notify = false },
-})
+require("lazy").setup("plugins", { change_detection = { notify = false } })
 
 -- }}}
 
 -- {{{ [[ Colorscheme ]]
--- lua/plugins/colorscheme.lua
 
 -- 'dark'/'light'
 vim.o.background = "light"
 
+-- lua/plugins/colorscheme.lua
 local status_ok, _ = pcall(vim.cmd, "colorscheme gruvbox")
 if not status_ok then
   vim.cmd("colorscheme retrobox")
@@ -281,48 +282,28 @@ end
 
 -- }}}
 
--- {{{ [[ Split/resize ]]
+-- {{{ [[ Window switch/resize ]]
 
-local function toggle_resize_mode()
-  if vim.g.resize_mode then
-    vim.g.resize_mode = nil
-    vim.print("Resize mode disabled")
-  else
-    vim.g.resize_mode = true
-    vim.print("Resize mode enabled")
-  end
-end
-vim.keymap.set("n", "<leader>xt", toggle_resize_mode, { silent = true, desc = "[R]esize buffer" })
-
--- Ctrl+h/j/k/l bindings
-vim.keymap.set(
-  "n",
-  "<C-h>",
-  "!exists('g:resize_mode') ? '<C-w><C-h>' : ':vert res -1<cr>'",
-  { silent = true, expr = true, noremap = true, desc = "Move focus to the left window" }
-)
-vim.keymap.set(
-  "n",
-  "<C-j>",
-  "!exists('g:resize_mode') ? '<C-w><C-j>' : ':res -1<cr>'",
-  { silent = true, expr = true, noremap = true, desc = "Move focus to the right window" }
-)
-vim.keymap.set(
-  "n",
-  "<C-k>",
-  "!exists('g:resize_mode') ? '<C-w><C-k>' : ':res +1<cr>'",
-  { silent = true, expr = true, noremap = true, desc = "Move focus to the lower window" }
-)
-vim.keymap.set(
-  "n",
-  "<C-l>",
-  "!exists('g:resize_mode') ? '<C-w><C-l>' : ':vert res +1<cr>'",
-  { silent = true, expr = true, noremap = true, desc = "Move focus to the upper window" }
-)
+vim.keymap.set("n", "<leader>r",
+               function() vim.g.window_resize = not vim.g.window_resize end,
+               { silent = true, desc = "toggle window [r]esizing" })
+vim.keymap.set("n", "<C-H>",
+               function() if not vim.g.window_resize then return "<C-W><C-H>" else return ":vert res -1<CR>" end end,
+               { silent = true, expr = true, noremap = true })
+vim.keymap.set("n", "<C-J>",
+               function() if not vim.g.window_resize then return "<C-W><C-J>" else return ":res -1<CR>" end end,
+               { silent = true, expr = true, noremap = true })
+vim.keymap.set("n", "<C-K>",
+               function() if not vim.g.window_resize then return "<C-W><C-K>" else return ":res +1<CR>" end end,
+               { silent = true, expr = true, noremap = true })
+vim.keymap.set("n", "<C-L>",
+               function() if not vim.g.window_resize then return "<C-W><C-L>" else return ":vert res +1<CR>" end end,
+               { silent = true, expr = true, noremap = true })
 
 -- }}}
 
 -- {{{ [[ Session ]]
+
 -- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
   local current_file = vim.api.nvim_buf_get_name(0)
@@ -352,12 +333,10 @@ end
 set_session_file()
 
 vim.keymap.set(
-  "n",
-  "<leader>m",
-  "<cmd>mksession! " .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<cr>',
-  { silent = true }
-)
-vim.keymap.set("n", "<leader>l", "<cmd>source " .. vim.g.session_file .. "<cr>", { silent = true })
+  "n", "<leader>m",
+  "<Cmd>mksession! " .. vim.g.session_file .. ' <bar> echo "Session saved to ' .. vim.g.session_file .. '"<CR>',
+  { silent = true })
+vim.keymap.set("n", "<leader>l", "<Cmd>source " .. vim.g.session_file .. "<CR>", { silent = true })
 
 -- }}}
 

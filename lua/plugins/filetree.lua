@@ -6,7 +6,7 @@ return {
     local m = require("mini.files")
     m.setup(opts)
     vim.keymap.set(
-      "n", "<C-n>",
+      "n", "<C-N>",
       function()
         m.open(vim.api.nvim_buf_get_name(0))
         m.reveal_cwd()

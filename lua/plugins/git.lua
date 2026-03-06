@@ -29,10 +29,10 @@ return {
 
       -- Actions
       -- visual mode
-      map("v", "<localleader>gs",
+      map("x", "<localleader>gs",
           function() gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
           { desc = "[g]it [s]tage hunk" })
-      map("v", "<localleader>gr",
+      map("x", "<localleader>gr",
           function() gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
           { desc = "[g]it [r]eset hunk" })
       -- normal mode
