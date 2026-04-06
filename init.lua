@@ -243,32 +243,6 @@ vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "open [d]ia
 
 -- }}}
 
--- {{{ [[ Private ]]
-
-local private_config_path = vim.fn.stdpath("config") .. "/lua/private"
-
--- center buffer
-if vim.loop.fs_stat(private_config_path .. "/center-buffer.lua") then
-  vim.keymap.set("n", "<C-W>b", require("private.center-buffer"), { desc = "Center [B]uffer" })
-end
-
--- }}}
-
--- {{{ [[ Plugins ]]
-
--- `lazy.nvim` plugin manager
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-end
-vim.opt.rtp:prepend(lazypath)
-
--- configure plugins
-require("lazy").setup("plugins", { change_detection = { notify = false } })
-
--- }}}
-
 -- {{{ [[ Colorscheme ]]
 
 -- 'dark'/'light'

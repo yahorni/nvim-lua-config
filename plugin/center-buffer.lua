@@ -1,4 +1,4 @@
-return function()
+local function center_buffer()
   local wins = vim.api.nvim_tabpage_list_wins(0)
   local has_tabs = #vim.api.nvim_list_tabpages() > 1 and 1 or 0
 
@@ -39,3 +39,5 @@ return function()
   local target_width = math.floor(total_width * 0.33 + 0.5)
   vim.api.nvim_win_set_width(first_win, target_width)
 end
+
+vim.keymap.set("n", "<C-W>b", center_buffer, { desc = "center [b]uffer" })
