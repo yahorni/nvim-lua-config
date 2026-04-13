@@ -114,6 +114,8 @@ vim.opt.updatetime = 250
 vim.opt.timeoutlen = 700
 -- extended color support
 vim.opt.termguicolors = true -- makes everything ugly in raw console
+-- add/subtract numbers
+vim.opt.nrformats = "bin,hex,unsigned"
 
 --- }}}
 

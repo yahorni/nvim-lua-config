@@ -1,0 +1,33 @@
+snippet dl
+    ---
+    tags:
+      - daily-notes
+    ---
+    # ${1:`system("echo -n $(LC_ALL=en_US.utf8 date +%B)")`} ${2:`system("echo -n $(date +%-d)")`}, ${3:`system("echo -n $(date +%Y)")`}
+
+    - [ ] ${4}
+
+snippet job
+    ---
+    arrived_at:
+    expected_leave:
+    left_at:
+    ---
+    # ${1:`system("echo -n $(LC_ALL=en_US.utf8 date +%B)")`} ${2:`system("echo -n $(date +%-d)")`}, ${3:`system("echo -n $(date +%Y)")`}
+
+    - [ ] ${4}
+
+snippet task
+    ---
+    task-link: <${1}>
+    git-link: <${2}>
+    ---
+    # ${3}
+
+    ## description
+
+    ${4}
+
+    ## tasks
+
+    - [ ] ${5}
