@@ -22,9 +22,9 @@ vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 -- tab/space
-vim.opt.tabstop = 4     -- width for Tab
-vim.opt.shiftwidth = 4  -- width for shifting with '>>'/'<<'
-vim.opt.softtabstop = 4 -- width for Tab in inserting or deleting (Backspace)
+vim.opt.tabstop = 4      -- width for Tab
+vim.opt.shiftwidth = 4   -- width for shifting with '>>'/'<<'
+vim.opt.softtabstop = -1 -- width for Tab/Backspace align for insert/delete
 vim.opt.smarttab = true
 vim.opt.expandtab = true
 -- indentation
