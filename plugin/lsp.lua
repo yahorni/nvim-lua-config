@@ -2,10 +2,11 @@ require("mason").setup()
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(event)
-    vim.keymap.set("n", "grf", vim.lsp.buf.format, { buffer = event.buf, desc = "LSP [f]ormat file" })
-
     local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client and client.server_capabilities.documentHighlightProvider then
+    if not client then return end
+
+    -- highlight object on cursor hold/move
+    if client:supports_method("textDocument/documentHighlight") then
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
         buffer = event.buf,
         callback = vim.lsp.buf.document_highlight,
@@ -14,6 +15,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
         buffer = event.buf,
         callback = vim.lsp.buf.clear_references,
       })
+    end
+
+    -- omnifunc completion
+    if client:supports_method("textDocument/completion") then
+      vim.lsp.completion.enable(true, client.id, event.buf)
+    end
+
+    -- formatting
+    if client:supports_method("textDocument/formatting") then
+      vim.keymap.set("n", "grf", vim.lsp.buf.format, { buffer = event.buf, desc = "LSP [f]ormat file" })
+    end
+    if client:supports_method("textDocument/rangeFormatting") then
+      vim.keymap.set("x", "grf", vim.lsp.buf.format, { buffer = event.buf, desc = "LSP [f]ormat range" })
     end
   end,
 })

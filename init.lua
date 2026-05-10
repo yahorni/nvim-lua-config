@@ -108,6 +108,9 @@ vim.opt.hidden = true
 vim.opt.signcolumn = "yes"
 -- configure completion
 vim.opt.completeopt = "fuzzy,menuone,noselect,popup"
+vim.opt.complete:append("o")
+vim.opt.autocomplete = true
+vim.opt.pumheight = 10
 -- decrease update time
 vim.opt.updatetime = 250
 -- decrease timeout length
