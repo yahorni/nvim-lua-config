@@ -1,1 +1,1 @@
-require('xkbswitch').setup()
+require("xkbswitch").setup()

@@ -29,17 +29,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if client:supports_method("textDocument/rangeFormatting") then
       vim.keymap.set("x", "grf", vim.lsp.buf.format, { buffer = event.buf, desc = "LSP [f]ormat range" })
     end
+
+    -- buffer-local mappings
+    if client.name == "clangd" then
+      vim.keymap.set("n", "grs", "<Cmd>LspClangdSwitchSourceHeader<CR>",
+                     { buffer = event.buf, desc = "LSP [s]witch header/source" })
+    elseif client.name == "markdown_oxide" then
+      vim.keymap.set("n", "grs", vim.lsp.buf.references,
+                     { buffer = event.buf, desc = "LSP list [r]eference[s]" })
+    end
   end,
 })
 
 local function enable_server_if_present(name, executable)
   if vim.fn.executable(executable or name) == 1 then
     vim.lsp.enable(name)
-    if name == "clangd" then
-      vim.keymap.set("n", "grs", "<Cmd>LspClangdSwitchSourceHeader<CR>", { desc = "LSP [s]witch header/source" })
-    elseif name == "markdown_oxide" then
-      vim.keymap.set("n", "grs", vim.lsp.buf.references, { desc = "LSP list [r]eference[s]" })
-    end
   end
 end
 
