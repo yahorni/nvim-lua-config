@@ -116,6 +116,10 @@ vim.opt.timeoutlen = 700
 vim.opt.termguicolors = true -- makes everything ugly in raw console
 -- add/subtract numbers
 vim.opt.nrformats = "bin,hex,unsigned"
+-- spell (spellfile: ~/.local/share/nvim/site/spell/en.utf-8.add)
+vim.opt.spell = true
+vim.opt.spelllang = ""
+vim.opt.spellcapcheck = ""
 
 --- }}}
 
@@ -285,6 +289,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.bo.tabstop = 2
     vim.bo.shiftwidth = 2
+    vim.opt.listchars:append({ leadmultispace = "| " })
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
@@ -299,12 +304,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   pattern = { "text", "markdown", "gitcommit", "typst" },
-  callback = function()
-    vim.wo.spell = true
-    vim.bo.spelllang = "en,ru"
-    vim.bo.spellcapcheck = ""
-    -- spellfile: ~/.local/share/nvim/site/spell/en.utf-8.add
-  end,
+  callback = function() vim.bo.spelllang = "en,ru" end,
 })
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup,

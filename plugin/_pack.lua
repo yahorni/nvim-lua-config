@@ -7,7 +7,6 @@ vim.pack.add({
   "https://github.com/hedyhli/outline.nvim",
   "https://github.com/ibhagwan/fzf-lua",
   "https://github.com/lewis6991/gitsigns.nvim",
-  "https://github.com/morhetz/gruvbox",
   "https://github.com/nvim-mini/mini.files",
   "https://github.com/yahorni/simple-calendar.nvim",
   "https://github.com/ivanesmantovich/xkbswitch.nvim",

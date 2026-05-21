@@ -42,9 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 local function enable_server_if_present(name, executable)
-  if vim.fn.executable(executable or name) == 1 then
-    vim.lsp.enable(name)
-  end
+  if vim.fn.executable(executable or name) == 1 then vim.lsp.enable(name) end
 end
 
 enable_server_if_present("clangd")
