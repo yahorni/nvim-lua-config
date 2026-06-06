@@ -38,7 +38,7 @@ vim.opt.listchars = {
   nbsp = "␣", -- type: <C-K><space><space>
   extends = ">",
   precedes = "<",
-  leadmultispace = "|   ",
+  leadmultispace = "│   ",
 }
 -- line numbers
 vim.opt.number = true
@@ -122,6 +122,11 @@ vim.opt.spelllang = ""
 vim.opt.spellcapcheck = ""
 
 --- }}}
+
+-- {{{ [[ Colorscheme ]]
+vim.o.background = "light"
+vim.cmd("colorscheme retrobox")
+-- }}}
 
 -- {{{ [[ Keymaps ]]
 
@@ -266,14 +271,6 @@ vim.cmd([[ nn <leader>xl :%s;\v^(.*)(\n\1)+$;\1;<CR> ]])
 -- remove swaps
 vim.cmd([[ nn <leader>xs :!rm -f ~/.local/state/nvim/swap/*<CR> ]])
 
--- }}}
-
--- {{{ [[ Colorscheme ]]
-vim.o.background = "light"
-local status_ok, _ = pcall(vim.cmd, "colorscheme gruvbox")
-if not status_ok then
-  vim.cmd("colorscheme retrobox")
-end
 -- }}}
 
 -- {{{ [[ Autocmds ]]
