@@ -1,7 +1,6 @@
 -- vim: fdm=marker fdl=0
 
 -- {{{ [[ Options ]]
-
 -- leader/localleader keys
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -120,7 +119,6 @@ vim.opt.nrformats = "bin,hex,unsigned"
 vim.opt.spell = true
 vim.opt.spelllang = ""
 vim.opt.spellcapcheck = ""
-
 --- }}}
 
 -- {{{ [[ Colorscheme ]]
@@ -156,6 +154,9 @@ vim.cmd("cnoreabbrev Wq wq")
 vim.cmd("cnoreabbrev WQ wq")
 vim.cmd("cnoreabbrev Qa qa")
 vim.cmd("cnoreabbrev QA qa")
+vim.cmd("cnoreabbrev Wa wa")
+vim.cmd("cnoreabbrev WA wa")
+vim.cmd("cnoreabbrev Wqa wqa")
 vim.cmd("cnoreabbrev w\\ w")
 vim.cmd("cnoreabbrev e\\ e")
 vim.cmd("cnoreabbrev w' w")
@@ -238,6 +239,11 @@ vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "open [d]i
 vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "open [d]iagnostics [q]uickfix" })
 -- }}}
 
+-- custom buffer width
+vim.keymap.set("n", "<C-W>R",
+               function() vim.api.nvim_win_set_width(0, math.floor(vim.o.columns * 0.65)) end,
+               { desc = "[R]esize buffer width to 65%" })
+
 -- file build
 vim.keymap.set("n", "<leader>cb", function()
                  local makeprg = vim.bo.makeprg
@@ -282,7 +288,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
-  pattern = "lua",
+  pattern = { "lua", "json*" },
   callback = function()
     vim.bo.tabstop = 2
     vim.bo.shiftwidth = 2
