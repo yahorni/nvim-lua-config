@@ -9,13 +9,13 @@ snippet dl
 
 snippet job
     ---
-    arrived_at:
+    arrived_at: ${1}
     expected_leave:
     left_at:
     ---
-    # ${1:`system("echo -n $(LC_ALL=en_US.utf8 date +%B)")`} ${2:`system("echo -n $(date +%-d)")`}, ${3:`system("echo -n $(date +%Y)")`}
+    # ${2:`system("echo -n $(LC_ALL=en_US.utf8 date +%B)")`} ${3:`system("echo -n $(date +%-d)")`}, ${4:`system("echo -n $(date +%Y)")`}
 
-    - [ ] ${4}
+    - [ ] ${5}
 
 snippet task
     ---
